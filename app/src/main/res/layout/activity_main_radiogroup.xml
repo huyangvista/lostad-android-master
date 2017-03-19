@@ -78,5 +78,60 @@
             android:drawablePadding="2dp"
             android:text="我的" />
 
+
+        <RadioButton
+            android:id="@+id/rb_4"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@xml/tab_icon0"
+            android:textSize="@dimen/sp_content3"
+            android:textColor="@color/txt_gray"
+            android:drawablePadding="2dp"
+            android:text="视频" />
+        <RadioButton
+            android:id="@+id/rb_5"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@xml/tab_icon0"
+            android:textSize="@dimen/sp_content3"
+            android:textColor="@color/txt_gray"
+            android:drawablePadding="2dp"
+            android:text="截图" />
+        <RadioButton
+            android:id="@+id/rb_6"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@xml/tab_icon0"
+            android:textSize="@dimen/sp_content3"
+            android:textColor="@color/txt_gray"
+            android:drawablePadding="2dp"
+            android:text="录像" />
+        <RadioButton
+            android:id="@+id/rb_7"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@xml/tab_icon0"
+            android:textSize="@dimen/sp_content3"
+            android:textColor="@color/txt_gray"
+            android:drawablePadding="2dp"
+            android:text="报警" />
+
+
     </RadioGroup>
 </LinearLayout>

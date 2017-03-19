@@ -141,6 +141,13 @@
             android:parentActivityName="com.lostad.app.base.view.BaseActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
 
+        <activity
+            android:name=".view.SelectVideoActivity"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+
+
+
     </application>
 
 </manifest>

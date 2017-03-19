@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author sszvip
+ * Created by Renqy on 2017/3/20.
  * 
  */
-public class ListWaterFragment extends BaseFragment implements WaterDropListView.IWaterDropListViewListener,AdapterView.OnItemClickListener {
+public abstract class BaseListFragment extends BaseFragment implements WaterDropListView.IWaterDropListViewListener,AdapterView.OnItemClickListener {
 
 	@ViewInject(R.id.lv_data)
 	private WaterDropListView lv_data;
@@ -56,6 +56,7 @@ public class ListWaterFragment extends BaseFragment implements WaterDropListView
 		mAdapter = new ListWaterAdapter(mType,ctx, mListData);
 		lv_data.setAdapter(mAdapter);
 		lv_data.setWaterDropListViewListener(this);
+		lv_data.setOnItemClickListener(this);
 		lv_data.setPullLoadEnable(true);
 		//mListData.add(new Tour("测试", "测试", null, "测试哇测试!"));
 		loadData(false);
@@ -106,6 +107,8 @@ public class ListWaterFragment extends BaseFragment implements WaterDropListView
 
 	}
 
+
+	//region  hid
     /**
      * 如果是下拉刷新，先不要清空数据，以免闪屏体验不好。
      * 上拉加载数据时，不清空数据
@@ -150,6 +153,13 @@ public class ListWaterFragment extends BaseFragment implements WaterDropListView
 //			}
 //		}.execute(); //线程池里的线程逐个顺次执行
 //	}
+	//endregion
+
+	/**
+	 * 需要实现的 加载数据
+	 * @return
+     */
+	public abstract TourList4j loadDataAny(int start,TourList4j tourList4j);
 
 	private void loadData(final boolean isLoadMore) {
 //		if(lv_data.isLoading()){
@@ -170,8 +180,8 @@ public class ListWaterFragment extends BaseFragment implements WaterDropListView
 					e.printStackTrace();
 				}
 
-				TourList4j g4j = TourManager.getInstance().listTourAll(start);
-
+				//TourList4j g4j = TourManager.getInstance().listTourAll(start);
+				TourList4j g4j = loadDataAny(start,new TourList4j(false,"success"));
 				return g4j;
 			}
 

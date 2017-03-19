@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -12,6 +15,8 @@ import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.view.LoginActivity;
 import com.lostad.app.demo.view.MainActivity;
 import com.lostad.applib.view.BaseAppActivity;
+
+import java.util.Map;
 
 
 public class BaseActivity extends BaseAppActivity{
@@ -94,5 +99,43 @@ public class BaseActivity extends BaseAppActivity{
 		startActivity(intent);
 	}
 
+
+	/*
+	* 跳转指定页面
+	*/
+	public void  toActivty(Class activityClass){
+		Intent intent = new Intent(ctx,activityClass);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
+	}
+
+	public void  toActivtyNoClear(Class activityClass){
+		Intent intent = new Intent(ctx,activityClass);
+		startActivity(intent);
+	}
+	/**
+	 * 跳转传参
+	 * @param params
+	 * @param activityClass
+	 */
+	public void toActivty(Map<String,String> params, Class activityClass){
+		Intent intent = new Intent(ctx,activityClass);
+		for(String key:params.keySet()){
+			intent.putExtra(key,params.get(key));
+		}
+		startActivity(intent);
+	}
+
+	/**
+	 * 添加碎片
+	 * @param fragment
+	 * @param tag
+	 */
+	protected void addFragment(int fragmentId, Fragment fragment, String tag){
+		FragmentManager manager=getSupportFragmentManager();
+		FragmentTransaction transaction=manager.beginTransaction();
+		transaction.add(fragmentId,fragment,tag);
+		transaction.commit();
+	}
 
 }

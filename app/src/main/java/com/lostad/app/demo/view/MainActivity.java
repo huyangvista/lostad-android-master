@@ -20,6 +20,7 @@ import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment1;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
 import com.lostad.app.demo.view.mainFragment.SettingsFragment;
+import com.lostad.app.demo.view.mainFragment.VideoFragment;
 import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
@@ -97,6 +98,21 @@ public class MainActivity extends BaseActivity {
             case R.id.rb_3:
                 fragment = new SettingsFragment();
                 break;
+
+            //vive
+            case R.id.rb_4:
+                fragment = new VideoFragment();
+                break;
+            case R.id.rb_5:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.rb_6:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.rb_7:
+                fragment = new SettingsFragment();
+                break;
+
 
         }
         return fragment;
@@ -181,4 +197,13 @@ public class MainActivity extends BaseActivity {
         }.start();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String vs = data.getExtras().getString("mmm");
+         vs += data.getExtras().getString("msg");
+        vs += ";";
+        super.onActivityResult(requestCode, resultCode, data);
+       // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
+    }
 }
