@@ -165,7 +165,7 @@ public class ListWaterFragment extends BaseFragment implements WaterDropListView
 				   start = mListData.size();
 				}
 				try{
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				}catch (Exception e){
 					e.printStackTrace();
 				}

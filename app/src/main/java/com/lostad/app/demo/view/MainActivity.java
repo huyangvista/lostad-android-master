@@ -20,6 +20,7 @@ import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment1;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
 import com.lostad.app.demo.view.mainFragment.SettingsFragment;
+import com.lostad.app.demo.view.mainFragment.VideoFragment;
 import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
@@ -97,6 +98,21 @@ public class MainActivity extends BaseActivity {
             case R.id.rb_3:
                 fragment = new SettingsFragment();
                 break;
+
+            //vive
+            case R.id.rb_4:
+                fragment = new VideoFragment();
+                break;
+            case R.id.rb_5:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.rb_6:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.rb_7:
+                fragment = new SettingsFragment();
+                break;
+
 
         }
         return fragment;

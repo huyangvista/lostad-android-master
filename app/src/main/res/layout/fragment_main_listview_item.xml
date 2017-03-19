@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--android:clickable="true"-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent"></View>
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="15dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/presence_online" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent"></View>
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Text"
+            android:textSize="20dp"
+            android:gravity="center" />
+    </LinearLayout>
+
+
+</RelativeLayout>
