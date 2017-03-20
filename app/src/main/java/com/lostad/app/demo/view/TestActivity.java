@@ -20,7 +20,7 @@ public class TestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_test);
         vv = new VView(this);
-        vv.setScaleScene(1,1);
+        vv.setScalcScene(1,1);
         setContentView(vv);
     }
 
@@ -43,8 +43,8 @@ public class TestActivity extends BaseActivity {
             case PLAY_ID:
                 // 此处设定不同分辨率的码流文件
                 File skRoot = Environment.getExternalStorageDirectory();
-               // String file =   "/mnt/sdcard/352x288.264"; //352x288.264"; //240x320.264";
-                String file =   "/mnt/shared/Other/test.h264"; //352x288.264"; //240x320.264";
+                String file =   "/mnt/sdcard/352x288.264"; //352x288.264"; //240x320.264";
+               // String file =   "/mnt/shared/Other/test.h264"; //352x288.264"; //240x320.264";
                 //String file = skRoot.getParent() +   "/352x288.264"; //352x288.264"; //240x320.264";
                 vv.PlayVideo(file);
                 return true;

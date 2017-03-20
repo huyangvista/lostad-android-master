@@ -20,28 +20,27 @@ import java.nio.ByteBuffer;
 
 public class VView extends View implements Runnable {
 
-    @Override
-    public float getScaleX() {
-        return scaleX;
+
+    public float getScalcX() {
+        return scalcX;
     }
 
-    public void setScale(float scaleX,float scaleY) {
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
+    public void setScalc(float scaleX,float scaleY) {
+        this.scalcX = scaleX;
+        this.scalcY = scaleY;
     }
-    public void setScaleScene(float sceneX,float sceneY) {
-        this.scaleX = this.sceneX * sceneX / getWidthSize() ;
-        this.scaleY = this.sceneY * sceneY / getHeightSize() ;
+    public void setScalcScene(float sceneX, float sceneY) {
+        this.scalcX = this.sceneX * sceneX / getWidthSize() ;
+        this.scalcY = this.sceneY * sceneY / getHeightSize() ;
     }
 
-    @Override
-    public float getScaleY() {
-        return scaleY;
+    public float getScalcY() {
+        return scalcY;
     }
 
     private int sceneX,sceneY;
-    private float scaleX = 1.0f;
-    private float scaleY = 1.0f;
+    private float scalcX = 1.0f;
+    private float scalcY = 1.0f;
 
     Bitmap mBitQQ  = null;
 
@@ -133,7 +132,7 @@ public class VView extends View implements Runnable {
 
         // 保存画布状态
         canvas.save();
-        canvas.scale(getScaleX(), getScaleY());
+        canvas.scale(scalcX, scalcY);
 
         canvas.drawBitmap(VideoBit, 0, 0, null);
 
