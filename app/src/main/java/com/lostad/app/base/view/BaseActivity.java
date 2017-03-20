@@ -109,6 +109,10 @@ public class BaseActivity extends BaseAppActivity{
 		startActivity(intent);
 	}
 
+	/**
+	 * vive
+	 * @param activityClass
+	 */
 	public void  toActivtyNoClear(Class activityClass){
 		Intent intent = new Intent(ctx,activityClass);
 		startActivity(intent);

@@ -56,6 +56,8 @@ public class MainActivity extends BaseActivity {
 
         //changeFragment(R.id.rb_0);
         changeFragment(R.id.rb_2);
+
+        toActivtyNoClear(TestActivity.class);
     }
 
     private void changeFragment(int checkedId) {

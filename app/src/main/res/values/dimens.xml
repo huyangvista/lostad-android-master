@@ -3,7 +3,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    
+
     <dimen name="paddings">10dp</dimen>
     <dimen name="margins">10dp</dimen>
     <dimen name="height_list_item">64.0dip</dimen>
@@ -16,5 +16,5 @@
     <dimen name="sp_header2_or_button">20sp</dimen>
     <dimen name="sp_bigest">22sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    
+
 </resources>
