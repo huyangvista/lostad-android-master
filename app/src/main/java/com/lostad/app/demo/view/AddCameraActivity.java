@@ -33,6 +33,7 @@ public class AddCameraActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+
     }
 
     @Event(R.id.buttonSubmit)
