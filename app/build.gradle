@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.lostad.app.tbi"
+        applicationId "com.lostad.app.demo"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

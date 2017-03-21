@@ -22,7 +22,7 @@ public class WelActivity extends Activity {
 			 @Override
 			 public void run() {
 				 try {
-					 sleep(1000);
+					 sleep(500);
 				 } catch (InterruptedException e) {
 					 e.printStackTrace();
 				 }
