@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.lostad.app.base.util.DownloadUtil;
 import com.lostad.app.base.util.ImageChooserUtil;
 import com.lostad.app.base.util.ImageTools;
-import com.lostad.app.base.util.Validator;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.component.BaseFormActivity;
 import com.lostad.app.base.view.component.FormAddressActivity;
@@ -25,6 +24,7 @@ import com.lostad.app.demo.entity.UserInfo;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.DialogUtil;
 import com.lostad.applib.util.FileDataUtil;
+import com.lostad.applib.util.Validator;
 
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.Event;

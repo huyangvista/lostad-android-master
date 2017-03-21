@@ -17,6 +17,8 @@
 package com.lostad.app.base.util;
 
 import com.google.gson.Gson;
+import com.lostad.applib.util.FormFile;
+import com.lostad.applib.util.Validator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -273,7 +275,7 @@ public class RequestUtil {
 	 * @param files 上传文件
 	 * @throws Exception 
 	 */  
-	public static String postFile(String actionUrl, Map<String, String> params, FormFile[] files,String token) throws Exception {
+	public static String postFile(String actionUrl, Map<String, String> params, FormFile[] files, String token) throws Exception {
 	    try {             
 	        String BOUNDARY = "---------7d4a6d158c9"; //数据分隔线  
 	        String MULTIPART_FORM_DATA = "multipart/form-data";  

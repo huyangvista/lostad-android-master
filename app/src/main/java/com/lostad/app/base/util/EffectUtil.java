@@ -1,17 +1,20 @@
 package com.lostad.app.base.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
-import com.nineoldandroids.animation.*;
-import com.lostad.app.demo.R;
 
+import com.lostad.applib.R;
+import com.nineoldandroids.animation.ObjectAnimator;
 /**
  * 窗口工具类,提供可重用的窗口
- * 
+ *
  * @author sszvip@qq.com
  * @copyright lostad.com
  */
@@ -42,5 +45,23 @@ public class EffectUtil {
 		ObjectAnimator.ofFloat(target, "scaleX", 1, 2, 1).setDuration(2000).start();
 	}
 
+	/**
+	 *  转动效果
+	 * @param ctx 上下文
+	 * @param ivIcon 组件
+	 */
+	public static void startAnimation(Context ctx, ImageView ivIcon){
+		try{
+			Animation operatingAnim = AnimationUtils.loadAnimation(ctx, R.anim.progress_loading);
+			LinearInterpolator lin = new LinearInterpolator();
+			operatingAnim.setInterpolator(lin);
+			if (operatingAnim != null && ivIcon != null) {
+				ivIcon.startAnimation(operatingAnim);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
 
 }

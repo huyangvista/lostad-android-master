@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lostad.app.base.util.LogMe;
+import com.lostad.applib.util.LogMe;
 import com.lostad.applib.BaseApplication;
 import com.lostad.applib.entity.ILoginConfig;
 

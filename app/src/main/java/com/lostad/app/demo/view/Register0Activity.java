@@ -10,13 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lostad.app.base.util.Validator;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.manager.SysManager;
 import com.lostad.applib.Config;
 import com.lostad.applib.entity.BaseBeanRsult;
 import com.lostad.applib.util.DialogUtil;
+import com.lostad.applib.util.Validator;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;

@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.lostad.app.base.util.Validator;
 import com.lostad.app.demo.R;
+import com.lostad.applib.util.Validator;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;

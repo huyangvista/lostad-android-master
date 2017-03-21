@@ -51,7 +51,7 @@ public class LogMe {
 	public static void d(String tag, Object msg) {
 
 		if (Config.isTestMode) {
-			Log.d("LogMe:" + tag, ""+msg);
+			Log.d(tag, ""+msg);
 		}
 		if(Config.isWrittenToSD){
 			writeFileToSD(tag+"--------》"+msg);

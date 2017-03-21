@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lostad.app.base.util.EffectUtil;
-import com.lostad.app.base.util.PrefManager;
+import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.LoginConfig;

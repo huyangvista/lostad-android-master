@@ -14,12 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.lostad.app.base.util.LogMe;
-import com.lostad.app.base.util.Validator;
+import com.lostad.applib.util.LogMe;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.DialogUtil;
+import com.lostad.applib.util.Validator;
 
 import org.xutils.x;
 

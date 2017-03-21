@@ -11,9 +11,9 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.lostad.app.base.util.Validator;
 import com.lostad.app.demo.R;
 import com.lostad.applib.util.DateUtil;
+import com.lostad.applib.util.Validator;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;

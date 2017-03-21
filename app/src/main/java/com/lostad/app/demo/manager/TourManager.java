@@ -1,7 +1,7 @@
 package com.lostad.app.demo.manager;
 
 import com.google.gson.Gson;
-import com.lostad.app.base.util.LogMe;
+import com.lostad.applib.util.LogMe;
 import com.lostad.app.base.util.RequestUtil;
 import com.lostad.app.demo.entity.Tour;
 import com.lostad.app.demo.entity.TourList4j;

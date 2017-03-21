@@ -2,7 +2,7 @@ package com.lostad.app.demo.manager;
 
 import com.google.gson.Gson;
 import com.lostad.app.demo.IConst;
-import com.lostad.app.base.util.LogMe;
+import com.lostad.applib.util.LogMe;
 import com.lostad.app.base.util.RequestUtil;
 import com.lostad.app.demo.entity.UserInfo4j;
 import com.lostad.applib.entity.BaseBeanRsult;

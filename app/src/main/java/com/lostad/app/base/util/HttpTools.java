@@ -1,5 +1,7 @@
 package com.lostad.app.base.util;
 
+import com.lostad.applib.util.FormFile;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -269,7 +271,7 @@ public class HttpTools {
 	 * @param files 上传文件
 	 * @throws Exception 
 	 */  
-	public static String postFile(String url, Map<String, String> params, FormFile[] files) throws Exception {  
+	public static String postFile(String url, Map<String, String> params, FormFile[] files) throws Exception {
 	    try {             
 	        String BOUNDARY = "---------7d4a6d158c9"; //数据分隔线  
 	        String MULTIPART_FORM_DATA = "multipart/form-data";  

@@ -12,7 +12,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.lostad.app.base.AppConfig;
 import com.lostad.app.demo.entity.LoginConfig;
-import com.lostad.app.base.util.PrefManager;
+import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.app.demo.entity.UserInfo;
 import com.lostad.applib.BaseApplication;
 import com.lostad.applib.entity.ILoginConfig;

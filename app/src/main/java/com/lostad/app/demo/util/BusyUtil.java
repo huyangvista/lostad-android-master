@@ -3,7 +3,8 @@ package com.lostad.app.demo.util;
 
 import android.widget.TextView;
 
-import com.lostad.app.base.util.Validator;
+
+import com.lostad.applib.util.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
