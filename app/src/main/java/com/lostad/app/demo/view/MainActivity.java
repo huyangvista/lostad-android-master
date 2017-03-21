@@ -120,10 +120,14 @@ public class MainActivity extends BaseActivity {
         return fragment;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
+        //getMenuInflater().inflate(R.menu.menu_settings, menu);
+        menu.clear();
+        menu.add(0,0,0,"扫描二维码样例");
+        menu.add(0,1,1,"主界面Drawer");
         return true;
     }
 
@@ -132,19 +136,20 @@ public class MainActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if(id==R.id.action_settings){
-            Intent i = new Intent(this, CaptureActivity.class);
-            startActivityForResult(i,0);
-            return true;
-        }else if(id==R.id.action_drawer){
-            Intent i = new Intent(this, DrawerActivity.class);
-            startActivity(i);
-        }else{
-            Intent i = new Intent(this, DrawerActivity.class);
-            startActivity(i);
+        if(item.getGroupId() == 0) {
+            int id = item.getItemId();
+            if (id == R.id.action_settings) {
+                Intent i = new Intent(this, CaptureActivity.class);
+                startActivityForResult(i, 0);
+                return true;
+            } else if (id == R.id.action_drawer) {
+                Intent i = new Intent(this, DrawerActivity.class);
+                startActivity(i);
+            } else {
+                Intent i = new Intent(this, DrawerActivity.class);
+                startActivity(i);
+            }
         }
-
         return super.onOptionsItemSelected(item);
     }
 

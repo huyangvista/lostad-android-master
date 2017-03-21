@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.lostad.applib.util.ReflectUtil;
 
+import java.util.Map;
+
 
 /**
  * 窗体工具
@@ -53,6 +55,36 @@ public class ContextUtil {
      */
 	public static void startActivity(Context con, Class<?> cls){
 		con.startActivity(new Intent(con,cls));
+	}
+
+	/*
+* 跳转指定页面
+*/
+	public static void  toActivty(Class activityClass){
+		Intent intent = new Intent(getAppContext(),activityClass);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		getAppContext().startActivity(intent);
+	}
+
+	/**
+	 * vive
+	 * @param activityClass
+	 */
+	public void  toActivtyNoClear(Class activityClass){
+		Intent intent = new Intent(getAppContext(),activityClass);
+		getAppContext().startActivity(intent);
+	}
+	/**
+	 * 跳转传参
+	 * @param params
+	 * @param activityClass
+	 */
+	public void toActivty(Map<String,String> params, Class activityClass){
+		Intent intent = new Intent(getAppContext(),activityClass);
+		for(String key:params.keySet()){
+			intent.putExtra(key,params.get(key));
+		}
+		getAppContext().startActivity(intent);
 	}
 
 }

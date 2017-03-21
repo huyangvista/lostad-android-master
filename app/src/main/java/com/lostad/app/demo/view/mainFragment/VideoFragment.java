@@ -10,6 +10,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.R;
+import com.lostad.app.demo.entity.TouchListViewData;
 import com.lostad.app.demo.entity.Tour;
 import com.lostad.app.demo.entity.TourList4j;
 import com.lostad.app.demo.manager.TourManager;
@@ -29,6 +34,7 @@ import com.lostad.app.demo.view.MainActivity;
 import com.lostad.app.demo.view.SelectVideoActivity;
 import com.lostad.app.demo.view.TestActivity;
 import com.lostad.applib.core.MyCallback;
+import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -68,7 +74,7 @@ public class VideoFragment extends BaseFragment {
 			}
 			@Override
 			public void loadSetItemView(Object holders, Object demo){
-				final Tour f = (Tour) demo;
+				final ItemText f = (ItemText) demo;
 				ViewHolder holder = (ViewHolder) holders;
 				holder.tv_title.setText(f.title );
 				holder.tv_desc.setText(f.desc);
@@ -81,21 +87,33 @@ public class VideoFragment extends BaseFragment {
 							public void onCallback(Integer data) {
 								DialogUtil.showToastCust("heh " + data);
 								//设置后 回调
-
 							}
 						});
 					}
 				});
-//                if(Validator.isNotEmpty(f.picUrl)){
-//                    //DownloadUtil.loadImage(holder.iv_pic, IConst.URL_BASE+f.XMTP,R.drawable.loading_frame1,R.mipmap.img_default,R.mipmap.load_fail);
-//                    DownloadUtil.loadImage(mContext,holder.iv_pic, f.picUrl);
-//                }
+			}
+			@Override
+			public TouchListViewData loadDataAny(int start, TouchListViewData success) {
+
+				TouchListViewData g4j = null;
+				String index = "Camera :"+ start++;
+				List<Object> list = new ArrayList<Object>();
+				list.add(new ItemText(index,index, null,"123456789"));
+				index = "Camera :"+ start++;
+				list.add(new ItemText(index,index,null,"987654321"));
+				index = "Camera :"+ start++;
+				list.add(new ItemText(index,index,null,"555666448899"));
+
+				g4j = new TouchListViewData(true,"success");
+				g4j.list = list;
+				return g4j;
 			}
 			//点击列表
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				DialogUtil.showToastCust("heh 00000");
 			}
+
 		};
 
 
@@ -105,6 +123,38 @@ public class VideoFragment extends BaseFragment {
 
 		return rootView;
 	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		menu.add(2,0,0,"增加");
+		menu.add(2,1,1,"关于");
+		menu.add(2,2,2,"退出");
+
+
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getGroupId() == 2){
+			switch (item.getItemId()) {
+				case 0:
+					ContextUtil.toActivty(MainActivity.class);
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				default:
+					break;
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
 
 //	@Override
 //	public TourList4j loadDataAny(int start, TourList4j tourList4j) {

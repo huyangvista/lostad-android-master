@@ -24,6 +24,7 @@ import net.frakbot.jumpingbeans.JumpingBeans;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +102,22 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+    public TouchListViewData loadDataAny(int start, TouchListViewData success) {
+
+        TouchListViewData g4j = null;
+        String index = "Title :"+ start++;
+        List<Object> list = new ArrayList<Object>();
+        list.add(new Tour(index,index, null,"Lostad-android framework is ready for u !"));
+        index = "Title :"+ start++;
+        list.add(new Tour(index,index,null,"Lostad-android framework"));
+        index = "Title :"+ start++;
+        list.add(new Tour(index,index,null,"Lostad-android framework"));
+        index = "Title :"+ start++;
+
+        g4j = new TouchListViewData(true,"success");
+        g4j.list = list;
+        return g4j;
+    }
     /////////////////////////// 需要重写的
 
     /**
@@ -165,22 +182,7 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
         }.execute();
     }
 
-    private TouchListViewData loadDataAny(int start, TouchListViewData success) {
 
-        TouchListViewData g4j = null;
-        String index = "Title :"+ start++;
-        List<Object> list = new ArrayList<Object>();
-        list.add(new Tour(index,index, null,"Lostad-android framework is ready for u !"));
-        index = "Title :"+ start++;
-        list.add(new Tour(index,index,null,"Lostad-android framework"));
-        index = "Title :"+ start++;
-        list.add(new Tour(index,index,null,"Lostad-android framework"));
-        index = "Title :"+ start++;
-
-        g4j = new TouchListViewData(true,"success");
-        g4j.list = list;
-        return g4j;
-    }
 
     //demo
     public class ViewHolder extends ItemView{
@@ -210,6 +212,23 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
         public ItemView(View convertView) {
             x.view().inject(this, convertView);
         }
+    }
+    public class ItemText implements Serializable {
+        //列表内容
+        public String id;
+        public String desc;//简介
+        public String picUrl;//名称
+        public String title;//图片
+
+        public ItemText() {
+        }
+        public ItemText(String id,String title,String picUrl,String desc) {
+            this.id = id;
+            this.title = title;
+            this.picUrl = picUrl;
+            this.desc = desc;
+        }
+
     }
 
     //region 效果
