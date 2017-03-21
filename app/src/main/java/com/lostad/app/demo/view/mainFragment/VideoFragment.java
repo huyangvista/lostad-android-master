@@ -30,6 +30,7 @@ import com.lostad.app.demo.entity.TourList4j;
 import com.lostad.app.demo.manager.TourManager;
 import com.lostad.app.demo.util.view.ListViewBuild;
 import com.lostad.app.demo.util.view.TouchListView;
+import com.lostad.app.demo.view.AddCameraActivity;
 import com.lostad.app.demo.view.MainActivity;
 import com.lostad.app.demo.view.SelectVideoActivity;
 import com.lostad.app.demo.view.TestActivity;
@@ -139,7 +140,7 @@ public class VideoFragment extends BaseFragment {
 		if(item.getGroupId() == 2){
 			switch (item.getItemId()) {
 				case 0:
-					ContextUtil.toActivty(MainActivity.class);
+					ContextUtil.toActivty(AddCameraActivity.class);
 					break;
 				case 1:
 					break;
