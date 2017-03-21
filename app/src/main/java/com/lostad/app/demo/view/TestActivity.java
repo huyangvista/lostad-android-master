@@ -14,6 +14,7 @@ import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.Tour;
 import com.lostad.app.demo.util.view.TouchListView;
+import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.ui.DialogUtil;
 
 import org.xutils.view.annotation.ContentView;
@@ -56,7 +57,15 @@ public class TestActivity extends BaseActivity {
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogUtil.showToastCust("heh ");
+
+                        com.lostad.applib.util.DialogUtil.showAlertMenu(TestActivity.this, "设置", new String[]{"重新连接", "修改摄像机", "查看事件", "查看快照", "删除相机"}, new MyCallback<Integer>() {
+                            @Override
+                            public void onCallback(Integer data) {
+                                DialogUtil.showToastCust("heh " + data);
+                                //设置后 回调
+
+                            }
+                        });
                     }
                 });
 //                if(Validator.isNotEmpty(f.picUrl)){
