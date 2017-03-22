@@ -1,4 +1,4 @@
-package com.lostad.app.base.view.widget;
+package com.lostad.app.base.view.component;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.lostad.app.demo.R;
+import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.view.BaseAppActivity;
 
 import org.xutils.view.annotation.ContentView;
@@ -23,7 +24,9 @@ import org.xutils.x;
 public abstract class BaseHisActivity extends BaseAppActivity {
     //protected HeaderLayout headerLayout;
     private Intent intentData; //传递过来的数据
-    public abstract Bundle setResult();//设置返回值
+
+    public abstract Bundle setResult(Bundle bundle);
+
 
     @ViewInject(R.id.body)
     protected LinearLayout body;
@@ -49,6 +52,11 @@ public abstract class BaseHisActivity extends BaseAppActivity {
 //        });
     }
 
+    public void setBodyContentView(int rid){
+        body.removeAllViews();
+        body.addView(ContextUtil.loadLayout(rid));
+    }
+
     @Event(R.id.buttonBack)
     private void onClickButtonBack(View v){
         toBack();
@@ -62,14 +70,13 @@ public abstract class BaseHisActivity extends BaseAppActivity {
     /**
      * 带覆盖
      */
-    public boolean toSubmit(){
-        Bundle bundle=setResult();
-        if(bundle!=null) {
-            intentData.putExtras(setResult());
+    public void toSubmit(){
+        Bundle bundle=setResult(getExtras());
+        if(bundle != null){
+            intentData.putExtras(bundle);
         }
         setResult(RESULT_OK, intentData); //intent为A传来的带有Bundle的intent，当然也可以自己定义新的Bundle
         quitApp();
-        return true;
     }
 
     /**

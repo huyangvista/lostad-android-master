@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.lostad.app.base.view.BaseActivity;
+import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.demo.R;
 
 import org.xutils.view.annotation.ContentView;
@@ -14,8 +15,8 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-@ContentView(R.layout.activity_add_camera)
-public class AddCameraActivity extends BaseActivity {
+//@ContentView(R.layout.activity_add_camera)
+public class AddCameraActivity extends BaseHisActivity {
 
     @ViewInject(R.id.editTextUid)
     private EditText editTextUid;
@@ -30,19 +31,18 @@ public class AddCameraActivity extends BaseActivity {
     private Button buttonCancel;
 
     @Override
+    public Bundle setResult(Bundle bundle) {
+        return bundle;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
+        setBodyContentView(R.layout.activity_add_camera);
     }
 
-    @Event(R.id.buttonSubmit)
-    private void onClickSubmit(View v){
 
-    }
 
-    @Event(R.id.buttonCancel)
-    private void onClickCancel(View v){
-
-    }
 }

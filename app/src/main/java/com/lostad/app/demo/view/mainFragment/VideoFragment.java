@@ -140,7 +140,8 @@ public class VideoFragment extends BaseFragment {
 		if(item.getGroupId() == 2){
 			switch (item.getItemId()) {
 				case 0:
-					ContextUtil.toActivty(AddCameraActivity.class);
+
+					ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
 					break;
 				case 1:
 					break;

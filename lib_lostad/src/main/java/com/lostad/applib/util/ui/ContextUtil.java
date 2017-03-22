@@ -1,7 +1,13 @@
 package com.lostad.applib.util.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.lostad.applib.util.ReflectUtil;
 
@@ -15,6 +21,12 @@ import java.util.Map;
  */
 public class ContextUtil {
 	private static Context appContext; //全局上下文
+
+	public void setLayoutInflater(LayoutInflater layoutInflater) {
+		this.layoutInflater = layoutInflater;
+	}
+
+	private static LayoutInflater layoutInflater;
 
 	/**
 	 * 得到当前窗体的名称
@@ -70,7 +82,7 @@ public class ContextUtil {
 	 * vive
 	 * @param activityClass
 	 */
-	public void  toActivtyNoClear(Class activityClass){
+	public static void  toActivtyNoClear(Class activityClass){
 		Intent intent = new Intent(getAppContext(),activityClass);
 		getAppContext().startActivity(intent);
 	}
@@ -79,12 +91,47 @@ public class ContextUtil {
 	 * @param params
 	 * @param activityClass
 	 */
-	public void toActivty(Map<String,String> params, Class activityClass){
+	public static void toActivty(Map<String,String> params, Class activityClass){
 		Intent intent = new Intent(getAppContext(),activityClass);
 		for(String key:params.keySet()){
 			intent.putExtra(key,params.get(key));
 		}
 		getAppContext().startActivity(intent);
 	}
+
+	public static void toActivtyResult(Activity act, Class activityClass) {
+		Intent intent = new Intent(act, activityClass);
+		act.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
+	public static void toActivtyResult(Activity act, Map<String, String> params, Class activityClass) {
+		Intent intent = new Intent(act, activityClass);
+		for (String key : params.keySet()) {
+			intent.putExtra(key, params.get(key));
+		}
+		act.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
+
+
+
+
+	public static LayoutInflater getLayoutInflater(){
+		if(layoutInflater == null){
+			layoutInflater = LayoutInflater.from(getAppContext());
+		}
+		return layoutInflater;
+	}
+
+	public static View loadLayout(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot){
+		return getLayoutInflater().inflate(resource,root,attachToRoot);
+	}
+	public static View loadLayout(@LayoutRes int resource, @Nullable ViewGroup root){
+		return getLayoutInflater().inflate(resource,root);
+	}
+	public static View loadLayout(@LayoutRes int resource){
+		return getLayoutInflater().inflate(resource,null);
+	}
+
+
+
 
 }

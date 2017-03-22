@@ -6,40 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.lostad.app.demo.view.AddCameraActivity">
 
-    <LinearLayout
-        android:layout_width="374dp"
-        android:layout_height="42dp"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="509dp">
+
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            tools:layout_editor_absoluteY="444dp"
+            tools:layout_editor_absoluteX="16dp" />
 
         <Button
             android:id="@+id/buttonCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
-    </LinearLayout>
+            android:text="Button"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <LinearLayout
-        android:layout_width="315dp"
-        android:layout_height="39dp"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="163dp">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="TextView"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
 
         <EditText
             android:id="@+id/editTextUsername"
@@ -48,22 +43,20 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
-    </LinearLayout>
+            android:text="Name"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <LinearLayout
-        android:layout_width="315dp"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="104dp">
+
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="TextView"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -72,21 +65,19 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
-    </LinearLayout>
+            android:text="Name"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <LinearLayout
-        android:layout_width="316dp"
-        android:layout_height="38dp"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="50dp">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="TextView"
+            tools:layout_editor_absoluteY="31dp"
+            tools:layout_editor_absoluteX="0dp" />
 
         <EditText
             android:id="@+id/editTextUid"
@@ -95,8 +86,9 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
-    </LinearLayout>
+            android:text="Name"
+            tools:layout_editor_absoluteY="204dp"
+            tools:layout_editor_absoluteX="87dp" />
 
     <TextView
         android:id="@+id/textViewSetting"
@@ -105,5 +97,23 @@
         android:text="TextView"
         tools:layout_editor_absoluteY="16dp"
         tools:layout_editor_absoluteX="16dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        app:layout_constraintGuide_begin="23dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="23dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline2"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="20dp" />
 
 </android.support.constraint.ConstraintLayout>
