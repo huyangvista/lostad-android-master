@@ -56,8 +56,8 @@ android {
     }
     buildTypes {
         debug {
-            ndk{
-                abiFilters "armeabi","x86","armeabi-v7a","mips"
+            ndk {
+                abiFilters "armeabi", "x86", "armeabi-v7a", "mips"
 
 //                abiFilters "armeabi"
 //                abiFilters "armeabi"

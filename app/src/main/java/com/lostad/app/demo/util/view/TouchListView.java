@@ -253,8 +253,14 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
             if (mListData == null || mListData.size() == 0) {
                 iv_loading.setVisibility(View.VISIBLE);
                 tv_loading.setVisibility(View.VISIBLE);
-                tv_loading.setText("没有数据，请添加。");
+                tv_loading.setText("没有数据，点击刷新。");
                 iv_loading.setImageResource(R.mipmap.img_no_data);
+                iv_loading.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onLoadMore();
+                    }
+                });
             } else {
                 iv_loading.setVisibility(View.GONE);
                 tv_loading.setVisibility(View.GONE);

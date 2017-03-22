@@ -147,7 +147,8 @@
             android:name=".view.TestActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.AddCameraActivity"></activity>
+        <activity android:name=".view.AddCameraActivity" />
+        <activity android:name=".view.FolderSelectActivity"></activity>
     </application>
 
 </manifest>

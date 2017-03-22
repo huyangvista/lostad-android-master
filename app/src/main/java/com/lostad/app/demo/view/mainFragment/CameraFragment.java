@@ -1,11 +1,7 @@
 package com.lostad.app.demo.view.mainFragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.MyApplication;
@@ -23,7 +18,6 @@ import com.lostad.app.demo.entity.TouchListViewDataMsg;
 import com.lostad.app.demo.entity.Video;
 import com.lostad.app.demo.util.view.TouchListView;
 import com.lostad.app.demo.view.AddCameraActivity;
-import com.lostad.app.demo.view.MainActivity;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
@@ -32,20 +26,17 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import h264.com.VView;
 
 /**
  * @author sszvip@qq.com
  */
-public class VideoFragment extends BaseFragment {
+public class CameraFragment extends BaseFragment {
 
     private LinearLayout linearLayout;
     VView vv;
@@ -53,7 +44,7 @@ public class VideoFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_video, null);
+        View rootView = inflater.inflate(R.layout.fragment_camera, null);
         linearLayout = (LinearLayout) rootView.findViewById(R.id.line_layout);
         x.view().inject(getActivity());
         vv = new VView(getContext());
@@ -118,7 +109,6 @@ public class VideoFragment extends BaseFragment {
                 DbManager db = MyApplication.getInstance().getDb();
                 List<Object> list = new ArrayList<>();
                 try {
-                    //载入 list
                     List<Video> videos = db.findAll(Video.class);
                     if (videos != null && start < videos.size()) {
                         for (int i = start; i < videos.size(); i++) {
@@ -126,7 +116,6 @@ public class VideoFragment extends BaseFragment {
                             list.add(v);
                         }
                     }
-
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -150,26 +139,18 @@ public class VideoFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        menu.add(3, 0, 0, "保存地址");
-        menu.add(3, 1, 1, "设置");
+        menu.add(2, 0, 0, "增加");
+        menu.add(2, 1, 1, "关于");
+        menu.add(2, 2, 2, "退出");
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getGroupId() == 3) {
+        if (item.getGroupId() == 2) {
             switch (item.getItemId()) {
                 case 0:
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType("folder /*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-//                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-//                    intent.setType("image/*");
-//                    intent.setType("audio/*"); //选择音频
-//                    intent.setType("video/*"); //选择视频 （mp4 3gp 是android支持的视频格式）
-//                    intent.setType("video/*;image/*");//同时选择视频和图片
-                    // ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
-                    startActivityForResult(intent, 1);
+                    ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
                     break;
                 case 1:
                     break;
@@ -213,26 +194,6 @@ public class VideoFragment extends BaseFragment {
 ////                startActivity(intent);
 //		startActivityForResult(intent,0);//跳转并发送请求码
 //	}
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-       // if (resultCode == Activity.RESULT_OK)
-        {//是否选择，没选择就不会继续
-
-            String path = data.getData().getPath();
-            path += "sdfsdf";
-            path = path;
-//            Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
-//            String[] proj = {MediaStore.Images.Media.DATA};
-//            Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);
-//            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            actualimagecursor.moveToFirst();
-//            String img_path = actualimagecursor.getString(actual_image_column_index);
-//            File file = new File(img_path);
-        }
-
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
 }

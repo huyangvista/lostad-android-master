@@ -11,6 +11,7 @@ import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.Video;
+import com.lostad.applib.util.ui.ContextUtil;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -48,6 +49,14 @@ public class AddCameraActivity extends BaseHisActivity {
         editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);
 
+
+       Bundle bun =  ContextUtil.getActivtyExtra(this);
+        if(bun != null){
+            Video v = (Video) bun.get("data");
+            editTextUid.setText(v.uid);
+            editTextUsername.setText(v.username);
+            //editTextPassword.setText(v.password);
+        }
     }
 
     @Override

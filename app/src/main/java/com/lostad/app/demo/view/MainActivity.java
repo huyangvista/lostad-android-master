@@ -2,8 +2,10 @@ package com.lostad.app.demo.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.R;
+import com.lostad.app.demo.view.mainFragment.CameraFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment1;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
@@ -25,6 +28,8 @@ import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * 主要
@@ -103,13 +108,13 @@ public class MainActivity extends BaseActivity {
 
             //vive
             case R.id.rb_4:
-                fragment = new VideoFragment();
+                fragment = new CameraFragment();
                 break;
             case R.id.rb_5:
                 fragment = new SettingsFragment();
                 break;
             case R.id.rb_6:
-                fragment = new SettingsFragment();
+                fragment = new VideoFragment();
                 break;
             case R.id.rb_7:
                 fragment = new SettingsFragment();
@@ -217,6 +222,14 @@ public class MainActivity extends BaseActivity {
 //        String vs = data.getExtras().getString("mmm");
 //         vs += data.getExtras().getString("msg");
 //        vs += ";";
+//        try{
+//            List<Fragment> list = fragmentManager.getFragments();
+//            for (int i = 0; i < list.size(); i++) {
+//                (list.get(i)).onActivityResult(requestCode,resultCode,data);
+//            }
+//        }
+
+
         super.onActivityResult(requestCode, resultCode, data);
        // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
     }

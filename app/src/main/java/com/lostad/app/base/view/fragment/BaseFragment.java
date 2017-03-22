@@ -2,6 +2,7 @@ package com.lostad.app.base.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -96,4 +97,6 @@ public abstract class BaseFragment extends Fragment {
 	public ILoginConfig getLoginConfig(){
        return mApp.getLoginConfig();
 	}
+
+
 }
