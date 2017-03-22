@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import h264.com.VView;
@@ -24,12 +25,19 @@ import org.xutils.x;
 
 import java.io.File;
 
+
+/**
+ * Created by Hocean on 2017/3/21.
+ */
 @ContentView(R.layout.activity_test)
 public class TestActivity extends BaseActivity {
 
     @ViewInject(R.id.line_layout)
     private LinearLayout linearLayout;
     VView vv;
+
+    @ViewInject(R.id.editText)
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +89,9 @@ public class TestActivity extends BaseActivity {
         };
 
 
-        linearLayout.addView(tlv.getRootView());
-        tlv.onLoadMore();
-        //linearLayout.addView(vv);
+       // linearLayout.addView(tlv.getRootView());
+        //tlv.onLoadMore();
+        linearLayout.addView(vv);
     }
 
     // Menu item Ids
@@ -106,6 +114,8 @@ public class TestActivity extends BaseActivity {
             case PLAY_ID:
                 // 此处设定不同分辨率的码流文件
                 File skRoot = Environment.getExternalStorageDirectory();
+                String vs = editText.getText().toString();
+                //String file =   vs + "352x288.264"; //352x288.264"; //240x320.264";
                 String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
                 // String file =   "/mnt/shared/Other/test.h264"; //352x288.264"; //240x320.264";
                 //String file = skRoot.getParent() +   "/352x288.264"; //352x288.264"; //240x320.264";
@@ -124,7 +134,9 @@ public class TestActivity extends BaseActivity {
     }
     @Event(R.id.button2)
     private void onClickButton2(View v){
-        toActivty(LoginActivity.class);
+        String vs = editText.getText().toString();
+        String file =   vs + "352x288.264"; //352x288.264"; //240x320.264";
+        vv.PlayVideo(file);
     }
 
 }

@@ -1,10 +1,18 @@
 package com.lostad.applib.util.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.lostad.applib.util.ReflectUtil;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
@@ -15,6 +23,12 @@ import java.util.Map;
  */
 public class ContextUtil {
 	private static Context appContext; //全局上下文
+
+	public void setLayoutInflater(LayoutInflater layoutInflater) {
+		this.layoutInflater = layoutInflater;
+	}
+
+	private static LayoutInflater layoutInflater;
 
 	/**
 	 * 得到当前窗体的名称
@@ -60,31 +74,81 @@ public class ContextUtil {
 	/*
 * 跳转指定页面
 */
-	public static void  toActivty(Class activityClass){
-		Intent intent = new Intent(getAppContext(),activityClass);
+	public static void toActivtyClear(Class activityClass){
+		toActivtyClear(getAppContext(),activityClass);
+	}
+	public static void toActivtyClear(Context context, Class activityClass){
+		Intent intent = new Intent(context,activityClass);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		getAppContext().startActivity(intent);
+		context.startActivity(intent);
+	}
+	public static void toActivtyClear(Context context, Map<String,? extends Serializable> params, Class activityClass){
+		Intent intent = new Intent(context,activityClass);
+		for(String key:params.keySet()){
+			intent.putExtra(key,params.get(key));
+		}
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+	public static void toActivtyClear(Map<String,? extends Serializable> params, Class activityClass){
+		toActivtyClear(getAppContext(),params,activityClass);
 	}
 
 	/**
 	 * vive
 	 * @param activityClass
 	 */
-	public void  toActivtyNoClear(Class activityClass){
-		Intent intent = new Intent(getAppContext(),activityClass);
-		getAppContext().startActivity(intent);
+	public static void toActivty(Class activityClass){
+		toActivty(getAppContext(),activityClass);
 	}
-	/**
-	 * 跳转传参
-	 * @param params
-	 * @param activityClass
-	 */
-	public void toActivty(Map<String,String> params, Class activityClass){
-		Intent intent = new Intent(getAppContext(),activityClass);
+	public static void toActivty(Context context, Class activityClass){
+		Intent intent = new Intent(context,activityClass);
+		context.startActivity(intent);
+	}
+	public static void toActivty(Context context, Map<String,? extends Serializable> params, Class activityClass){
+		Intent intent = new Intent(context,activityClass);
 		for(String key:params.keySet()){
 			intent.putExtra(key,params.get(key));
 		}
-		getAppContext().startActivity(intent);
+		context.startActivity(intent);
 	}
+	public static void toActivty(Map<String,? extends Serializable> params, Class activityClass){
+		toActivtyClear(getAppContext(),params,activityClass);
+	}
+
+	public static void toActivtyResult(Activity act, Class activityClass) {
+		Intent intent = new Intent(act, activityClass);
+		act.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
+
+	public static void toActivtyResult(Activity act, Map<String, ? extends Serializable> params, Class activityClass) {
+		Intent intent = new Intent(act, activityClass);
+		for (String key : params.keySet()) {
+			intent.putExtra(key,  params.get(key));
+		}
+		act.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
+
+	public static LayoutInflater getLayoutInflater(){
+		if(layoutInflater == null){
+			layoutInflater = LayoutInflater.from(getAppContext());
+		}
+		return layoutInflater;
+	}
+
+	public static View loadLayout(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot){
+		return getLayoutInflater().inflate(resource,root,attachToRoot);
+	}
+	public static View loadLayout(@LayoutRes int resource, @Nullable ViewGroup root){
+		return getLayoutInflater().inflate(resource,root);
+	}
+	public static View loadLayout(@LayoutRes int resource){
+		return getLayoutInflater().inflate(resource,null);
+	}
+
+	public static Bundle getActivtyExtra(Activity act){
+		return act.getIntent().getExtras();
+	}
+
 
 }

@@ -7,15 +7,24 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.lostad.app.base.view.BaseActivity;
+import com.lostad.app.base.view.component.BaseHisActivity;
+import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
+import com.lostad.app.demo.entity.Video;
 
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-@ContentView(R.layout.activity_add_camera)
-public class AddCameraActivity extends BaseActivity {
+/**
+ * Created by Hocean on 2017/3/21.
+ */
+
+//@ContentView(R.layout.activity_add_camera)
+public class AddCameraActivity extends BaseHisActivity {
 
     @ViewInject(R.id.editTextUid)
     private EditText editTextUid;
@@ -24,25 +33,35 @@ public class AddCameraActivity extends BaseActivity {
     @ViewInject(R.id.editTextPassword)
     private EditText editTextPassword;
 
-    @ViewInject(R.id.buttonSubmit)
-    private Button buttonSubmit;
-    @ViewInject(R.id.buttonCancel)
-    private Button buttonCancel;
+
+
+    @Override
+    public Bundle setResult(Bundle bundle) {
+        return bundle;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        x.view().inject(this);
+        setBodyContentView(R.layout.activity_add_camera);
+        editTextUid = (EditText) this.findViewById(R.id.editTextUid);
+        editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
+        editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);
 
     }
 
-    @Event(R.id.buttonSubmit)
-    private void onClickSubmit(View v){
-
-    }
-
-    @Event(R.id.buttonCancel)
-    private void onClickCancel(View v){
-
+    @Override
+    public void onSubmit() {
+        DbManager db =  MyApplication.getInstance().getDb();
+        try {
+            Video v = new Video();
+            v.uid = editTextUid.getText().toString();
+            v.username = editTextUsername.getText().toString();
+            v.password = editTextPassword.getText().toString();
+            db.save(v);
+        } catch (DbException e) {
+            e.printStackTrace(); ///storage/emulated/0/1_tour/tour_0107.db
+        }
+        super.onSubmit();
     }
 }

@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
         //changeFragment(R.id.rb_0);
         changeFragment(R.id.rb_2);
 
-        //toActivtyNoClear(TestActivity.class);
+        //toActivty(TestActivity.class);
     }
 
     private void changeFragment(int checkedId) {
@@ -128,6 +128,7 @@ public class MainActivity extends BaseActivity {
         menu.clear();
         menu.add(0,0,0,"扫描二维码样例");
         menu.add(0,1,1,"主界面Drawer");
+        menu.add(0,2,2,"测试");
         return true;
     }
 
@@ -138,17 +139,23 @@ public class MainActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         if(item.getGroupId() == 0) {
             int id = item.getItemId();
-            if (id == R.id.action_settings) {
-                Intent i = new Intent(this, CaptureActivity.class);
-                startActivityForResult(i, 0);
-                return true;
-            } else if (id == R.id.action_drawer) {
-                Intent i = new Intent(this, DrawerActivity.class);
-                startActivity(i);
-            } else {
-                Intent i = new Intent(this, DrawerActivity.class);
-                startActivity(i);
+            switch (id){
+                case 0:
+                    Intent i = new Intent(this, CaptureActivity.class);
+                    startActivityForResult(i, 0);
+                    break;
+                case 1:
+                     i = new Intent(this, DrawerActivity.class);
+                    startActivity(i);
+                    break;
+                case 2:
+
+                    toActivty(TestActivity.class);
+                    break;
+                default:
+                    break;
             }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -207,9 +214,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String vs = data.getExtras().getString("mmm");
-         vs += data.getExtras().getString("msg");
-        vs += ";";
+//        String vs = data.getExtras().getString("mmm");
+//         vs += data.getExtras().getString("msg");
+//        vs += ";";
         super.onActivityResult(requestCode, resultCode, data);
        // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
     }

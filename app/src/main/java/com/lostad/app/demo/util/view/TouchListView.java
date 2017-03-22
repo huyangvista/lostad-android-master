@@ -1,22 +1,16 @@
 package com.lostad.app.demo.util.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lostad.app.base.util.DownloadUtil;
 import com.lostad.app.demo.R;
-import com.lostad.app.demo.entity.TouchListViewData;
+import com.lostad.app.demo.entity.TouchListViewDataMsg;
 import com.lostad.app.demo.entity.Tour;
-import com.lostad.app.demo.entity.TourList4j;
-import com.lostad.app.demo.view.mainFragment.ListWaterAdapter;
-import com.lostad.applib.util.Validator;
 import com.lostad.applib.view.widget.WaterDropListView;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
@@ -102,9 +96,9 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-    public TouchListViewData loadDataAny(int start, TouchListViewData success) {
+    public TouchListViewDataMsg loadDataAny(int start, TouchListViewDataMsg dataMsg) {
 
-        TouchListViewData g4j = null;
+        TouchListViewDataMsg g4j = null;
         String index = "Title :"+ start++;
         List<Object> list = new ArrayList<Object>();
         list.add(new Tour(index,index, null,"Lostad-android framework is ready for u !"));
@@ -114,7 +108,7 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
         list.add(new Tour(index,index,null,"Lostad-android framework"));
         index = "Title :"+ start++;
 
-        g4j = new TouchListViewData(true,"success");
+        g4j = new TouchListViewDataMsg(true,"success");
         g4j.list = list;
         return g4j;
     }
@@ -143,9 +137,9 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
     private void loadData(final boolean isLoadMore) {
         showLoading();
         String url = "";
-        new AsyncTask<String,String,TouchListViewData>(){//启动任务输入参数类型,后台任务执行中返回进度值类型，后台执行任务完成后放回结果类型
+        new AsyncTask<String,String,TouchListViewDataMsg>(){//启动任务输入参数类型,后台任务执行中返回进度值类型，后台执行任务完成后放回结果类型
             @Override
-            protected TouchListViewData doInBackground(String... params) {//必须重写，异步执行后后台线程将要完成任务
+            protected TouchListViewDataMsg doInBackground(String... params) {//必须重写，异步执行后后台线程将要完成任务
                 int start = 0;
                 if(isLoadMore){
                     start = mListData.size();
@@ -156,11 +150,11 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
                     e.printStackTrace();
                 }
                 //TourList4j g4j = TourManager.getInstance().listTourAll(start);
-                TouchListViewData g4j = loadDataAny(start,new TouchListViewData(false,"success"));
+                TouchListViewDataMsg g4j = loadDataAny(start,new TouchListViewDataMsg(true,"success"));
                 return g4j;
             }
             @Override
-            protected void onPostExecute(TouchListViewData g4j) {//当 doInBackground被调用后 系统自动调用 并将doInBackground返回参数传入
+            protected void onPostExecute(TouchListViewDataMsg g4j) {//当 doInBackground被调用后 系统自动调用 并将doInBackground返回参数传入
                 boolean isTheEnd = false ;
                 if(g4j.isSuccess()){
                     if(g4j.list.size()==0){
@@ -259,6 +253,7 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
             if (mListData == null || mListData.size() == 0) {
                 iv_loading.setVisibility(View.VISIBLE);
                 tv_loading.setVisibility(View.VISIBLE);
+                tv_loading.setText("没有数据，请添加。");
                 iv_loading.setImageResource(R.mipmap.img_no_data);
             } else {
                 iv_loading.setVisibility(View.GONE);

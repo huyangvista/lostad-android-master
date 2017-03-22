@@ -5,6 +5,21 @@ android {
     buildToolsVersion '25.0.0'
     useLibrary 'org.apache.http.legacy'
 
+    //开启更多图片格式
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
+    def listSubFile = { //重新定义布局文件
+        def resFolder = 'src/main/res/layout'
+        def files = file(resFolder).listFiles()
+        def folders = []
+        files.each {
+            item -> folders.add(item.absolutePath)
+        }
+        folders.add(file(resFolder).parentFile.absolutePath)
+        return folders
+    }
+
 
     lintOptions {//关闭警告退出检查
         abortOnError false
@@ -13,6 +28,8 @@ android {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
             //aidl.srcDirs = ['src/main/aidl']
+            //res.srcDirs = listSubFile() //重新定义布局文件
+
         }
     }
 
@@ -38,6 +55,17 @@ android {
         }
     }
     buildTypes {
+        debug {
+            ndk{
+                abiFilters "armeabi","x86","armeabi-v7a","mips"
+
+//                abiFilters "armeabi"
+//                abiFilters "armeabi"
+//                abiFilter "x86"
+//                abiFilters "armeabi", "armeabi-v7a"
+            }
+            signingConfig signingConfigs.myConfig
+        }
         release {
             //不要忘了要在release的时候加入签名配置信息
             signingConfig signingConfigs.myConfig
@@ -47,6 +75,25 @@ android {
     }
     //多渠道发布
     productFlavors {
+
+        x86 {
+            ndk {
+                abiFilter "x86"
+            }
+        }
+        arm {
+            ndk {
+                abiFilters "armeabi", "armeabi-v7a"
+            }
+        }
+        mips {
+            ndk {
+                abiFilter "mips"
+            }
+        }
+
+
+
         yingyongbao {
             manifestPlaceholders = [CHANNEL_NAME: "YINGYONGBAO"]
         }

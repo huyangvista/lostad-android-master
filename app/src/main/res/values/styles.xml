@@ -20,6 +20,9 @@
         <!-- 抽屉菜单效果 -->
         <item name="drawerArrowStyle">@style/AppTheme.JDDrawerArrowStyle</item>
 
+
+        <item name="android:textColorSecondary">#000000</item>
+
     </style>
 
     <style name="MenuTextStyle">
@@ -31,6 +34,8 @@
         <item name="spinBars">false</item>
         <item name="color">@android:color/white</item>
     </style>
+
+
 
 
 </resources>
