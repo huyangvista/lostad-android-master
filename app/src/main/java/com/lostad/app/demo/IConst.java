@@ -39,6 +39,12 @@ public class IConst {
    public static  final String API_USER_UPDATE    = "/user/modify";
    public static  final String API_PWD_UPDATE     = "/user/modifyPsw";//phone/old/new
    public static  final String API_PWD_FIND       = "/user/resetPsw";//phone/new
+
+   public static  final String KEY_PATH_VIDEOS    = "/Videos";
+
+   //临时保存变量
+   public interface Path{
+   }
 }
 /**
 http://121.42.25.194:88/vtSell/getGgxxApi

@@ -17,14 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.lostad.app.base.view.fragment.BaseFragment;
+import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.TouchListViewDataMsg;
 import com.lostad.app.demo.entity.Video;
 import com.lostad.app.demo.util.view.TouchListView;
 import com.lostad.app.demo.view.AddCameraActivity;
+import com.lostad.app.demo.view.FolderSelectActivity;
 import com.lostad.app.demo.view.MainActivity;
 import com.lostad.applib.core.MyCallback;
+import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
 
@@ -48,16 +51,18 @@ import h264.com.VView;
 public class VideoFragment extends BaseFragment {
 
     private LinearLayout linearLayout;
-    VView vv;
+
+    private String videoPath = IConst.PATH_ROOT + IConst.KEY_PATH_VIDEOS; //默认保存位置
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        videoPath = PrefManager.getString(getContext(), IConst.KEY_PATH_VIDEOS, videoPath);
+
         View rootView = inflater.inflate(R.layout.fragment_video, null);
         linearLayout = (LinearLayout) rootView.findViewById(R.id.line_layout);
         x.view().inject(getActivity());
-        vv = new VView(getContext());
-        vv.setScalcScene(1, 1);
+
 
         TouchListView tlv = new TouchListView(getContext()) {
             @Override
@@ -72,10 +77,10 @@ public class VideoFragment extends BaseFragment {
 
             @Override
             public void loadSetItemView(Object holders, Object demo) {
-                final Video video = (Video) demo;
+                final File f = (File) demo;
                 ViewHolder holder = (ViewHolder) holders;
-                holder.tv_title.setText(video.uid);
-                holder.tv_desc.setText(video.macname);
+                holder.tv_title.setText(f.getName());
+                holder.tv_desc.setText(f.getPath());
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -89,21 +94,12 @@ public class VideoFragment extends BaseFragment {
                                             case 0: //重新连接
                                                 break;
                                             case 1: //修改摄像机
-                                                Map<String, Video> map = new HashMap<>();
-                                                map.put("data", video);
-                                                ContextUtil.toActivtyResult(getActivity(), map, AddCameraActivity.class);
                                                 break;
                                             case 2: //查看事件
                                                 break;
                                             case 3: //查看快照
                                                 break;
                                             case 4: //删除相机
-                                                DbManager db = MyApplication.getInstance().getDb();
-                                                try {
-                                                    db.delete(video);
-                                                } catch (DbException e) {
-                                                    e.printStackTrace();
-                                                }
                                                 break;
                                         }
                                     }
@@ -118,16 +114,18 @@ public class VideoFragment extends BaseFragment {
                 DbManager db = MyApplication.getInstance().getDb();
                 List<Object> list = new ArrayList<>();
                 try {
+
+                    File[] files = new File(videoPath).listFiles();
+
                     //载入 list
-                    List<Video> videos = db.findAll(Video.class);
-                    if (videos != null && start < videos.size()) {
-                        for (int i = start; i < videos.size(); i++) {
-                            Video v = videos.get(i);
-                            list.add(v);
+                    //List<Video> videos = db.findAll(Video.class);
+                    if (files != null && start < files.length) {
+                        for (int i = start; i < files.length; i++) {
+                            list.add(files[i]);
                         }
                     }
 
-                } catch (DbException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 //g4j = new TouchListViewDataMsg(true,"success");
@@ -160,16 +158,20 @@ public class VideoFragment extends BaseFragment {
         if (item.getGroupId() == 3) {
             switch (item.getItemId()) {
                 case 0:
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType("folder /*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-//                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-//                    intent.setType("image/*");
-//                    intent.setType("audio/*"); //选择音频
-//                    intent.setType("video/*"); //选择视频 （mp4 3gp 是android支持的视频格式）
-//                    intent.setType("video/*;image/*");//同时选择视频和图片
-                    // ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
-                    startActivityForResult(intent, 1);
+//                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+//                    intent.setType("folder /*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
+////                    intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
+////                    intent.setType("image/*");
+////                    intent.setType("audio/*"); //选择音频
+////                    intent.setType("video/*"); //选择视频 （mp4 3gp 是android支持的视频格式）
+////                    intent.setType("video/*;image/*");//同时选择视频和图片
+//                    // ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
+//                    startActivityForResult(intent, 1);
+
+                    Map<String, Serializable> map = new HashMap<>();
+                    map.put("data", videoPath);
+                    ContextUtil.toActivtyResult(this, map, FolderSelectActivity.class);
                     break;
                 case 1:
                     break;
@@ -216,12 +218,16 @@ public class VideoFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-       // if (resultCode == Activity.RESULT_OK)
-        {//是否选择，没选择就不会继续
 
-            String path = data.getData().getPath();
-            path += "sdfsdf";
-            path = path;
+        if (resultCode == Activity.RESULT_OK) {//是否选择，没选择就不会继续
+            // String path = data.getData().getPath();
+
+            String path = data.getExtras().getString("path");
+            DialogUtil.showToastCust("已选择:" + path);
+            videoPath = path;
+            PrefManager.saveString(getContext(), IConst.KEY_PATH_VIDEOS, path);
+
+
 //            Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
 //            String[] proj = {MediaStore.Images.Media.DATA};
 //            Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);

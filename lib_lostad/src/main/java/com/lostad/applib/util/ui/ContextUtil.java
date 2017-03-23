@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +121,10 @@ public class ContextUtil {
 		Intent intent = new Intent(act, activityClass);
 		act.startActivityForResult(intent, 0);//跳转并发送请求码
 	}
+	public static void toActivtyResult(Fragment fra, Class activityClass) {
+		Intent intent = new Intent(fra.getContext(), activityClass);
+		fra.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
 
 	public static void toActivtyResult(Activity act, Map<String, ? extends Serializable> params, Class activityClass) {
 		Intent intent = new Intent(act, activityClass);
@@ -127,6 +132,13 @@ public class ContextUtil {
 			intent.putExtra(key,  params.get(key));
 		}
 		act.startActivityForResult(intent, 0);//跳转并发送请求码
+	}
+	public static void toActivtyResult(Fragment fra, Map<String, ? extends Serializable> params, Class activityClass) {
+		Intent intent = new Intent(fra.getContext(), activityClass);
+		for (String key : params.keySet()) {
+			intent.putExtra(key,  params.get(key));
+		}
+		fra.startActivityForResult(intent, 0);//跳转并发送请求码
 	}
 
 	public static LayoutInflater getLayoutInflater(){

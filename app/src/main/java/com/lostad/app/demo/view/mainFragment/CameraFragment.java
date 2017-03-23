@@ -39,7 +39,6 @@ import h264.com.VView;
 public class CameraFragment extends BaseFragment {
 
     private LinearLayout linearLayout;
-    VView vv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +46,6 @@ public class CameraFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_camera, null);
         linearLayout = (LinearLayout) rootView.findViewById(R.id.line_layout);
         x.view().inject(getActivity());
-        vv = new VView(getContext());
-        vv.setScalcScene(1, 1);
 
         TouchListView tlv = new TouchListView(getContext()) {
             @Override

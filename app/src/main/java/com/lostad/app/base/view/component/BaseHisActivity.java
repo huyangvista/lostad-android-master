@@ -73,6 +73,10 @@ public abstract class BaseHisActivity extends BaseAppActivity {
         body.removeAllViews();
         body.addView(ContextUtil.loadLayout(rid));
     }
+    public void setBodyContentView(View view){
+        body.removeAllViews();
+        body.addView(view);
+    }
 
     @Event(R.id.buttonBack)
     private void onClickButtonBack(View v){
@@ -108,7 +112,11 @@ public abstract class BaseHisActivity extends BaseAppActivity {
      * @return
      */
     public Bundle getExtras(){
-        return intentData.getExtras();
+        Bundle b = intentData.getExtras();
+        if(b == null){
+            b = new Bundle();
+        }
+        return b;
     }
 
     @Override

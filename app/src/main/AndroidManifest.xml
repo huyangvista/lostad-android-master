@@ -149,6 +149,9 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".view.AddCameraActivity" />
         <activity android:name=".view.FolderSelectActivity"></activity>
+        <activity android:name="com.lostad.app.demo.util.view.folder.OpenFileDemo"></activity>
+
+
     </application>
 
 </manifest>

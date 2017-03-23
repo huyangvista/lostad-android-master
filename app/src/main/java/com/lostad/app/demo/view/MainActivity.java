@@ -33,6 +33,7 @@ import java.util.List;
 
 /**
  * 主要
+ * PrefManager
  */
 public class MainActivity extends BaseActivity {
 

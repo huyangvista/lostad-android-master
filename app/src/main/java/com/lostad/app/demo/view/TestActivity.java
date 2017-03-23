@@ -11,10 +11,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import h264.com.VView;
+import h264.com.VideoView;
+
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.Tour;
 import com.lostad.app.demo.util.view.TouchListView;
+import com.lostad.app.demo.util.view.folder.CallbackBundle;
+import com.lostad.app.demo.util.view.folder.OpenFileDialog;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.ui.DialogUtil;
 
@@ -24,6 +28,8 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -34,7 +40,9 @@ public class TestActivity extends BaseActivity {
 
     @ViewInject(R.id.line_layout)
     private LinearLayout linearLayout;
-    VView vv;
+//    VView vv;
+
+    private VideoView videoView;
 
     @ViewInject(R.id.editText)
     private EditText editText;
@@ -42,56 +50,12 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(vv);
         x.view().inject(this);
-        vv = new VView(this);
-        vv.setScalcScene(1,1);
 
-        TouchListView tlv = new TouchListView(this){
-            @Override
-            public View loadItemLayout(LayoutInflater inf){
-                return inf.inflate(R.layout.list_item_touchlistview, null);
-            }
-            @Override
-            public Object loadItemView(View con){
-                return new ViewHolder(con);
-            }
-            @Override
-            public void loadSetItemView(Object holders, Object demo){
-                final Tour f = (Tour) demo;
-                ViewHolder holder = (ViewHolder) holders;
-                holder.tv_title.setText(f.title );
-                holder.tv_desc.setText(f.desc);
-                holder.imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        videoView = new VideoView(this);
+        videoView.setScalcScene(1,1);
+        linearLayout.addView(videoView);
 
-                        com.lostad.applib.util.DialogUtil.showAlertMenu(TestActivity.this, "设置", new String[]{"重新连接", "修改摄像机", "查看事件", "查看快照", "删除相机"}, new MyCallback<Integer>() {
-                            @Override
-                            public void onCallback(Integer data) {
-                                DialogUtil.showToastCust("heh " + data);
-                                //设置后 回调
-
-                            }
-                        });
-                    }
-                });
-//                if(Validator.isNotEmpty(f.picUrl)){
-//                    //DownloadUtil.loadImage(holder.iv_pic, IConst.URL_BASE+f.XMTP,R.drawable.loading_frame1,R.mipmap.img_default,R.mipmap.load_fail);
-//                    DownloadUtil.loadImage(mContext,holder.iv_pic, f.picUrl);
-//                }
-            }
-            //点击列表
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogUtil.showToastCust("heh 00000");
-            }
-        };
-
-
-       // linearLayout.addView(tlv.getRootView());
-        //tlv.onLoadMore();
-        linearLayout.addView(vv);
     }
 
     // Menu item Ids
@@ -101,11 +65,8 @@ public class TestActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-
         menu.add(0, PLAY_ID, 0, R.string.play);
         menu.add(0, EXIT_ID, 1, R.string.exit);
-
         return true;
     }
     @Override
@@ -113,13 +74,9 @@ public class TestActivity extends BaseActivity {
         switch (item.getItemId()) {
             case PLAY_ID:
                 // 此处设定不同分辨率的码流文件
-                File skRoot = Environment.getExternalStorageDirectory();
-                String vs = editText.getText().toString();
-                //String file =   vs + "352x288.264"; //352x288.264"; //240x320.264";
                 String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
-                // String file =   "/mnt/shared/Other/test.h264"; //352x288.264"; //240x320.264";
-                //String file = skRoot.getParent() +   "/352x288.264"; //352x288.264"; //240x320.264";
-                vv.PlayVideo(file);
+                videoView.ready(file);
+                videoView.start();
                 return true;
             case EXIT_ID:
                 finish();
@@ -130,13 +87,10 @@ public class TestActivity extends BaseActivity {
 
     @Event(R.id.button)
     private void onClickLoginByPhone(View v) {
-        toActivty(LoginActivity.class);
     }
     @Event(R.id.button2)
     private void onClickButton2(View v){
-        String vs = editText.getText().toString();
-        String file =   vs + "352x288.264"; //352x288.264"; //240x320.264";
-        vv.PlayVideo(file);
+
     }
 
 }
