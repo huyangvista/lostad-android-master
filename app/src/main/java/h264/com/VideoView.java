@@ -139,14 +139,26 @@ public class VideoView extends View implements Runnable {
     }
 
     public void start() {
+
         if(isPaue)paue(false);
         if (isExit) {
             thread = new Thread(this);
             thread.start();
             isStart = true;
         } else {
-            stop();
-            start();
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    stop();
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            start();
+                        }
+                    });
+                }
+            });
+
         }
     }
 
@@ -170,15 +182,20 @@ public class VideoView extends View implements Runnable {
 
     public void stop() {
         try {
-            if(isPaue)paue(false);
-            isStart = false;
-            if (thread != null) {
-                thread.interrupt();
-                thread.join(5000);
-            }
-        } catch (Exception e) {
+            is.reset();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+//        try {
+//            if(isPaue)paue(false);
+//            isStart = false;
+//            if (thread != null) {
+//                thread.interrupt();
+//                thread.join(5000);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 

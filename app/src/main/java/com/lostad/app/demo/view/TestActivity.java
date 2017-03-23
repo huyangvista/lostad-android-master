@@ -75,6 +75,7 @@ public class TestActivity extends BaseActivity {
             case PLAY_ID:
                 // 此处设定不同分辨率的码流文件
                 String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
+                videoView.load();
                 videoView.ready(file);
                 videoView.start();
                 return true;
