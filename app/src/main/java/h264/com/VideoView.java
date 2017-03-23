@@ -26,7 +26,9 @@ import java.nio.ByteBuffer;
  */
 
 public class VideoView extends View implements Runnable {
-    VView vview;
+
+    private Thread thread;
+    private VView vview;
 
     private int sceneX = 1080; //屏幕
     private int sceneY = 1920;
@@ -47,10 +49,14 @@ public class VideoView extends View implements Runnable {
     private InputStream is = null; //必须参数
     public Action1<Bitmap> actBitmap;  //图片回调
 
-    private Func3<byte[],Integer,Integer,Integer> funcRead;
+    private Func3<byte[], Integer, Integer, Integer> funcRead;
 
-    private boolean isStop = false;
+    private volatile boolean isStart = false;
+    private volatile boolean isPaue = false;
+    public volatile boolean isExit = true;
     private int sleepTime = 50; //默认50ms 每帧
+
+    private Object control = new Object();//只是任意的实例化一个对象而已
 
     public VideoView(Context context) {
         super(context);
@@ -63,13 +69,14 @@ public class VideoView extends View implements Runnable {
 
         load();
     }
+
     public VideoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public VideoView(Context context,int width, int height) {
+    public VideoView(Context context, int width, int height) {
         super(context);
-        setSize(width,height);
+        setSize(width, height);
 
         vview = new VView();
         setFocusable(true);
@@ -107,62 +114,95 @@ public class VideoView extends View implements Runnable {
     }
 
     public void ready(String file) {
-        try
-        {
+        try {
             is = new FileInputStream(file);
-        }
-        catch(IOException e)
-        {
-            return ;
+        } catch (IOException e) {
+            return;
         }
     }
+
     public void ready(File file) {
-        try
-        {
+        try {
             is = new FileInputStream(file);
-        }
-        catch(IOException e)
-        {
-            return ;
+        } catch (IOException e) {
+            return;
         }
     }
+
     public void ready(InputStream is) {
-       this.is = is;
+        this.is = is;
     }
-    public void ready(byte[] byt){
+
+    public void ready(byte[] byt) {
         //byte[] byt = new byte[1024];
-         is = new ByteArrayInputStream(byt);
+        is = new ByteArrayInputStream(byt);
     }
 
     public void start() {
-        new Thread(this).start();
+        if(isPaue)paue(false);
+        if (isExit) {
+            thread = new Thread(this);
+            thread.start();
+            isStart = true;
+        } else {
+            stop();
+            start();
+        }
     }
-    public void start(Func3<byte[],Integer,Integer,Integer> func) {
+
+    public void start(Func3<byte[], Integer, Integer, Integer> func) {
         start();
     }
 
-    public void stop(){
-        isStop = true;
+
+    public void paue() {
+        paue(!isPaue);
+    }
+
+    public void paue(boolean isPaue) {
+        if (!isPaue) {
+            synchronized (control) {
+                control.notifyAll();
+            }
+        }
+        this.isPaue = isPaue;
+    }
+
+    public void stop() {
+        try {
+            if(isPaue)paue(false);
+            isStart = false;
+            if (thread != null) {
+                thread.interrupt();
+                thread.join(5000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        try {
+            //    	Bitmap tmpBit = Bitmap.createBitmap(mPixel, 320, 480, Bitmap.Config.RGB_565);//.ARGB_8888);
 
-//    	Bitmap tmpBit = Bitmap.createBitmap(mPixel, 320, 480, Bitmap.Config.RGB_565);//.ARGB_8888);
+            buffer.rewind(); //vive 必须清除缓存 防止粘包
+            VideoBit.copyPixelsFromBuffer(buffer);//makeBuffer(data565, N));
 
-        buffer.rewind(); //vive 必须清除缓存 防止粘包
-        VideoBit.copyPixelsFromBuffer(buffer);//makeBuffer(data565, N));
+            // 保存画布状态
+            canvas.save();
+            canvas.scale(scalcX, scalcY);
+            if (actBitmap != null) actBitmap.invoke(VideoBit);
+            canvas.drawBitmap(VideoBit, 0, 0, null);
 
-        // 保存画布状态
-        canvas.save();
-        canvas.scale(scalcX, scalcY);
-        if(actBitmap != null) actBitmap.invoke(VideoBit);
-        canvas.drawBitmap(VideoBit, 0, 0, null);
+            // 画布状态回滚
+            canvas.restore();
+        } catch (Exception e) {
 
-        // 画布状态回滚
-        canvas.restore();
+        }
+
     }
 
     //融入流
@@ -185,87 +225,105 @@ public class VideoView extends View implements Runnable {
 
     //播放开始
     public void run() {
-        int iTemp = 0;
-        int nalLen;
-        boolean bFirst = true;
-        boolean bFindPPS = true;
-        int bytesRead = 0;
-        int NalBufUsed = 0;
-        int SockBufUsed = 0;
-        byte[] NalBuf = new byte[40980]; // 40k
-        byte[] SockBuf = new byte[2048];
+        try {
+            int iTemp = 0;
+            int nalLen;
+            boolean bFirst = true;
+            boolean bFindPPS = true;
+            int bytesRead = 0;
+            int NalBufUsed = 0;
+            int SockBufUsed = 0;
+            byte[] NalBuf = new byte[40980]; // 40k
+            byte[] SockBuf = new byte[2048];
 
-        vview.InitDecoder(width, height);
-        while (!Thread.currentThread().isInterrupted() || !isStop) {
-            long start = System.currentTimeMillis();
-            try {
-                if(funcRead != null){
-                    bytesRead = funcRead.invoke(SockBuf,0,2048);
-                }else{
-                    bytesRead = is.read(SockBuf, 0, 2048);
-                }
-            } catch (IOException e) {
-            }
-            if (bytesRead <= 0)
-                break;
-            SockBufUsed = 0;
-            while (bytesRead - SockBufUsed > 0) {
-                nalLen = MergeBuffer(NalBuf, NalBufUsed, SockBuf, SockBufUsed, bytesRead - SockBufUsed);
-                NalBufUsed += nalLen;
-                SockBufUsed += nalLen;
-                while (mTrans == 1) {
-                    mTrans = 0xFFFFFFFF;
-                    if (bFirst == true) // the first start flag
-                    {
-                        bFirst = false;
-                    } else  // a complete NAL data, include 0x00000001 trail.
-                    {
-                        if (bFindPPS == true) // true
-                        {
-                            if ((NalBuf[4] & 0x1F) == 7) {
-                                bFindPPS = false;
-                            } else {
-                                NalBuf[0] = 0;
-                                NalBuf[1] = 0;
-                                NalBuf[2] = 0;
-                                NalBuf[3] = 1;
-                                NalBufUsed = 4;
-                                break;
-                            }
-                        }
-                        //	decode nal
-                        iTemp = vview.DecoderNal(NalBuf, NalBufUsed - 4, mPixel);
-                        if (iTemp > 0)
-                            postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
-                    }
-                    NalBuf[0] = 0;
-                    NalBuf[1] = 0;
-                    NalBuf[2] = 0;
-                    NalBuf[3] = 1;
-                    NalBufUsed = 4;
-                }
-            }
-
-            long end = System.currentTimeMillis();
-            try
-            {
-                if (end - start < sleepTime)
+            vview.InitDecoder(width, height);
+            while (isStart && !Thread.currentThread().isInterrupted()) {
+                long start = System.currentTimeMillis();
+//                synchronized (control) {
+//                    if (isPaue) {
+//                        try {
+//                            control.wait();
+//                        } catch (InterruptedException e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+                if (!isPaue)
                 {
-                    Thread.sleep(sleepTime - (end - start));
+                    try {
+                        if (funcRead != null) {
+                            bytesRead = funcRead.invoke(SockBuf, 0, 2048);
+                        } else {
+                            bytesRead = is.read(SockBuf, 0, 2048);
+                        }
+                    } catch (IOException e) {
+                    }
+                    if (bytesRead <= 0)
+                        break;
+                    SockBufUsed = 0;
+                    while (bytesRead - SockBufUsed > 0) {
+                        nalLen = MergeBuffer(NalBuf, NalBufUsed, SockBuf, SockBufUsed, bytesRead - SockBufUsed);
+                        NalBufUsed += nalLen;
+                        SockBufUsed += nalLen;
+                        while (mTrans == 1) {
+                            mTrans = 0xFFFFFFFF;
+                            if (bFirst == true) // the first start flag
+                            {
+                                bFirst = false;
+                            } else  // a complete NAL data, include 0x00000001 trail.
+                            {
+                                if (bFindPPS == true) // true
+                                {
+                                    if ((NalBuf[4] & 0x1F) == 7) {
+                                        bFindPPS = false;
+                                    } else {
+                                        NalBuf[0] = 0;
+                                        NalBuf[1] = 0;
+                                        NalBuf[2] = 0;
+                                        NalBuf[3] = 1;
+                                        NalBufUsed = 4;
+                                        break;
+                                    }
+                                }
+                                //	decode nal
+                                iTemp = vview.DecoderNal(NalBuf, NalBufUsed - 4, mPixel);
+                                if (iTemp > 0) {
+                                    try {
+                                        postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                            }
+                            NalBuf[0] = 0;
+                            NalBuf[1] = 0;
+                            NalBuf[2] = 0;
+                            NalBuf[3] = 1;
+                            NalBufUsed = 4;
+                        }
+                    }
+                }
+                long end = System.currentTimeMillis();
+                try {
+                    if (end - start < sleepTime) {
+                        Thread.sleep(sleepTime - (end - start));
+                    }
+                } catch (InterruptedException e) {
+                    //e.printStackTrace();
+                    break;
                 }
             }
-            catch (InterruptedException e)
-            {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            vview.UninitDecoder();
+            isExit = true;
+        } catch (Exception e) {
         }
-        try {
-            if (is != null)
-                is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        vview.UninitDecoder();
 
     }
 
@@ -276,21 +334,27 @@ public class VideoView extends View implements Runnable {
     public void setActBitmap(Action1<Bitmap> actBitmap) {
         this.actBitmap = actBitmap;
     }
+
     public Func3<byte[], Integer, Integer, Integer> getFuncRead() {
         return funcRead;
     }
+
     public void setFuncRead(Func3<byte[], Integer, Integer, Integer> funcRead) {
         this.funcRead = funcRead;
     }
+
     public int getSleepTime() {
         return sleepTime;
     }
+
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
     }
+
     public int getFPS() {
         return 1000 / sleepTime;
     }
+
     public void setFPS(int fps) {
         this.sleepTime = 1000 / fps;
     }

@@ -87,9 +87,11 @@ public class TestActivity extends BaseActivity {
 
     @Event(R.id.button)
     private void onClickLoginByPhone(View v) {
+        videoView.paue();
     }
     @Event(R.id.button2)
     private void onClickButton2(View v){
+        videoView.stop();
 
     }
 
