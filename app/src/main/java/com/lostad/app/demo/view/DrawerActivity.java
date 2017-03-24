@@ -16,6 +16,7 @@ import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.view.mainFragment.DrawerMenuFragment;
 import com.lostad.app.demo.view.mainFragment.MainFragment;
+import com.lostad.applib.core.Actions;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -39,6 +40,7 @@ public class DrawerActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         initView();
+
 
     }
 

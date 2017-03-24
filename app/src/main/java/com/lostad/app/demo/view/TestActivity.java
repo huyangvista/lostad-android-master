@@ -28,6 +28,9 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +55,7 @@ public class TestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-        videoView = new VideoView(this);
-        videoView.setScalcScene(1,1);
-        linearLayout.addView(videoView);
+
 
     }
 
@@ -74,6 +75,11 @@ public class TestActivity extends BaseActivity {
         switch (item.getItemId()) {
             case PLAY_ID:
                 // 此处设定不同分辨率的码流文件
+                if(videoView!= null )videoView.stop();
+                videoView = new VideoView(this);
+                videoView.setScalcScene(1,1);
+                linearLayout.removeAllViews();
+                linearLayout.addView(videoView);
                 String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
                 videoView.load();
                 videoView.ready(file);
@@ -93,7 +99,32 @@ public class TestActivity extends BaseActivity {
     @Event(R.id.button2)
     private void onClickButton2(View v){
         videoView.stop();
+    }
 
+    @Event(R.id.button3)
+    private void onClickButton23(View v){
+
+        String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
+        try {
+            FileInputStream is = new FileInputStream(file);
+            byte[] b = new byte[1024 * 5];
+            int read = is.read(b,0,1024 * 5);
+
+
+            if(videoView!= null )videoView.stop();
+            videoView = new VideoView(this);
+            videoView.setScalcScene(1,1);
+            linearLayout.removeAllViews();
+            linearLayout.addView(videoView);
+            videoView.load();
+            videoView.ready(is);
+            videoView.start();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

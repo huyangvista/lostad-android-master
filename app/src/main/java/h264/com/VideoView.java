@@ -48,7 +48,6 @@ public class VideoView extends View implements Runnable {
 
     private InputStream is = null; //必须参数
     public Action1<Bitmap> actBitmap;  //图片回调
-
     private Func3<byte[], Integer, Integer, Integer> funcRead;
 
     private volatile boolean isStart = false;
@@ -112,6 +111,14 @@ public class VideoView extends View implements Runnable {
         this.scalcX = this.sceneX * sceneX / width;
         this.scalcY = this.sceneY * sceneY / height;
     }
+    public void close(){
+        try {
+            if (is != null)
+                is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void ready(String file) {
         try {
@@ -139,7 +146,6 @@ public class VideoView extends View implements Runnable {
     }
 
     public void start() {
-
         if(isPaue)paue(false);
         if (isExit) {
             thread = new Thread(this);
@@ -158,7 +164,6 @@ public class VideoView extends View implements Runnable {
                     });
                 }
             });
-
         }
     }
 
@@ -181,21 +186,17 @@ public class VideoView extends View implements Runnable {
     }
 
     public void stop() {
+
         try {
-            is.reset();
-        } catch (IOException e) {
+            if(isPaue)paue(false);
+            isStart = false;
+            if (thread != null) {
+                thread.interrupt();
+                thread.join(5000);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-//        try {
-//            if(isPaue)paue(false);
-//            isStart = false;
-//            if (thread != null) {
-//                thread.interrupt();
-//                thread.join(5000);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
 
@@ -261,7 +262,6 @@ public class VideoView extends View implements Runnable {
 //                        try {
 //                            control.wait();
 //                        } catch (InterruptedException e) {
-//                            // TODO Auto-generated catch block
 //                            e.printStackTrace();
 //                        }
 //                    }
@@ -330,7 +330,7 @@ public class VideoView extends View implements Runnable {
                     //e.printStackTrace();
                     break;
                 }
-            }
+            }//j结束编码
             try {
                 if (is != null)
                     is.close();
