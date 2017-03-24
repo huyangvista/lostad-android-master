@@ -30,6 +30,7 @@ import org.xutils.x;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class TestActivity extends BaseActivity {
                 videoView.setScalcScene(1,1);
                 linearLayout.removeAllViews();
                 linearLayout.addView(videoView);
-                String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
+                String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
                 videoView.load();
                 videoView.ready(file);
                 videoView.start();
@@ -101,15 +102,74 @@ public class TestActivity extends BaseActivity {
         videoView.stop();
     }
 
+    @Event(R.id.button4)
+    private void onClickButton23sdfgsdfg(View v){
+        String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
+        String fileO =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+        try {
+            FileInputStream is = new FileInputStream(file);
+            FileOutputStream os = new FileOutputStream(fileO);
+            int temp=0;
+            byte[] bs = new byte[1024 * 4 ];
+
+            for (int i = 0; i < 2000; i++) {
+                is = new FileInputStream(file);
+                while((temp=is.read(bs,0,1024 * 4)) > 0) {
+                    os.write(bs,0,temp);
+                }
+            }
+
+            os.close();
+            is.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Event(R.id.button3)
     private void onClickButton23(View v){
 
         String file =   "/mnt/shared/Other/352x288.264"; //352x288.264"; //240x320.264";
+        String fileO =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
         try {
-            FileInputStream is = new FileInputStream(file);
-            byte[] b = new byte[1024 * 5];
-            int read = is.read(b,0,1024 * 5);
+            FileInputStream isb = new FileInputStream(file);
+            FileInputStream is = new FileInputStream(fileO);
 
+            //int read = is.read(b,0,1024 * 5);
+            //is.read()
+
+            int temp=0;
+            int len=0;
+            int mTrans = 0x0F0F0F0F;
+            int count = 50;
+            byte[] bs = new byte[1024 * 4 ];
+
+//            while((temp=is.read())!=-1){
+//                byte ib =(byte) temp;
+//                mTrans <<= 8;
+//                mTrans |= ib;
+//                count++;
+//                if (mTrans == 1) // 找到一个开始字
+//                {
+//                    if(count >= 38){
+//                        count++;
+//                        if(is.read() == 0x67){
+//
+//                            break;
+//
+//                        }
+//                    }
+//                }
+//            }
+//            is.close();
+//            is = new FileInputStream(file);
+            for (int i = 0; i < 500; i++) {
+                temp=is.read();
+            }
 
             if(videoView!= null )videoView.stop();
             videoView = new VideoView(this);
@@ -118,6 +178,7 @@ public class TestActivity extends BaseActivity {
             linearLayout.addView(videoView);
             videoView.load();
             videoView.ready(is);
+            //videoView.setmTrans(0x0F0F0F0F);
             videoView.start();
 
         } catch (FileNotFoundException e) {

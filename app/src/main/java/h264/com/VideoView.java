@@ -223,7 +223,7 @@ public class VideoView extends View implements Runnable {
 
     }
 
-    //融入流
+    //融入流               缓存        即将使用的       读取后的流        用过的         读取 - 用过
     int MergeBuffer(byte[] NalBuf, int NalBufUsed, byte[] SockBuf, int SockBufUsed, int SockRemain) {
         int i = 0;
         byte Temp;
@@ -241,6 +241,7 @@ public class VideoView extends View implements Runnable {
         return i;
     }
 
+    long counts = 0;
     //播放开始
     public void run() {
         try {
@@ -292,7 +293,7 @@ public class VideoView extends View implements Runnable {
                             {
                                 if (bFindPPS == true) // true
                                 {
-                                    if ((NalBuf[4] & 0x1F) == 7) {
+                                    if ((NalBuf[4] & 0x1F) == 7){
                                         bFindPPS = false;
                                     } else {
                                         NalBuf[0] = 0;
@@ -307,6 +308,7 @@ public class VideoView extends View implements Runnable {
                                 iTemp = vview.DecoderNal(NalBuf, NalBufUsed - 4, mPixel);
                                 if (iTemp > 0) {
                                     try {
+                                        counts++;
                                         postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
                                     } catch (Exception e) {
 
@@ -324,7 +326,8 @@ public class VideoView extends View implements Runnable {
                 long end = System.currentTimeMillis();
                 try {
                     if (end - start < sleepTime) {
-                        Thread.sleep(sleepTime - (end - start));
+                       // Thread.sleep(sleepTime - (end - start));
+                        Thread.sleep(0);
                     }
                 } catch (InterruptedException e) {
                     //e.printStackTrace();
@@ -340,6 +343,7 @@ public class VideoView extends View implements Runnable {
             vview.UninitDecoder();
             isExit = true;
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -374,5 +378,13 @@ public class VideoView extends View implements Runnable {
 
     public void setFPS(int fps) {
         this.sleepTime = 1000 / fps;
+    }
+
+    public int getmTrans() {
+        return mTrans;
+    }
+
+    public void setmTrans(int mTrans) {
+        this.mTrans = mTrans;
     }
 }
