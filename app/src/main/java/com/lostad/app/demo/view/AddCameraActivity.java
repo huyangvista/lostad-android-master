@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.component.BaseHisActivity;
@@ -24,8 +25,11 @@ import org.xutils.x;
  * Created by Hocean on 2017/3/21.
  */
 
-//@ContentView(R.layout.activity_add_camera)
+@ContentView(R.layout.activity_add_camera)
 public class AddCameraActivity extends BaseHisActivity {
+
+    @ViewInject(R.id.his)
+    private LinearLayout his;
 
     @ViewInject(R.id.editTextUid)
     private EditText editTextUid;
@@ -34,7 +38,7 @@ public class AddCameraActivity extends BaseHisActivity {
     @ViewInject(R.id.editTextPassword)
     private EditText editTextPassword;
 
-
+    Video video;
 
     @Override
     public Bundle setResult(Bundle bundle) {
@@ -44,17 +48,19 @@ public class AddCameraActivity extends BaseHisActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBodyContentView(R.layout.activity_add_camera);
-        editTextUid = (EditText) this.findViewById(R.id.editTextUid);
-        editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
-        editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);
+//        setBodyContentView(R.layout.activity_add_camera);
+//        editTextUid = (EditText) this.findViewById(R.id.editTextUid);
+//        editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
+//        editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);
+        x.view().inject(this);
 
+        loadLayout(his);
 
        Bundle bun =  ContextUtil.getActivtyExtra(this);
         if(bun != null){
-            Video v = (Video) bun.get("data");
-            editTextUid.setText(v.uid);
-            editTextUsername.setText(v.username);
+            video = (Video) bun.get("data");
+            editTextUid.setText(video.uid);
+            editTextUsername.setText(video.username);
             //editTextPassword.setText(v.password);
         }
     }
@@ -64,10 +70,13 @@ public class AddCameraActivity extends BaseHisActivity {
         DbManager db =  MyApplication.getInstance().getDb();
         try {
             Video v = new Video();
+            if(video != null){
+                v.id = video.id;
+            }
             v.uid = editTextUid.getText().toString();
             v.username = editTextUsername.getText().toString();
             v.password = editTextPassword.getText().toString();
-            db.save(v);
+            db.saveOrUpdate(v);
         } catch (DbException e) {
             e.printStackTrace(); ///storage/emulated/0/1_tour/tour_0107.db
         }

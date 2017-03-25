@@ -6,5 +6,6 @@
     android:clipToPadding="true"
     android:background="@mipmap/welcome" >
 
-  
+
+
 </RelativeLayout>

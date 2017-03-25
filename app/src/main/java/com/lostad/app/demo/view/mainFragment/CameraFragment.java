@@ -1,5 +1,6 @@
 package com.lostad.app.demo.view.mainFragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.lostad.app.demo.entity.TouchListViewDataMsg;
 import com.lostad.app.demo.entity.Video;
 import com.lostad.app.demo.util.view.TouchListView;
 import com.lostad.app.demo.view.AddCameraActivity;
+import com.lostad.app.demo.view.VideoActivity;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
@@ -26,10 +28,12 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import h264.com.VView;
 
@@ -39,7 +43,7 @@ import h264.com.VView;
 public class CameraFragment extends BaseFragment {
 
     private LinearLayout linearLayout;
-
+    TouchListView tlv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -47,7 +51,7 @@ public class CameraFragment extends BaseFragment {
         linearLayout = (LinearLayout) rootView.findViewById(R.id.line_layout);
         x.view().inject(getActivity());
 
-        TouchListView tlv = new TouchListView(getContext()) {
+        tlv = new TouchListView(getContext()) {
             @Override
             public View loadItemLayout(LayoutInflater inf) {
                 return inf.inflate(R.layout.list_item_touchlistview, null);
@@ -71,7 +75,6 @@ public class CameraFragment extends BaseFragment {
                                 new String[]{"重新连接", "修改摄像机", "查看事件", "查看快照", "删除相机"}, new MyCallback<Integer>() {
                                     @Override
                                     public void onCallback(Integer data) {
-                                        DialogUtil.showToastCust("heh " + data);
                                         //设置后 回调
                                         switch (data) {
                                             case 0: //重新连接
@@ -79,7 +82,9 @@ public class CameraFragment extends BaseFragment {
                                             case 1: //修改摄像机
                                                 Map<String, Video> map = new HashMap<>();
                                                 map.put("data", video);
-                                                ContextUtil.toActivtyResult(getActivity(), map, AddCameraActivity.class);
+                                                ContextUtil.toActivtyResult(CameraFragment.this, map, AddCameraActivity.class);
+                                                tlv.onRefresh();
+
                                                 break;
                                             case 2: //查看事件
                                                 break;
@@ -92,6 +97,7 @@ public class CameraFragment extends BaseFragment {
                                                 } catch (DbException e) {
                                                     e.printStackTrace();
                                                 }
+                                                tlv.onRefresh();
                                                 break;
                                         }
                                     }
@@ -124,7 +130,12 @@ public class CameraFragment extends BaseFragment {
             //点击列表
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogUtil.showToastCust("heh 00000");
+                //DialogUtil.showToastCust("list:" + position);
+                Map<String, Video> map = new HashMap<>();
+                if(position - 1 < tlv.getmListData().size()){
+                    map.put("data", (Video) tlv.getmListData().get(position - 1));
+                    ContextUtil.toActivtyResult(CameraFragment.this,map, VideoActivity.class);
+                }
             }
         };
         linearLayout.addView(tlv.getRootView());
@@ -147,7 +158,7 @@ public class CameraFragment extends BaseFragment {
         if (item.getGroupId() == 2) {
             switch (item.getItemId()) {
                 case 0:
-                    ContextUtil.toActivtyResult(getActivity(), AddCameraActivity.class);
+                    ContextUtil.toActivtyResult(this, AddCameraActivity.class);
                     break;
                 case 1:
                     break;
@@ -162,6 +173,11 @@ public class CameraFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        tlv.onRefresh();
+    }
 
     //	@Override
 //	public TourList4j loadDataAny(int start, TourList4j tourList4j) {

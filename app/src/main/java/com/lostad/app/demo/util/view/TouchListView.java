@@ -37,6 +37,7 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
     private ImageView iv_loading;
 
     private TouchListViewAdapter mAdapter;
+
     private List<Object> mListData = null;
     private String mType = null;
 
@@ -224,6 +225,15 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
         }
 
     }
+
+    public List<Object> getmListData() {
+        return mListData;
+    }
+
+    public void setmListData(List<Object> mListData) {
+        this.mListData = mListData;
+    }
+
 
     //region 效果
     //////////////////加载效果,以下代码可以直接复制粘贴////////////////////////////////////////////////////////////////////////////////

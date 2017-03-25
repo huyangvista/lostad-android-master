@@ -1,5 +1,6 @@
 package h264.com;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.lostad.app.demo.util.SceneUtil;
 import com.lostad.applib.core.Action1;
@@ -113,6 +115,7 @@ public class VideoView extends View implements Runnable {
     }
     public void close(){
         try {
+            stop();
             if (is != null)
                 is.close();
         } catch (IOException e) {
@@ -386,5 +389,10 @@ public class VideoView extends View implements Runnable {
 
     public void setmTrans(int mTrans) {
         this.mTrans = mTrans;
+    }
+
+    public void loadLayout(ViewGroup vg) {
+        vg.removeAllViews();
+        vg.addView(this);
     }
 }

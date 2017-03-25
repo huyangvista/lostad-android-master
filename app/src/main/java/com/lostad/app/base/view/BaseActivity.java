@@ -1,5 +1,6 @@
 package com.lostad.app.base.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,8 @@ import com.lostad.app.demo.view.LoginActivity;
 import com.lostad.app.demo.view.MainActivity;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.view.BaseAppActivity;
+
+import org.xutils.x;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -136,4 +139,7 @@ public class BaseActivity extends BaseAppActivity {
         transaction.commit();
     }
 
+    protected  void x(Activity act){
+        x.view().inject(act);
+    }
 }

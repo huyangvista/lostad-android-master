@@ -147,6 +147,9 @@ public class ContextUtil {
 		}
 		return layoutInflater;
 	}
+	public static LayoutInflater getLayoutInflater(Context context){
+		return LayoutInflater.from(context);
+	}
 
 	public static View loadLayout(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot){
 		return getLayoutInflater().inflate(resource,root,attachToRoot);
@@ -160,6 +163,9 @@ public class ContextUtil {
 
 	public static Bundle getActivtyExtra(Activity act){
 		return act.getIntent().getExtras();
+	}
+	public static Bundle getBundle(Activity act){
+		return getActivtyExtra(act);
 	}
 
 

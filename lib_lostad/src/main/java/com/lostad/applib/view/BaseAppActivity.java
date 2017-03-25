@@ -27,7 +27,6 @@ public class BaseAppActivity extends ActivitySupport implements IActivitySupport
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ctx = this;
-
 	}
 
 	protected void initToolBar(Toolbar toolbar) {
