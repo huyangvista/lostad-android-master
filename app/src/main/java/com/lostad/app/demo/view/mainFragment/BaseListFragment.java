@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Renqy on 2017/3/20.
- * 
+ * Created by Hocean on 2017/3/20.
+ *
  */
 public abstract class BaseListFragment extends BaseFragment implements WaterDropListView.IWaterDropListViewListener,AdapterView.OnItemClickListener {
 

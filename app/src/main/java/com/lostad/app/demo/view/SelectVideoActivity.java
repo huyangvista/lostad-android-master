@@ -11,6 +11,7 @@ import com.lostad.app.demo.R;
 import org.xutils.view.annotation.ContentView;
 
 /**
+ * Created by Hocean on 2017/3/20.
  *
  */
 @ContentView(R.layout.activity_wel)

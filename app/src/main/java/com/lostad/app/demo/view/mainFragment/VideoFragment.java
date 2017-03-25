@@ -46,7 +46,8 @@ import java.util.Objects;
 import h264.com.VView;
 
 /**
- * @author sszvip@qq.com
+ * Created by Hocean on 2017/3/20.
+ *
  */
 public class VideoFragment extends BaseFragment {
 

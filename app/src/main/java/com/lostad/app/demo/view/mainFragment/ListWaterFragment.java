@@ -24,10 +24,13 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
+ * Hocean 参见 TouchListView
  * @author sszvip
  * 
  */
+@Deprecated
 public class ListWaterFragment extends BaseFragment implements WaterDropListView.IWaterDropListViewListener,AdapterView.OnItemClickListener {
 
 	@ViewInject(R.id.lv_data)

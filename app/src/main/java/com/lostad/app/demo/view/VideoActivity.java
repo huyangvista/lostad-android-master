@@ -17,6 +17,10 @@ import org.xutils.x;
 
 import h264.com.VideoView;
 
+/**
+ * Created by Hocean on 2017/3/20.
+ *
+ */
 @ContentView(R.layout.activity_video)
 public class VideoActivity extends BaseHisActivity {
 

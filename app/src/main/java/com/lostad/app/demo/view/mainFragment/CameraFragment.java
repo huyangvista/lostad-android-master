@@ -38,7 +38,8 @@ import java.util.Objects;
 import h264.com.VView;
 
 /**
- * @author sszvip@qq.com
+ * Created by Renqy on 2017/3/20.
+ *
  */
 public class CameraFragment extends BaseFragment {
 

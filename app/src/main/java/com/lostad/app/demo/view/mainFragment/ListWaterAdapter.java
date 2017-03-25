@@ -18,6 +18,10 @@ import org.xutils.x;
 
 import java.util.List;
 
+/**
+ * Hocean 参见 TouchListView
+ */
+@Deprecated
 public class ListWaterAdapter extends BaseAdapter {
 
 	private Activity mContext;

@@ -15,12 +15,12 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
+ * 备份代码 不要使用本类
  * Created by Hocean on 2017/3/20.
  */
-
+@Deprecated
 public class VViewBace extends View implements Runnable {
-
-
+    
     public float getScalcX() {
         return scalcX;
     }

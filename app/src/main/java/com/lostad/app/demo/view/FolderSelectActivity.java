@@ -13,7 +13,10 @@ import com.lostad.applib.util.ui.ContextUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Created by Hocean on 2017/3/20.
+ *
+ */
 public class FolderSelectActivity extends BaseHisActivity {
 
     FileSelectView fsv;
