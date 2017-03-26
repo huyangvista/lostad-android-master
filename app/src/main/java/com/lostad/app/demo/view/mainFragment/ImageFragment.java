@@ -2,6 +2,7 @@ package com.lostad.app.demo.view.mainFragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import com.lostad.app.demo.util.view.TouchListView;
 import com.lostad.app.demo.view.FolderSelectActivity;
 import com.lostad.app.demo.view.VideoActivity;
 import com.lostad.applib.core.MyCallback;
+import com.lostad.applib.util.ImageUtil;
 import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
@@ -40,9 +42,9 @@ import java.util.Map;
  * Created by Hocean on 2017/3/20.
  *
  */
-public class VideoFragment extends BaseFragment {
+public class ImageFragment extends BaseFragment {
 
-    private String videoPath = IConst.PATH_ROOT + IConst.KEY_PATH_VIDEOS; //默认保存位置
+    private String videoPath = IConst.PATH_ROOT + IConst.KEY_PATH_IMAGES; //默认保存位置
 
     private LinearLayout linearLayout;
     private TouchListView tlv;
@@ -71,7 +73,8 @@ public class VideoFragment extends BaseFragment {
             public void loadSetItemView(Object holders, Object demo) {
                 final File f = (File) demo;
                 ViewHolder holder = (ViewHolder) holders;
-                holder.iv_pic.setImageResource(R.mipmap.film);
+                Bitmap photoFromSDCard = ImageUtil.getPhotoFromSDCard(f.getPath());
+                holder.iv_pic.setImageBitmap(photoFromSDCard);
                 holder.tv_title.setText(f.getName());
                 holder.tv_desc.setText(f.getPath());
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +90,7 @@ public class VideoFragment extends BaseFragment {
                                             case 0: //播放
                                                 Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
                                                 map.put(VideoActivity.VIDEO_NAME,f.getPath());
-                                                ContextUtil.toActivtyResult(VideoFragment.this, map, VideoActivity.class);
+                                                ContextUtil.toActivtyResult(ImageFragment.this, map, VideoActivity.class);
                                                 break;
                                             case 1: //删除
                                                 f.delete();
@@ -121,7 +124,7 @@ public class VideoFragment extends BaseFragment {
                         for (int i = start; i < files.length; i++) {
                             String fileName = files[i].getName();
                             String prefix=fileName.substring(fileName.lastIndexOf(".")+1);
-                            if(prefix.equals("264")){ //寻找后缀名为
+                            if(prefix.equals("png")){ //寻找后缀名为
                                 files264[count] = files[i];
                                 count++;
                             }
@@ -152,7 +155,7 @@ public class VideoFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
                 map.put(VideoActivity.VIDEO_NAME,((File)tlv.getmListData().get(position - 1)).getPath());
-                ContextUtil.toActivtyResult(VideoFragment.this, map, VideoActivity.class);
+                ContextUtil.toActivtyResult(ImageFragment.this, map, VideoActivity.class);
             }
         };
         linearLayout.addView(tlv.getRootView());

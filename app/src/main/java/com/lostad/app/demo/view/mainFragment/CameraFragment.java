@@ -127,6 +127,11 @@ public class CameraFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 //g4j = new TouchListViewDataMsg(true,"success");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 dataMsg.list = list;
                 return dataMsg;
             }

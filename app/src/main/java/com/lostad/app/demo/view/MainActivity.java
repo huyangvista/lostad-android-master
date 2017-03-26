@@ -19,6 +19,7 @@ import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.view.mainFragment.CameraFragment;
+import com.lostad.app.demo.view.mainFragment.ImageFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment1;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
@@ -112,7 +113,7 @@ public class MainActivity extends BaseActivity {
                 fragment = new CameraFragment();
                 break;
             case R.id.rb_5:
-                fragment = new SettingsFragment();
+                fragment = new ImageFragment();
                 break;
             case R.id.rb_6:
                 fragment = new VideoFragment();

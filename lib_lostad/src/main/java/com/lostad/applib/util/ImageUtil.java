@@ -319,6 +319,14 @@ public class ImageUtil {
 			return photoBitmap;
 		}
 	}
+	public static Bitmap getPhotoFromSDCard(String path){
+		Bitmap photoBitmap = BitmapFactory.decodeFile(path);
+		if (photoBitmap == null) {
+			return null;
+		}else {
+			return photoBitmap;
+		}
+	}
 	
 	/**
 	 * Check the SD card 

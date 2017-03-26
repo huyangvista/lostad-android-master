@@ -158,14 +158,15 @@ public class TouchListView   implements WaterDropListView.IWaterDropListViewList
             protected void onPostExecute(TouchListViewDataMsg g4j) {//当 doInBackground被调用后 系统自动调用 并将doInBackground返回参数传入
                 boolean isTheEnd = false ;
                 if(g4j.isSuccess()){
-                    if(g4j.list.size()==0){
-                        isTheEnd = true;
-                    }else{
+                    if(g4j.list != null){
                         if(!isLoadMore){//刷新
                             mListData.clear();
                         }
                         mListData.addAll(g4j.list);
                         mAdapter.notifyDataSetChanged();
+                    }
+                    if(g4j.list == null || g4j.list.size() <= 0){
+                        isTheEnd = true;
                     }
                 }
                 dismissLoding(isTheEnd);
