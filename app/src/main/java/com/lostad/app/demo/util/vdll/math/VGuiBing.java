@@ -2,8 +2,6 @@ package com.lostad.app.demo.util.vdll.math;
 
 import java.util.HashMap;
 
-import com.lostad.app.demo.util.vdll.math.VGuiBing.ESort;
-
 class VGMain
 {
 	public VGMain()
@@ -11,7 +9,7 @@ class VGMain
 		//归并排序  不用递归
 		String[] a = { "9", "8", "7", "1", "1", "4", "3", "2", "8" };
 		a = VGuiBing.vuniq(a); //去重复
-		Object[] aux = VGuiBing.vsort(a, ESort.desc); //从大到小
+		Object[] aux = VGuiBing.vsort(a, VGuiBing.ESort.desc); //从大到小
 		for (int i = 0; i < a.length; i++)
 		{
 			System.out.print(aux[i] + "  ");
@@ -21,7 +19,7 @@ class VGMain
 		//归并排序  递归实现
 		Integer[] data = new Integer[] { 5, 3, 6, 2, 1, 9, 4, 8, 7 };
 		VGuiBing.print(data);
-		VGuiBing.mergeSort(data, ESort.asc); //从大到小
+		VGuiBing.mergeSort(data, VGuiBing.ESort.asc); //从大到小
 		System.out.println("排序后的数组：");
 		VGuiBing.print(data);
 	}

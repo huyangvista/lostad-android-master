@@ -40,6 +40,7 @@ public class IConst {
    public static  final String API_PWD_UPDATE     = "/user/modifyPsw";//phone/old/new
    public static  final String API_PWD_FIND       = "/user/resetPsw";//phone/new
 
+   public static  final String APP_FIRST    = "APP_FIRST";
    public static  final String KEY_PATH_VIDEOS    = "/Videos";
 
    //临时保存变量

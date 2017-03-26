@@ -59,9 +59,11 @@ public class AddCameraActivity extends BaseHisActivity {
        Bundle bun =  ContextUtil.getActivtyExtra(this);
         if(bun != null){
             video = (Video) bun.get("data");
-            editTextUid.setText(video.uid);
-            editTextUsername.setText(video.username);
-            //editTextPassword.setText(v.password);
+            if(video != null){
+                editTextUid.setText(video.uid);
+                editTextUsername.setText(video.username);
+                editTextPassword.setText(video.password);
+            }
         }
     }
 

@@ -1,12 +1,17 @@
-package com.lostad.app.demo.util.vdll.net.android;
+package com.lostad.app.demo.util.adll.net.android;
+
+import com.lostad.app.demo.util.vdll.net.android.GetPostUtil;
+import com.lostad.app.demo.util.vdll.net.android.UploadUtil;
+import com.lostad.app.demo.util.vdll.tools.fileobj.Base64;
 
 import java.util.*;
 import java.net.*;
 import java.io.*;
 import org.json.*;
-import org.apache.commons.codec.binary.*;
 
-
+/**
+ * Hocean 2016年9月9日13:30:23
+ */
 public class VMain
 {//32
 	String vsPashGen= "/storage/emulated/0/0NEW Android/";
@@ -78,7 +83,9 @@ static
 			while (true) {
 
 				String str = wt.readLine();
-				str = "a::D:/,,b::tt.mp3,,c::" + Base64.encodeBase64(str.getBytes("utf-8"));
+				//str = "a::D:/,,b::tt.mp3,,c::" + Base64.encodeBase64(str.getBytes("utf-8"));
+				str = "a::D:/,,b::tt.mp3,,c::" + Base64.encode(str.getBytes("utf-8"));  //eclipse 不支持
+
 				out.println(str);
 				out.flush();
 				if (str.equals("end")) {

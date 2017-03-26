@@ -8,12 +8,12 @@ import java.util.Properties;
 /**
  * JDBC操作的工具类,加载数据库驱动,获取数据库连接
  *  弃用的
- *  请使用  VMySql
+ *  请使用  MySql
  * @author Hocean
  *
  */
 @Deprecated
-public class DBUtil 
+public class DBUtil
 {
 	private static Connection conn = null;
 	private static String databaseName = "";
@@ -56,7 +56,7 @@ public class DBUtil
 
 	/**
 	 * 获取数据库连接
-	 * 
+	 *
 	 * @return Connection conn
 	 */
 	public static Connection getConnection()
@@ -100,7 +100,7 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static void close()
 	{
@@ -118,19 +118,19 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: getPstmt
-	 * 
+	 *
 	 * @Description: TODO 获取数据库的预处理命令类PreparedStatement
-	 * 
+	 *
 	 * @param conn
 	 *            数据库的连接
 	 * @param sql
 	 *            要执行的sql语句
 	 * @param
-	 * 
+	 *
 	 * @return PreparedStatement 返回类型
-	 * 
+	 *
 	 * @throws
 	 */
 	public static PreparedStatement getPstmt(Connection conn, String sql)
@@ -171,17 +171,17 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: getRs
-	 * 
+	 *
 	 * @Description: TODO 获取结果
-	 * 
+	 *
 	 * @param pstmt
 	 *            PreparedStatement对象
 	 * @param
-	 * 
+	 *
 	 * @return ResultSet 返回类型
-	 * 
+	 *
 	 * @throws
 	 */
 	public static ResultSet getRs(PreparedStatement pstmt)
@@ -200,16 +200,16 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: close
-	 * 
+	 *
 	 * @Description: TODO 关闭结果集的连接
-	 * 
+	 *
 	 * @param rs
 	 *            结果
-	 * 
+	 *
 	 * @return void 返回类型
-	 * 
+	 *
 	 * @throws
 	 */
 	public static void close(ResultSet rs)
@@ -230,15 +230,15 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: close
-	 * 
+	 *
 	 * @Description: TODO 关闭PreparedStatement的连接
-	 * 
+	 *
 	 * @param pstmt
-	 * 
+	 *
 	 * @return void 返回类型
-	 * 
+	 *
 	 * @throws
 	 */
 	public static void close(PreparedStatement pstmt)
@@ -259,16 +259,16 @@ public class DBUtil
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: closeDatabase
-	 * 
+	 *
 	 * @Description: TODO 关闭所有链接
-	 * 
+	 *
 	 * @param rs
 	 * @param pstmt
-	 * 
+	 *
 	 * @return void 返回类型
-	 * 
+	 *
 	 * @throws
 	 */
 	public static void closeDatabase(ResultSet rs, PreparedStatement pstmt)

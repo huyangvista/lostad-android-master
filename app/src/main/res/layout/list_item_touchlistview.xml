@@ -25,8 +25,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_centerInParent="true"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="1dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/img_default" />
+                android:src="@mipmap/camera" />
 
         </RelativeLayout>
 
@@ -60,9 +64,9 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="34dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_login" />
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@mipmap/down_list_spr" />
 
     </LinearLayout>
 

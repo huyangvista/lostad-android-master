@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.R;
+import com.lostad.applib.util.sys.PrefManager;
+import com.lostad.applib.util.ui.ContextUtil;
 
 /**
  *
@@ -13,6 +16,11 @@ public class WelActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		String appFirst = PrefManager.getString(this, IConst.APP_FIRST, "-1");
+		if(appFirst.equals("-1")){
+			ContextUtil.toActivtyClear(this,WelReadmeActivity.class);
+			return;
+		}
 		setContentView(R.layout.activity_wel);
 		toMain();
 	}

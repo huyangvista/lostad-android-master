@@ -1,4 +1,4 @@
-package com.lostad.app.demo.util.vdll.tools;//package com.lostad.app.demo.util.vdll.tools;
+package com.lostad.app.demo.util.vdll.tools;//package vdll.tools;
 //
 //import java.io.IOException;
 //import java.io.PrintWriter;

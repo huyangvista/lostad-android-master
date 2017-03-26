@@ -71,13 +71,13 @@
             android:textColor="@color/txt_blue_deep" />
 
         <EditText
-            android:id="@+id/editTextUsername"
+            android:id="@+id/editTextPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="输入密码"
+            android:inputType="textPersonName"
 
             android:text=""
             android:textColor="@color/txt_blue_deep" />
@@ -99,7 +99,7 @@
             android:textColor="@color/txt_blue_deep" />
 
         <EditText
-            android:id="@+id/editTextPassword"
+            android:id="@+id/editTextUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

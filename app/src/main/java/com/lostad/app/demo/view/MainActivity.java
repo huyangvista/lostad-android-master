@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
         });
 
         //changeFragment(R.id.rb_0);
-        changeFragment(R.id.rb_2);
+        changeFragment(R.id.rb_4);
 
         //toActivty(TestActivity.class);
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lostad.app.demo.R;
 import com.lostad.applib.util.ui.ContextUtil;
@@ -23,19 +24,17 @@ import org.xutils.x;
 //@ContentView(R.layout.activity_base_his_head_default)
 public abstract class BaseHisActivity extends BaseAppActivity {
     //protected HeaderLayout headerLayout;
-    private Intent intentData; //传递过来的数据
+    private Intent intentData;
+    public final static String TITLE = "title";
 
     public abstract Bundle setResult(Bundle bundle);
-
-
     //@ViewInject(R.id.body)
     //protected LinearLayout body;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //x.view().inject(this);
-        intentData = this.getIntent();       
+        intentData = this.getIntent();
 
         //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         //this.setContentView(R.layout.activity_base_his_head_default);
@@ -54,6 +53,15 @@ public abstract class BaseHisActivity extends BaseAppActivity {
 
     public void loadLayout(ViewGroup vg){
         ContextUtil.getLayoutInflater(vg.getContext()).inflate(R.layout.activity_base_his_head,vg);
+        Bundle bundle = intentData.getExtras(); // ContextUtil.getBundle(this);
+        if(bundle != null ){ //确定窗口传值了
+            TextView tv = (TextView) vg.findViewById(R.id.textViewTitle);
+            if(tv != null){
+                String title = bundle.getString(TITLE, "");
+                tv.setText(title);
+            }
+        }
+
         View buttonBack = vg.findViewById(R.id.buttonBack);
         if(buttonBack != null){
             buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +84,11 @@ public abstract class BaseHisActivity extends BaseAppActivity {
 //        vg.addView(view);
     }
 
+    @Deprecated
     public void setBodyContentView(int rid){
         setBodyContentView(ContextUtil.loadLayout(rid));
     }
+    @Deprecated
     public void setBodyContentView(View view){
         this.setContentView(R.layout.activity_base_his_head_default);
         LinearLayout body = (LinearLayout) this.findViewById(R.id.body);

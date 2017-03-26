@@ -2,12 +2,15 @@ package com.lostad.app.demo.util.view;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /**
  * 左右滑动页 构建  页侦听 ViewPage.addOnPageChangeListener
@@ -15,9 +18,9 @@ import android.widget.ImageView;
  */
 public class ViewPageBuild extends PagerAdapter{
 
-	public ArrayList<View> pages = new ArrayList<>();
-	public ArrayList<String> titles = new ArrayList<>();
-	public ViewGroup navigation;
+	private ArrayList<View> pages = new ArrayList<>();
+	private ArrayList<String> titles = new ArrayList<>();
+	private ViewGroup navigation;
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		//super.destroyItem(container, position, object);
@@ -42,6 +45,7 @@ public class ViewPageBuild extends PagerAdapter{
 		return arg0==arg1;
 	}
 	public void show(ViewPager vp){
+		//vp.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
 		vp.setAdapter(this);
 		setPoint(0);
 		vp.setCurrentItem(0);
@@ -79,13 +83,26 @@ public class ViewPageBuild extends PagerAdapter{
 			navigation.addView(img);
 		}
 	}
-
+	private void addTitle(String title){
+		titles.add(title);
+	}
 	public void addPage(View v){
 		pages.add(v);
 	}
 	public void addPage(View v, String title){
 		pages.add(v);
 		titles.add(title);
+	}
+	public void addPage(Context context, @DrawableRes int rid){
+		ImageView iv = new ImageView(context);
+		iv.setImageResource(rid);
+		//iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+		iv.setScaleType(ImageView.ScaleType.FIT_XY);
+		addPage(iv);
+	}
+	public void addPage(Context context, @DrawableRes int rid, String title){
+		addPage(context,rid);
+		addTitle(title);
 	}
 
 	public ArrayList<View> getPages() {
@@ -115,10 +132,10 @@ public class ViewPageBuild extends PagerAdapter{
 
 
 //demo
-//		ViewPager rg = new ViewPager(this);
-//		ViewPageBuild vpg = new ViewPageBuild();
-//      vpg.pages.add(new TextView(this));
-//		vpg.titles.add("0");
-//		vpg.pages.add(new TextView(this));
-//		vpg.titles.add("1");
-//		vpg.show(rg, 0);
+//ViewPager vg = new ViewPager(this);
+//	ViewPageBuild vpg = new ViewPageBuild();
+//        vpg.addPage(this, R.mipmap.camera,"0000");
+//				vpg.addPage(this, R.mipmap.camera_load,"222");
+//				vpg.setNavigation(ll_group);
+//				vpg.show(vg);
+//				ll_vp.addView(vg);

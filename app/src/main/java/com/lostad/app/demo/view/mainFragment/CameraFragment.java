@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
+import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
@@ -68,7 +69,7 @@ public class CameraFragment extends BaseFragment {
                 final Video video = (Video) demo;
                 ViewHolder holder = (ViewHolder) holders;
                 holder.tv_title.setText(video.uid);
-                holder.tv_desc.setText(video.macname);
+                holder.tv_desc.setText(video.username);
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -81,8 +82,9 @@ public class CameraFragment extends BaseFragment {
                                             case 0: //重新连接
                                                 break;
                                             case 1: //修改摄像机
-                                                Map<String, Video> map = new HashMap<>();
+                                                Map<String, Serializable> map = new HashMap<>();
                                                 map.put("data", video);
+                                                map.put(BaseHisActivity.TITLE, "修改摄像机");
                                                 ContextUtil.toActivtyResult(CameraFragment.this, map, AddCameraActivity.class);
                                                 tlv.onRefresh();
 
@@ -159,7 +161,9 @@ public class CameraFragment extends BaseFragment {
         if (item.getGroupId() == 2) {
             switch (item.getItemId()) {
                 case 0:
-                    ContextUtil.toActivtyResult(this, AddCameraActivity.class);
+                    Map<String, Serializable> map = new HashMap<>();
+                    map.put(BaseHisActivity.TITLE, "添加摄像机");
+                    ContextUtil.toActivtyResult(this,map, AddCameraActivity.class);
                     break;
                 case 1:
                     break;

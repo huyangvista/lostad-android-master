@@ -162,7 +162,12 @@ public class ContextUtil {
 	}
 
 	public static Bundle getActivtyExtra(Activity act){
-		return act.getIntent().getExtras();
+		Intent intent = act.getIntent();
+		Bundle extras = null;
+		if(intent != null){
+			 extras = intent.getExtras();
+		}
+		return extras;
 	}
 	public static Bundle getBundle(Activity act){
 		return getActivtyExtra(act);

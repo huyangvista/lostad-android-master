@@ -13,11 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"></LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/videos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
+    <include layout="@layout/view_video" />
 
 
 </LinearLayout>

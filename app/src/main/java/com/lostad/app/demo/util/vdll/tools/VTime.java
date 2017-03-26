@@ -36,7 +36,10 @@ public class VTime extends Calendar
 	}//*/
 
 	private Calendar vcal;
-	private static String vsFormatDefualt="yyyy-MM-dd HH:mm:ss";
+	
+	public static String vsFormatDefualtDate="yyyy-MM-dd";
+	public static String vsFormatDefualtTime="HH:mm:ss";
+	public static String vsFormatDefualt="yyyy-MM-dd HH:mm:ss";
 
 	public void setVcal(Calendar vcal)
 	{
@@ -115,7 +118,7 @@ public class VTime extends Calendar
 		 int hour = vcal.get(Calendar.HOUR);//时
 		 int minute = vcal.get(Calendar.MINUTE);//分
 		 int second = vcal.get(Calendar.SECOND);//秒*/
-		set(getYear(), getMonth(), getDate(), getHours(), getMinutes(), getSeconds());
+		set(getYear(), getMonth() - 1, getDate(), getHours(), getMinutes(), getSeconds());
 		setTime(vcal.getTime());
 		setTimeZone(vcal.getTimeZone());
 		setTimeInMillis(vcal.getTimeInMillis());

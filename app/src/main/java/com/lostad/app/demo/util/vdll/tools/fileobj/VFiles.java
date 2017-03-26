@@ -38,6 +38,16 @@ public class VFiles<T>
 		if (vusers == null) GetUserAll();
 		vusers.add(user);
 	}
+	//添加用户  需要保存
+	public void AddUser(T[] us)
+	{
+		if (vusers == null) GetUserAll();
+		
+		for(int i=0;i<us.length;i++){
+			vusers.add(us[i]);
+		}
+	}
+	
 
 	//添加用户且保存  线程安全
 	public synchronized void AddUserSave(T user)

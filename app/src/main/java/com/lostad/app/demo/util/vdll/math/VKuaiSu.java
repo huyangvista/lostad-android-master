@@ -9,7 +9,7 @@ class VMainS
 		VKuaiSu vsort = new VKuaiSu();
 		System.out.println("正在排序中...");
 		int mode = 100;
-		int[] varr = vsort.vrandom(200000);
+		int[] varr = vsort.vrandom(20000);
 		int[] varr2 =new int[varr.length];
 		System.arraycopy(varr,0,varr2,0,varr2.length);
 		vsort.vprintArr("随机产生的数组共 "+varr.length+" 个数据 抽样->: ",varr2,mode);

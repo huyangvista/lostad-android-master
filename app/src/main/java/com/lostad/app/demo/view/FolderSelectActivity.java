@@ -2,6 +2,7 @@ package com.lostad.app.demo.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.demo.R;
@@ -31,9 +32,7 @@ public class FolderSelectActivity extends BaseHisActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_folder_select);
-
         String defPath = ContextUtil.getActivtyExtra(this).getString("data");
-
 
         Map<String, Integer> images = new HashMap<String, Integer>();
         // 下面几句设置各文件类型的图标， 需要你先把图标添加到资源文件夹
@@ -50,9 +49,13 @@ public class FolderSelectActivity extends BaseHisActivity {
         }, ".wav;",
                 images,defPath);
 
-        setBodyContentView(fsv);
-
-
-
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout llTitle = new LinearLayout(this);
+        llTitle.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(llTitle);
+        ll.addView(fsv);
+        loadLayout(llTitle);
+        setContentView(ll);
     }
 }

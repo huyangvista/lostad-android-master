@@ -87,6 +87,8 @@
 
 
         <RadioButton
+            android:checked="true"
+
             android:id="@+id/rb_4"
             android:button="@null"
             android:layout_weight="1"

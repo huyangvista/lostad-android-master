@@ -16,7 +16,7 @@ public class VMath
 		int[] vi = vrandom(6,9);
 		for (int i : vi)
 		{
-			com.lostad.app.demo.util.vdll.tools.Console.WriteLine(i);
+			Console.WriteLine(i);
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class VMath
     public static int[] vrandom(int vn, int viMax) 
     {
     	if(vn > viMax)  {
-    		com.lostad.app.demo.util.vdll.tools.Console.ErrLine("数字最大值  必须大于需要数字");
+    		Console.ErrLine("数字最大值  必须大于需要数字");
     		return null;
     	}
     	

@@ -68,7 +68,7 @@
     <!-- 浅蓝色字体颜色 -->
     <color name="light_blue">#E5F2FD</color>
     <!-- 默认背景颜色，灰白 -->
-    <color name="base_bg">#FBFBFB</color>
+    <color name="base_bg">#fbfbfb</color>
     <!-- 首页上方边框的颜色，深灰 -->
     <color name="home_border_dark_gray">#E1E1E1</color>
     <!-- 首页上方三个环形进度条布局的背景颜色，浅灰 -->

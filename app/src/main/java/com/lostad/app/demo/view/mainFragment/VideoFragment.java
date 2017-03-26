@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.MyApplication;
@@ -172,6 +173,7 @@ public class VideoFragment extends BaseFragment {
 
                     Map<String, Serializable> map = new HashMap<>();
                     map.put("data", videoPath);
+                    map.put(BaseHisActivity.TITLE,"选择保存路径");
                     ContextUtil.toActivtyResult(this, map, FolderSelectActivity.class);
                     break;
                 case 1:
