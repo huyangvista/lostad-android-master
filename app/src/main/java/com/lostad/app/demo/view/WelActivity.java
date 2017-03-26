@@ -16,8 +16,8 @@ public class WelActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String appFirst = PrefManager.getString(this, IConst.APP_FIRST, "-1");
-		if(appFirst.equals("-1")){
+		String appFirst = PrefManager.getString(this, IConst.APP_FIRST, "0");
+		if(appFirst.equals("0")){
 			ContextUtil.toActivtyClear(this,WelReadmeActivity.class);
 			return;
 		}

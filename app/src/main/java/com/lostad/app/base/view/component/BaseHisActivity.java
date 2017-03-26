@@ -15,6 +15,10 @@ import com.lostad.applib.view.BaseAppActivity;
 import org.xutils.view.annotation.Event;
 import org.xutils.x;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * 返回上一页的基类
@@ -147,4 +151,13 @@ public abstract class BaseHisActivity extends BaseAppActivity {
         x.view().inject(act);
     }
 
+    public static Map<String, Serializable> markParms(Serializable... parms){
+        Map<String, Serializable> map = new HashMap<>();
+        if(parms != null){
+            for (int i = 0; i+1 < parms.length; i+=2) {
+                map.put((String) parms[i],parms[i+1]);
+            }
+        }
+        return map;
+    }
 }

@@ -2,10 +2,7 @@ package com.lostad.app.demo.view.mainFragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
@@ -22,18 +18,15 @@ import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.TouchListViewDataMsg;
-import com.lostad.app.demo.entity.Video;
 import com.lostad.app.demo.util.view.TouchListView;
-import com.lostad.app.demo.view.AddCameraActivity;
 import com.lostad.app.demo.view.FolderSelectActivity;
-import com.lostad.app.demo.view.MainActivity;
+import com.lostad.app.demo.view.VideoActivity;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.util.ui.DialogUtil;
 
 import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.io.File;
@@ -42,9 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import h264.com.VView;
 
 /**
  * Created by Hocean on 2017/3/20.
@@ -52,10 +42,10 @@ import h264.com.VView;
  */
 public class VideoFragment extends BaseFragment {
 
-    private LinearLayout linearLayout;
-
     private String videoPath = IConst.PATH_ROOT + IConst.KEY_PATH_VIDEOS; //默认保存位置
 
+    private LinearLayout linearLayout;
+    private TouchListView tlv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -66,7 +56,7 @@ public class VideoFragment extends BaseFragment {
         x.view().inject(getActivity());
 
 
-        TouchListView tlv = new TouchListView(getContext()) {
+        tlv = new TouchListView(getContext()) {
             @Override
             public View loadItemLayout(LayoutInflater inf) {
                 return inf.inflate(R.layout.list_item_touchlistview, null);
@@ -81,27 +71,34 @@ public class VideoFragment extends BaseFragment {
             public void loadSetItemView(Object holders, Object demo) {
                 final File f = (File) demo;
                 ViewHolder holder = (ViewHolder) holders;
+                holder.iv_pic.setImageResource(R.mipmap.film);
                 holder.tv_title.setText(f.getName());
                 holder.tv_desc.setText(f.getPath());
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         com.lostad.applib.util.DialogUtil.showAlertMenu(getActivity(), "设置",
-                                new String[]{"重新连接", "修改摄像机", "查看事件", "查看快照", "删除相机"}, new MyCallback<Integer>() {
+                                new String[]{"播放", "删除"}, new MyCallback<Integer>() {
                                     @Override
                                     public void onCallback(Integer data) {
                                         DialogUtil.showToastCust("heh " + data);
                                         //设置后 回调
                                         switch (data) {
-                                            case 0: //重新连接
+                                            case 0: //播放
+                                                Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
+                                                map.put(VideoActivity.VIDEO_NAME,f.getPath());
+                                                ContextUtil.toActivtyResult(VideoFragment.this, map, VideoActivity.class);
                                                 break;
-                                            case 1: //修改摄像机
+                                            case 1: //删除
+                                                f.delete();
+                                                tlv.onRefresh();
                                                 break;
                                             case 2: //查看事件
                                                 break;
                                             case 3: //查看快照
                                                 break;
                                             case 4: //删除相机
+
                                                 break;
                                         }
                                     }
@@ -118,13 +115,23 @@ public class VideoFragment extends BaseFragment {
                 try {
 
                     File[] files = new File(videoPath).listFiles();
-
-                    //载入 list
-                    //List<Video> videos = db.findAll(Video.class);
                     if (files != null && start < files.length) {
+                        File[] files264 = new File[files.length];
+                        int count = 0;
                         for (int i = start; i < files.length; i++) {
-                            list.add(files[i]);
+                            String fileName = files[i].getName();
+                            String prefix=fileName.substring(fileName.lastIndexOf(".")+1);
+                            if(prefix.equals("264")){ //寻找后缀名为
+                                files264[count] = files[i];
+                                count++;
+                            }
                         }
+                        if(start < count){
+                            for (int i = start; i < count && i - start < IConst.VALUE_ROWS; i++) {
+                                list.add(files264[i]);
+                            }
+                        }
+
                     }
 
                 } catch (Exception e) {
@@ -138,7 +145,9 @@ public class VideoFragment extends BaseFragment {
             //点击列表
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogUtil.showToastCust("heh 00000");
+                Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
+                map.put(VideoActivity.VIDEO_NAME,((File)tlv.getmListData().get(position - 1)).getPath());
+                ContextUtil.toActivtyResult(VideoFragment.this, map, VideoActivity.class);
             }
         };
         linearLayout.addView(tlv.getRootView());
@@ -172,7 +181,7 @@ public class VideoFragment extends BaseFragment {
 //                    startActivityForResult(intent, 1);
 
                     Map<String, Serializable> map = new HashMap<>();
-                    map.put("data", videoPath);
+                    map.put(FolderSelectActivity.VIDEO_PATH, videoPath);
                     map.put(BaseHisActivity.TITLE,"选择保存路径");
                     ContextUtil.toActivtyResult(this, map, FolderSelectActivity.class);
                     break;
@@ -221,14 +230,16 @@ public class VideoFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
         if (resultCode == Activity.RESULT_OK) {//是否选择，没选择就不会继续
             // String path = data.getData().getPath();
+            String path = data.getExtras().getString(FolderSelectActivity.VIDEO_PATH);
+            if(path != null){
+                DialogUtil.showToastCust("已选择:" + path);
+                videoPath = path;
+                PrefManager.saveString(getContext(), IConst.KEY_PATH_VIDEOS, path);
+                tlv.onRefresh();
+            }
 
-            String path = data.getExtras().getString("path");
-            DialogUtil.showToastCust("已选择:" + path);
-            videoPath = path;
-            PrefManager.saveString(getContext(), IConst.KEY_PATH_VIDEOS, path);
 
 
 //            Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。

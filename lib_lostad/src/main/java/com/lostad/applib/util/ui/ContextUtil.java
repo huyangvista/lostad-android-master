@@ -166,6 +166,8 @@ public class ContextUtil {
 		Bundle extras = null;
 		if(intent != null){
 			 extras = intent.getExtras();
+		}else{
+			extras = new Bundle();
 		}
 		return extras;
 	}

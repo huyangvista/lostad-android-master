@@ -103,8 +103,12 @@ public class FileSelectView extends ListView implements AdapterView.OnItemClickL
         }
         if(files==null){
             // 访问出错
-            Toast.makeText(getContext(), sOnErrorMsg,Toast.LENGTH_SHORT).show();
-            return -1;
+            if(path.equals(sRoot)){
+                Toast.makeText(getContext(), sOnErrorMsg,Toast.LENGTH_SHORT).show();
+                return -1;
+            }
+            path = sRoot;
+            return refreshFileList();
         }
         if(list != null){
             list.clear();

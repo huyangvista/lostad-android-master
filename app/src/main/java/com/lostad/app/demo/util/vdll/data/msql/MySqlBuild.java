@@ -1,7 +1,8 @@
 package com.lostad.app.demo.util.vdll.data.msql;
 
-import com.lostad.app.demo.util.vdll.tools.DateTime;
-import com.lostad.app.demo.util.vdll.tools.ReflectBuild;
+
+import com.lostad.applib.util.DateTime;
+import com.lostad.applib.util.ReflectUtil;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -58,7 +59,7 @@ public class MySqlBuild<T> extends MySql {
 			for (int i = 0; i < 600; i++) {
 				msql.add(userNew);  //添加数据
 			}
-			System.out.println(DateTime.subtract(new DateTime(), dt).getMilliSecondsCount());
+			System.out.println(DateTime.subtract(new DateTime(), dt).getCountMillis());
 		}	
 		{	//开启事务
 			DateTime dt = new DateTime();
@@ -67,7 +68,7 @@ public class MySqlBuild<T> extends MySql {
 				msql.add(userNew);  //添加数据
 			}
 			msql.commit();
-			System.out.println(DateTime.subtract(new DateTime(), dt).getMilliSecondsCount());
+			System.out.println(DateTime.subtract(new DateTime(), dt).getCountMillis());
 		}				
 		msql.drop();
 		msql.close(); //关闭
@@ -195,13 +196,13 @@ public class MySqlBuild<T> extends MySql {
 		ResultSet rs = exeQ();
 		try {
 			while (rs.next()) {
-				T vu = (T) ReflectBuild.newInstance(mcls,new Class[]{}, new Object[] {});
+				T vu = (T) ReflectUtil.newInstance(mcls,new Class[]{}, new Object[] {});
 				AISql.Parms par = new AISql.Parms();
 				List<SqlTags.RowTags> valRow = SqlTags.get(mcls,par);
 				for (int i = 0; i < valRow.size(); i++) {
 					String objField = valRow.get(i).getName();
 					String vs = rs.getString(objField);
-					Field field = ReflectBuild.getFieldAll(mcls, objField);
+					Field field = ReflectUtil.getFieldAll(mcls, objField);
 					field.set(vu, vs);
 				}			
 				list.add(vu);
@@ -377,7 +378,7 @@ public class MySqlBuild<T> extends MySql {
 
 		for (int i = 0; i < valRow.size(); i++) {
 			//Object val =valRow.get(i).getValue();
-			Object val = ReflectBuild.getFieldValue(t, valRow.get(i).getField());
+			Object val = ReflectUtil.getFieldValue(t, valRow.get(i).getField());
 			if(val == null) continue;
 			tableName.add( valRow.get(i).getName());
 			tableValue.add(val);
@@ -476,7 +477,7 @@ public class MySqlBuild<T> extends MySql {
 		List<Object> tableName = new ArrayList<>();
 		List<Object> tableValue = new ArrayList<>();
 		for (int i = 0; i < valRow.size(); i++) {
-			Object val = ReflectBuild.getFieldValue(t, valRow.get(i).getField());
+			Object val = ReflectUtil.getFieldValue(t, valRow.get(i).getField());
 			if(val == null) continue;
 			tableName.add( valRow.get(i).getName());
 			tableValue.add(val);

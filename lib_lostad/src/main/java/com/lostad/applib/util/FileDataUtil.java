@@ -38,6 +38,11 @@ public class FileDataUtil {
 			LogMe.d(fileName);
 			return fileName;
 		}
+	public static String createPngFileName(String prefix) {
+		String fileName = prefix + DateUtil.getCurrDateStr("yyyyMMddHHmmss")+".png";
+		LogMe.d(fileName);
+		return fileName;
+	}
 
 }
 

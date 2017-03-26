@@ -20,11 +20,13 @@ import java.util.Map;
  */
 public class FolderSelectActivity extends BaseHisActivity {
 
-    FileSelectView fsv;
+    public static final String  VIDEO_PATH = "VIDEO_PATH";
+
+    private FileSelectView fsv;
 
     @Override
     public Bundle setResult(Bundle bundle) {
-        bundle.putString("path",fsv.getPath());
+        bundle.putString(VIDEO_PATH,fsv.getPath());
         return bundle;
     }
 
@@ -32,7 +34,8 @@ public class FolderSelectActivity extends BaseHisActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_folder_select);
-        String defPath = ContextUtil.getActivtyExtra(this).getString("data");
+        String defPath = ContextUtil.getActivtyExtra(this).getString(VIDEO_PATH);
+        //defPath = "/";
 
         Map<String, Integer> images = new HashMap<String, Integer>();
         // 下面几句设置各文件类型的图标， 需要你先把图标添加到资源文件夹

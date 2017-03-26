@@ -45,7 +45,7 @@ public class VideoView extends View implements Runnable {
 
     private byte[] mPixel = new byte[width * height * 2];
     private ByteBuffer buffer = ByteBuffer.wrap(mPixel);
-    private Bitmap VideoBit = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+    private volatile Bitmap VideoBit = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
     private int mTrans = 0x0F0F0F0F;
 
     private InputStream is = null; //必须参数
@@ -211,7 +211,6 @@ public class VideoView extends View implements Runnable {
 
             buffer.rewind(); //vive 必须清除缓存 防止粘包
             VideoBit.copyPixelsFromBuffer(buffer);//makeBuffer(data565, N));
-
             // 保存画布状态
             canvas.save();
             canvas.scale(scalcX, scalcY);
@@ -275,8 +274,10 @@ public class VideoView extends View implements Runnable {
                     try {
                         if (funcRead != null) {
                             bytesRead = funcRead.invoke(SockBuf, 0, 2048);
-                        } else {
+                        } else if(is != null){
                             bytesRead = is.read(SockBuf, 0, 2048);
+                        }else{
+                            return;
                         }
                     } catch (IOException e) {
                     }
@@ -329,8 +330,8 @@ public class VideoView extends View implements Runnable {
                 long end = System.currentTimeMillis();
                 try {
                     if (end - start < sleepTime) {
-                       // Thread.sleep(sleepTime - (end - start));
-                        Thread.sleep(0);
+                        Thread.sleep(sleepTime - (end - start));
+                        //Thread.sleep(0);
                     }
                 } catch (InterruptedException e) {
                     //e.printStackTrace();
@@ -394,5 +395,21 @@ public class VideoView extends View implements Runnable {
     public void loadLayout(ViewGroup vg) {
         vg.removeAllViews();
         vg.addView(this);
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
+    public boolean isPaue() {
+        return isPaue;
+    }
+
+    public boolean isExit() {
+        return isExit;
+    }
+
+    public Bitmap getVideoBit() {
+        return VideoBit;
     }
 }

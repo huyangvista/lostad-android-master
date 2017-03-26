@@ -1,19 +1,24 @@
 package com.lostad.app.demo.view;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import com.lostad.app.base.view.component.BaseHisActivity;
+import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.R;
-import com.lostad.app.demo.entity.Video;
+import com.lostad.applib.util.DateTime;
+import com.lostad.applib.util.FileDataUtil;
+import com.lostad.applib.util.ImageUtil;
+import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import h264.com.VideoView;
 
@@ -23,6 +28,7 @@ import h264.com.VideoView;
  */
 @ContentView(R.layout.activity_video)
 public class VideoActivity extends BaseHisActivity {
+    public static final String VIDEO_NAME = "VIDEO_NAME";
 
     private VideoView videoView;
 
@@ -30,6 +36,8 @@ public class VideoActivity extends BaseHisActivity {
     private LinearLayout his;
     @ViewInject(R.id.videos)
     private LinearLayout videos;
+    @ViewInject(R.id.pre)
+    private SeekBar seekBar;
 
     @Override
     public Bundle setResult(Bundle bundle) {
@@ -42,11 +50,12 @@ public class VideoActivity extends BaseHisActivity {
         x(this);
         loadLayout(his);
         Bundle bundle = ContextUtil.getBundle(this);
-        Video video = (Video) bundle.get("data");
+
+        String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+        file =  bundle.getString(VIDEO_NAME,file);
 
         videoView = new VideoView(this);
         videoView.setScalcScene(1,1);
-        String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
         videoView.load();
         videoView.ready(file);
         videoView.start();
@@ -95,4 +104,17 @@ public class VideoActivity extends BaseHisActivity {
         super.onSubmit();
         videoView.close();
     }
+
+    @Event(R.id.play)
+    private void onClickPlay(View v){
+        if(videoView != null) videoView.paue();
+    }
+    @Event(R.id.fullWin)
+    private void onClickFullWin(View v){
+        String vs =  PrefManager.getString(this, IConst.KEY_PATH_VIDEOS, "");
+        ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
+
+    }
+
+
 }

@@ -145,25 +145,28 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
             android:name=".view.TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".view.AddCameraActivity" />
-        <activity android:name=".view.FolderSelectActivity" />
-        <activity android:name=".util.view.folder.OpenFileDemo" />
-        <activity android:name=".view.VideoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".view.WelReadmeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".view.AddCameraActivity"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".view.FolderSelectActivity"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".util.view.folder.OpenFileDemo"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".view.VideoActivity"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".view.WelReadmeActivity"
+            android:parentActivityName="com.lostad.app.base.view.BaseActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 
 </manifest>

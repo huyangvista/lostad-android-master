@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
+import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.TouchListViewDataMsg;
@@ -117,7 +118,7 @@ public class CameraFragment extends BaseFragment {
                 try {
                     List<Video> videos = db.findAll(Video.class);
                     if (videos != null && start < videos.size()) {
-                        for (int i = start; i < videos.size(); i++) {
+                        for (int i = start; i < videos.size() && i - start < IConst.VALUE_ROWS; i++) {
                             Video v = videos.get(i);
                             list.add(v);
                         }
