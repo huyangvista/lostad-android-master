@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.R;
+import com.lostad.app.demo.util.vdll.math.CompareUtil;
 import com.lostad.app.demo.view.mainFragment.CameraFragment;
 import com.lostad.app.demo.view.mainFragment.ImageFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
@@ -25,11 +26,20 @@ import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
 import com.lostad.app.demo.view.mainFragment.SettingsFragment;
 import com.lostad.app.demo.view.mainFragment.VideoFragment;
 import com.lostad.applib.util.DialogUtil;
+import com.lostad.applib.util.ReflectUtil;
 import com.lostad.applib.util.sys.TokenUtil;
 import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+import dalvik.system.DexFile;
 
 /**
  * 主要
@@ -160,9 +170,29 @@ public class MainActivity extends BaseActivity {
                     toActivty(TestActivity.class);
                     break;
                 case 3:
-                    String vs = TokenUtil.entryptPassword("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdf");
-                    boolean ss = TokenUtil.validatePassword("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdf", vs);
-                    DialogUtil.showToastCust("" + ss);
+                    StringBuilder sb = new StringBuilder("");
+                    List<Class<?>> packageClasses = ReflectUtil.getPackageClasses("com.lostad.app.demo.view");
+                    for (Class c : packageClasses) {
+                        Field[] fields = ReflectUtil.getFieldsLocal(ReflectUtil.getClassFromName(c.getName()));
+                        for (int j = 0; j < fields.length; j++) {
+                            Field f = fields[j];
+                            String n = f.getName();
+                            if (n != null) {
+                                sb.append(n);
+                            }
+                        }
+                    }
+                    String text = sb.toString();
+
+                    String vs = TokenUtil.entryptPassword(text);
+                    boolean ss = TokenUtil.validatePassword(text, vs);
+                    //DialogUtil.showToastCust("" + ss + " | " + text);
+
+                    List<String> className = getClassName("com");
+                    for (String c : className) {
+                        text +=c;
+                    }
+                    DialogUtil.showToastCust("" + ss + " | " + text);
                     break;
                 default:
                     break;
@@ -240,5 +270,10 @@ public class MainActivity extends BaseActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
         // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
+    }
+
+    public List<String > getClassName(String packageName){
+        List<String> classNameList = ReflectUtil.getPackageClassByAndroidAll(getBaseContext(),packageName);
+        return  classNameList;
     }
 }

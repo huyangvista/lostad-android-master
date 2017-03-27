@@ -1,8 +1,11 @@
 package com.lostad.applib.util.sys;
 
 
+import com.lostad.applib.util.ReflectUtil;
 import com.lostad.applib.util.sys.tuple.Digests;
 import com.lostad.applib.util.sys.tuple.Encodes;
+
+import java.util.List;
 
 /**
  * package com.thinkgem.jeesite.modules.sys.service;SystemService
@@ -18,6 +21,8 @@ public class TokenUtil {
      public static void main(String[] args){
          System.out.println(entryptPassword("vive"));
          System.out.println(validatePassword("vive","a8aea1c8c51ede6aa907fa61cd090c0a38d84564f4d01be258fb96b0"));
+
+
      }
 
     /**
