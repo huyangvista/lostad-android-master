@@ -266,8 +266,6 @@ public class MainActivity extends BaseActivity {
 //                (list.get(i)).onActivityResult(requestCode,resultCode,data);
 //            }
 //        }
-
-
         super.onActivityResult(requestCode, resultCode, data);
         // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
     }
