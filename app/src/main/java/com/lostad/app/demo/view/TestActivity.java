@@ -20,7 +20,7 @@ import com.lostad.app.demo.util.view.TouchListView;
 import com.lostad.app.demo.util.view.folder.CallbackBundle;
 import com.lostad.app.demo.util.view.folder.OpenFileDialog;
 import com.lostad.applib.core.MyCallback;
-import com.lostad.applib.util.ui.DialogUtil;
+import com.lostad.applib.util.DialogUtil;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -112,7 +112,7 @@ public class TestActivity extends BaseActivity {
             int temp=0;
             byte[] bs = new byte[1024 * 4 ];
 
-            for (int i = 0; i < 2000; i++) {
+            for (int i = 0; i < 2; i++) {
                 is = new FileInputStream(file);
                 while((temp=is.read(bs,0,1024 * 4)) > 0) {
                     os.write(bs,0,temp);

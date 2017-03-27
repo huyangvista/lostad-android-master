@@ -26,7 +26,7 @@ import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.util.ImageUtil;
 import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
-import com.lostad.applib.util.ui.DialogUtil;
+import com.lostad.applib.util.DialogUtil;
 
 import org.xutils.DbManager;
 import org.xutils.x;

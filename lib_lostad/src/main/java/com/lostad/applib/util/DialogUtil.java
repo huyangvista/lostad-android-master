@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.lostad.applib.R;
 import com.lostad.applib.core.MyCallback;
+import com.lostad.applib.util.ui.ContextUtil;
 import com.lostad.applib.view.widget.CustomProgressDialog;
 
 import java.util.List;
@@ -325,4 +326,13 @@ public class DialogUtil {
 		}
 	}
 
+
+	//va 引用了 ContextUtil
+	/**
+	 *
+	 * @param msg
+	 */
+	public static void showToastCust(String msg){
+		showToastCust(ContextUtil.getAppContext(),msg);
+	}
 }

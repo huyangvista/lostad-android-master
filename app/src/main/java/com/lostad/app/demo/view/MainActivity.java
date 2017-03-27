@@ -1,11 +1,10 @@
 package com.lostad.app.demo.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -25,12 +24,12 @@ import com.lostad.app.demo.view.mainFragment.IntegrationFragment1;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment2;
 import com.lostad.app.demo.view.mainFragment.SettingsFragment;
 import com.lostad.app.demo.view.mainFragment.VideoFragment;
+import com.lostad.applib.util.DialogUtil;
+import com.lostad.applib.util.sys.TokenUtil;
 import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.util.List;
 
 /**
  * 主要
@@ -133,9 +132,10 @@ public class MainActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.menu_settings, menu);
         menu.clear();
-        menu.add(0,0,0,"扫描二维码样例");
-        menu.add(0,1,1,"主界面Drawer");
-        menu.add(0,2,2,"测试");
+        menu.add(0, 0, 0, "扫描二维码样例");
+        menu.add(0, 1, 1, "主界面Drawer");
+        menu.add(0, 2, 2, "测试");
+        menu.add(0, 3, 3, "测试");
         return true;
     }
 
@@ -144,20 +144,25 @@ public class MainActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if(item.getGroupId() == 0) {
+        if (item.getGroupId() == 0) {
             int id = item.getItemId();
-            switch (id){
+            switch (id) {
                 case 0:
                     Intent i = new Intent(this, CaptureActivity.class);
                     startActivityForResult(i, 0);
                     break;
                 case 1:
-                     i = new Intent(this, DrawerActivity.class);
+                    i = new Intent(this, DrawerActivity.class);
                     startActivity(i);
                     break;
                 case 2:
 
                     toActivty(TestActivity.class);
+                    break;
+                case 3:
+                    String vs = TokenUtil.entryptPassword("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdf");
+                    boolean ss = TokenUtil.validatePassword("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdf", vs);
+                    DialogUtil.showToastCust("" + ss);
                     break;
                 default:
                     break;
@@ -169,12 +174,13 @@ public class MainActivity extends BaseActivity {
 
 
     private long exitTime = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(MainActivity.this,"再按一次退出程序",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_LONG).show();
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
@@ -186,8 +192,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public void checkVersionInfo(){
-        new Thread(){
+    public void checkVersionInfo() {
+        new Thread() {
 //			Version4j v;
 //			public void run() {
 //				v = SysManger.getInstance().loadVersion();
@@ -233,6 +239,6 @@ public class MainActivity extends BaseActivity {
 
 
         super.onActivityResult(requestCode, resultCode, data);
-       // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
+        // come.setText(data.getExtras().get("back").toString());//获得返回信息，并刷新UI
     }
 }
