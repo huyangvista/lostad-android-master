@@ -170,6 +170,19 @@ public class MainActivity extends BaseActivity {
                     toActivty(TestActivity.class);
                     break;
                 case 3:
+                {
+                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(getBaseContext(), "com.lostad.applib");
+                    StringBuilder sb = new StringBuilder("");
+                    for (String c : className) {
+                        sb.append(c);
+                    }
+                    String text = sb.toString();
+                    String vs = TokenUtil.entryptPassword(text);
+                    boolean ss = TokenUtil.validatePassword(text, vs);
+                    System.out.printf("" + ss + " | " + text);
+                   // DialogUtil.showToastCust("" + ss + " | " + text);
+                }
+
                     StringBuilder sb = new StringBuilder("");
                     List<Class<?>> packageClasses = ReflectUtil.getPackageClasses("com.lostad.app.demo.view");
                     for (Class c : packageClasses) {
@@ -183,16 +196,13 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                     String text = sb.toString();
-
                     String vs = TokenUtil.entryptPassword(text);
                     boolean ss = TokenUtil.validatePassword(text, vs);
-                    //DialogUtil.showToastCust("" + ss + " | " + text);
-
                     List<String> className = getClassName("com");
                     for (String c : className) {
                         text +=c;
                     }
-                    DialogUtil.showToastCust("" + ss + " | " + text);
+                    //DialogUtil.showToastCust("" + ss + " | " + text);
                     break;
                 default:
                     break;

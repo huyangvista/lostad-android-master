@@ -126,23 +126,23 @@ public class ReflectUtil {
 
     /**
      * 新建实例
-     * @param newOneClass
-     * @param args
-     * @param <T>
-     * @return
-     */
-    public static <T> T newInstance(Class<T> newOneClass, Object... args) {
-        return  newInstance(newOneClass, getParmsClass(args), args);
-    }
-
-    /**
      *
      * @param newOneClass
      * @param args
      * @param <T>
      * @return
      */
-    public static <T> T newInstanceInner(Class<T> newOneClass, Object... args){
+    public static <T> T newInstance(Class<T> newOneClass, Object... args) {
+        return newInstance(newOneClass, getParmsClass(args), args);
+    }
+
+    /**
+     * @param newOneClass
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public static <T> T newInstanceInner(Class<T> newOneClass, Object... args) {
         return newInstanceInner(newOneClass, getParmsClass(args), args);
     }
 
@@ -910,46 +910,50 @@ public class ReflectUtil {
 
     /**
      * 执行对象 的本地方法
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeMethod(Object owner, String methodName, Object... args){
-        return invokeMethod(owner,methodName,getParmsClass(args), args);
+    public static Object invokeMethod(Object owner, String methodName, Object... args) {
+        return invokeMethod(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行对象 的本地方法
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeMethodAll(Object owner, String methodName, Object... args){
-        return invokeMethodAll(owner,methodName,getParmsClass(args), args);
+    public static Object invokeMethodAll(Object owner, String methodName, Object... args) {
+        return invokeMethodAll(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行对象 的本地方法
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeMethodVisit(Object owner, String methodName, Object... args){
-        return invokeMethodVisit(owner,methodName,getParmsClass(args), args);
+    public static Object invokeMethodVisit(Object owner, String methodName, Object... args) {
+        return invokeMethodVisit(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行对象 的本地方法
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeMethodLocal(Object owner, String methodName, Object... args){
-        return invokeMethodLocal(owner,methodName,getParmsClass(args), args);
+    public static Object invokeMethodLocal(Object owner, String methodName, Object... args) {
+        return invokeMethodLocal(owner, methodName, getParmsClass(args), args);
     }
 
     /**
@@ -1018,47 +1022,52 @@ public class ReflectUtil {
 
     /**
      * 执行类的静态方法    搜索当前类
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeStaticMethod(Object owner, String methodName, Object... args){
-        return invokeStaticMethod(owner,methodName,getParmsClass(args), args);
+    public static Object invokeStaticMethod(Object owner, String methodName, Object... args) {
+        return invokeStaticMethod(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行类的静态方法     搜索全部父类
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeStaticMethodAll(Object owner, String methodName, Object... args){
-        return invokeStaticMethodAll(owner,methodName,getParmsClass(args), args);
+    public static Object invokeStaticMethodAll(Object owner, String methodName, Object... args) {
+        return invokeStaticMethodAll(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行类的静态可见方法   搜索全部父类
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeStaticMethodVisit(Object owner, String methodName, Object... args){
-        return invokeStaticMethodVisit(owner,methodName,getParmsClass(args), args);
+    public static Object invokeStaticMethodVisit(Object owner, String methodName, Object... args) {
+        return invokeStaticMethodVisit(owner, methodName, getParmsClass(args), args);
     }
 
     /**
      * 执行类的静态的本地方法         搜索当前类
+     *
      * @param owner
      * @param methodName
      * @param args
      * @return
      */
-    public static Object invokeStaticMethodLocal(Object owner, String methodName, Object... args){
-        return invokeStaticMethodLocal(owner,methodName,getParmsClass(args), args);
+    public static Object invokeStaticMethodLocal(Object owner, String methodName, Object... args) {
+        return invokeStaticMethodLocal(owner, methodName, getParmsClass(args), args);
     }
+
     /**
      * 对象当前函数   包括私有函数
      *
@@ -1265,37 +1274,41 @@ public class ReflectUtil {
         return cls.isInstance(obj);
     }
 
-    public static List<String> getPackageClassByAndroidAll(Object context, String packageName) {
-        List<String> classNameList = new ArrayList<>();
+    private static Enumeration<String> getPackageClassByAndroidAllEnum(Object context) {
+        Enumeration<String> enumeration = null;
         try {
-            classNameList = getPackageClassByAndroidAll(context);
             Object pcp = invokeMethod(context, "getPackageCodePath", new Class[0], new Object[0]); //DexFile
             Object df = newInstance(getClassFromName("dalvik.system.DexFile"), new Class<?>[]{String.class}, new Object[]{pcp});
-            Enumeration<String> enumeration = (Enumeration<String>) invokeMethod(df, "entries", new Class[0], new Object[0]);//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
+            enumeration = (Enumeration<String>) invokeMethod(df, "entries", new Class[0], new Object[0]);//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return enumeration;
+    }
+
+    public static List<String> getPackageClassByAndroidAll(Object context, String packageName) {
+        List<String> classNameList = new ArrayList<>();
+        Enumeration<String> enumeration = getPackageClassByAndroidAllEnum(context);
+        if (enumeration != null) {
+            int count = 0;
             while (enumeration.hasMoreElements()) {//遍历
                 String className = enumeration.nextElement();
-                if (className.contains(packageName)) {
+                if (classNameList.get(count++).contains(packageName)) {
                     classNameList.add(className);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return classNameList;
     }
 
     public static List<String> getPackageClassByAndroidAll(Object context) {
         List<String> classNameList = new ArrayList<>();
-        try {
-            Object pcp = invokeMethod(context, "getPackageCodePath", new Class[0], new Object[0]); //DexFile
-            Object df = newInstance(getClassFromName("dalvik.system.DexFile"), new Class<?>[]{String.class}, new Object[]{pcp});
-            Enumeration<String> enumeration = (Enumeration<String>) invokeMethod(df, "entries", new Class[0], new Object[0]);//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
+        Enumeration<String> enumeration = getPackageClassByAndroidAllEnum(context);
+        if (enumeration != null) {
             while (enumeration.hasMoreElements()) {//遍历
                 String className = enumeration.nextElement();
                 classNameList.add(className);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return classNameList;
     }
