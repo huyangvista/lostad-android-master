@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.lostad.app.base.view.BaseActivity;
 import com.lostad.app.base.view.fragment.BaseFragment;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.util.vdll.math.CompareUtil;
+import com.lostad.app.demo.util.vdll.tools.fileobj.Base64;
 import com.lostad.app.demo.view.mainFragment.CameraFragment;
 import com.lostad.app.demo.view.mainFragment.ImageFragment;
 import com.lostad.app.demo.view.mainFragment.IntegrationFragment;
@@ -28,6 +30,8 @@ import com.lostad.app.demo.view.mainFragment.VideoFragment;
 import com.lostad.applib.util.DialogUtil;
 import com.lostad.applib.util.ReflectUtil;
 import com.lostad.applib.util.sys.TokenUtil;
+import com.lostad.applib.util.sys.tuple.Digests;
+import com.lostad.applib.util.sys.tuple.Encodes;
 import com.zxing.view.CaptureActivity;
 
 import org.xutils.view.annotation.ViewInject;
@@ -53,6 +57,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private RadioGroup radioGroup;
 
+    private int adafdsdfsdf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,37 +176,70 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 3:
                 {
-                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(getBaseContext(), "com.lostad.applib");
+                    String vs0 = (Base64.encode("System"));
+                    String vs2 = (Base64.encode("exit"));
+                    Log.v("---", vs0);
+                    Log.v("---", vs2);
+                    Log.v("---", Base64.decode(vs0));
+                    Log.v("---", Base64.decode(vs2));
+
+                    Log.v("---", new String());
+
+
+                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(getBaseContext(), "com.lostad.app.demo.view");
                     StringBuilder sb = new StringBuilder("");
                     for (String c : className) {
                         sb.append(c);
-                    }
-                    String text = sb.toString();
-                    String vs = TokenUtil.entryptPassword(text);
-                    boolean ss = TokenUtil.validatePassword(text, vs);
-                    System.out.printf("" + ss + " | " + text);
-                   // DialogUtil.showToastCust("" + ss + " | " + text);
-                }
-
-                    StringBuilder sb = new StringBuilder("");
-                    List<Class<?>> packageClasses = ReflectUtil.getPackageClasses("com.lostad.app.demo.view");
-                    for (Class c : packageClasses) {
-                        Field[] fields = ReflectUtil.getFieldsLocal(ReflectUtil.getClassFromName(c.getName()));
-                        for (int j = 0; j < fields.length; j++) {
-                            Field f = fields[j];
-                            String n = f.getName();
-                            if (n != null) {
-                                sb.append(n);
+                        try{
+                            Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
+                            if(classFromName != null){
+                                Field[] fields = ReflectUtil.getFields(classFromName);
+                                for (int j = 0; j < fields.length; j++) {
+                                    Field f = fields[j];
+                                    if(f != null){
+                                        String n = f.getName();
+                                        if (n != null) {
+                                            sb.append(n);
+                                        }
+                                    }
+                                }
                             }
+                        }catch (Exception e){
                         }
                     }
                     String text = sb.toString();
-                    String vs = TokenUtil.entryptPassword(text);
-                    boolean ss = TokenUtil.validatePassword(text, vs);
-                    List<String> className = getClassName("com");
-                    for (String c : className) {
-                        text +=c;
+                    String vs = TokenUtil.entryptPasswordBuild(text);
+                    Log.v("--------------:",vs);
+                    boolean ss = TokenUtil.validatePasswordBuild(text, "437845314637112cc70d3e3d9283ebf2a82b71e76e27308cabbd770c");
+                    if(ss){
+
+                    }else{
+                        System.exit(0);
                     }
+
+                    //System.out.printf("" + ss + " | " + text);
+                   // DialogUtil.showToastCust("" + ss + " | " + text);
+                }
+
+//                    StringBuilder sb = new StringBuilder("");
+//                    List<Class<?>> packageClasses = ReflectUtil.getPackageClasses("com.lostad.app.demo.view");
+//                    for (Class c : packageClasses) {
+//                        Field[] fields = ReflectUtil.getFieldsLocal(ReflectUtil.getClassFromName(c.getName()));
+//                        for (int j = 0; j < fields.length; j++) {
+//                            Field f = fields[j];
+//                            String n = f.getName();
+//                            if (n != null) {
+//                                sb.append(n);
+//                            }
+//                        }
+//                    }
+//                    String text = sb.toString();
+//                    String vs = TokenUtil.entryptPassword(text);
+//                    boolean ss = TokenUtil.validatePassword(text, vs);
+//                    List<String> className = getClassName("com");
+//                    for (String c : className) {
+//                        text +=c;
+//                    }
                     //DialogUtil.showToastCust("" + ss + " | " + text);
                     break;
                 default:

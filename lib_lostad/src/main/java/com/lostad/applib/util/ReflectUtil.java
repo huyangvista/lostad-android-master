@@ -81,7 +81,15 @@ public class ReflectUtil {
         return newoneClass;
     }
 
-
+    public static Class<?> getClassFromNameNoStatic(String className){
+        Class<?> newoneClass = null;
+        try {
+            newoneClass = Thread.currentThread().getContextClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return newoneClass;
+    }
     //关于构造
 
     /**
@@ -1290,10 +1298,9 @@ public class ReflectUtil {
         List<String> classNameList = new ArrayList<>();
         Enumeration<String> enumeration = getPackageClassByAndroidAllEnum(context);
         if (enumeration != null) {
-            int count = 0;
             while (enumeration.hasMoreElements()) {//遍历
                 String className = enumeration.nextElement();
-                if (classNameList.get(count++).contains(packageName)) {
+                if (className.contains(packageName)) {
                     classNameList.add(className);
                 }
             }
