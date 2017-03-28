@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
@@ -20,6 +21,8 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.io.IOException;
+
 import h264.com.VideoView;
 
 /**
@@ -29,6 +32,9 @@ import h264.com.VideoView;
 @ContentView(R.layout.activity_video)
 public class VideoActivity extends BaseHisActivity {
     public static final String VIDEO_NAME = "VIDEO_NAME";
+    public static final String AWAKE_START = "AWAKE_START";
+    public static final String AWAKE_START_PLAY = "0";
+    public static final String AWAKE_START_STOP = "1";
 
     private VideoView videoView;
 
@@ -38,6 +44,14 @@ public class VideoActivity extends BaseHisActivity {
     private LinearLayout videos;
     @ViewInject(R.id.pre)
     private SeekBar seekBar;
+
+    @ViewInject(R.id.play)
+    private Button btnPlay;
+    @ViewInject(R.id.fullWin)
+    private Button btnFullWin;
+
+    int pro = 0;
+
 
     @Override
     public Bundle setResult(Bundle bundle) {
@@ -50,17 +64,61 @@ public class VideoActivity extends BaseHisActivity {
         x(this);
         loadLayout(his);
         Bundle bundle = ContextUtil.getBundle(this);
+        String awakeStart =  bundle.getString(AWAKE_START,AWAKE_START_PLAY);
 
-        String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
-        file =  bundle.getString(VIDEO_NAME,file);
 
-        videoView = new VideoView(this);
-        videoView.setScalcScene(1,1);
-        videoView.load();
-        videoView.ready(file);
-        videoView.start();
+        if(AWAKE_START_PLAY.equals(awakeStart)){
+            String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+            file =  bundle.getString(VIDEO_NAME,file);
+            videoView = new VideoView(this);
+            videoView.setScalcScene(1,1);
+            videoView.load();
+            videoView.ready(file);
+            videoView.start();
+            videoView.loadLayout(videos);
+            btnPlay.setBackgroundResource(R.mipmap.pause);
+        }else if(AWAKE_START_STOP.equals(awakeStart)){
+            btnPlay.setBackgroundResource(R.mipmap.play);
+        }
 
-        videoView.loadLayout(videos);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pro = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(videoView != null){
+                    try {
+                        videoView.close();
+                        String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+                        videoView = new VideoView(VideoActivity.this);
+                        videoView.setScalcScene(1,1);
+                        videoView.load();
+                        videoView.ready(file);
+
+                        int available = videoView.getReady().available();
+                        int p = available / 100 * pro;
+                        videoView.getReady().read(new byte[p]);
+
+                        videoView.start();
+                        videoView.loadLayout(videos);
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
     }
 
     // Menu item Ids
@@ -107,7 +165,14 @@ public class VideoActivity extends BaseHisActivity {
 
     @Event(R.id.play)
     private void onClickPlay(View v){
-        if(videoView != null) videoView.paue();
+        if(videoView != null){
+            videoView.paue();
+            if(videoView.isPaue()){
+                btnPlay.setBackgroundResource(R.mipmap.play);
+            }else{
+                btnPlay.setBackgroundResource(R.mipmap.pause);
+            }
+        }
     }
     @Event(R.id.fullWin)
     private void onClickFullWin(View v){

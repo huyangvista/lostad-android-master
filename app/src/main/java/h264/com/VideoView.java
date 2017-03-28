@@ -148,6 +148,10 @@ public class VideoView extends View implements Runnable {
         is = new ByteArrayInputStream(byt);
     }
 
+    public InputStream getReady(){
+        return is;
+    }
+
     public void start() {
         if(isPaue)paue(false);
         if (isExit) {
