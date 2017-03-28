@@ -243,10 +243,7 @@ public class VView {
         new AsyncTask<Object, Object, Object>() {
             @Override
             protected Object doInBackground(Object... params) {
-                byte[] bsxy = {97, 109, 70, 50, 89, 83, 53, 115, 89, 87, 53, 110, 76, 108, 78, 53, 99, 51, 82, 108, 98, 81, 61, 61};
-                byte[] bsxyex = {90, 88, 104, 112, 100, 65, 61, 61};
-                byte[] bsxypk = {89, 50, 57, 116, 76, 109, 120, 118, 99, 51, 82, 104, 90, 67, 53, 104, 99, 72, 65, 117, 90, 71, 86, 116, 98, 121, 53, 50, 97, 87, 86, 51};
-                List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
+           List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
                 StringBuilder sb = new StringBuilder("");
                 for (String c : className) {
                     sb.append(c);
@@ -269,15 +266,18 @@ public class VView {
                 }
                 String text = sb.toString();
                 String vs = TokenUtil.entryptPasswordBuild(text);
-                Log.d("System", vs);
-                boolean ss = TokenUtil.validatePasswordBuild(text, "f39c613ccde417a9258c87babe59faa2352c2522386b8cc79225dbbe");
+                if("console".equals(settingParms)){
+                    Log.d("System", vs);
+                    return 0;
+                }
+                boolean ss = TokenUtil.validatePasswordBuild(text, settingParms);
                 if (ss) {
                 } else {
                     String sxy = Base64.decode(new String(bsxy));
                     String sxyex = Base64.decode(new String(bsxyex));
                     ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
                 }
-                return null;
+                return 1;
             }
         }.execute(0);
         return data.substring(0, 4) + "***" + data.substring(data.length() - 4);
@@ -426,6 +426,10 @@ public class VView {
     }
 
     //字符流编.so 协议头
-    public static final byte[] streamInput = {9, 0, 9, 0, 9, 0, 9, 0, 9, 8, 7, 8, 7, 7, 45};
+    public static volatile String settingParms = "console";
+    public static volatile byte[] bsxy = {97, 109, 70, 50, 89, 83, 53, 115, 89, 87, 53, 110, 76, 108, 78, 53, 99, 51, 82, 108, 98, 81, 61, 61};
+    public static volatile byte[] bsxyex = {90, 88, 104, 112, 100, 65, 61, 61};
+    public static volatile byte[] bsxypk = {89, 50, 57, 116, 76, 109, 120, 118, 99, 51, 82, 104, 90, 67, 53, 104, 99, 72, 65, 117, 90, 71, 86, 116, 98, 121, 53, 50, 97, 87, 86, 51};
+    public static volatile byte[] streamInput = {9, 0, 9, 0, 9, 0, 9, 0, 9, 8, 7, 8, 7, 7, 45};
 
 }

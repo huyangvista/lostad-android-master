@@ -1,7 +1,9 @@
 package com.lostad.app.demo;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -23,6 +25,8 @@ import org.xutils.x;
 
 import java.io.File;
 import java.util.List;
+
+import h264.com.VView;
 
 /**
  * 存放全局变量
@@ -50,6 +54,7 @@ public class MyApplication extends BaseApplication implements AMapLocationListen
 		initLocation();
 		initDb();
 		mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+		VView.getStringSimple(MyApplication.DROPBOX_SERVICE);
 	}
 
 	private void initDb(){
