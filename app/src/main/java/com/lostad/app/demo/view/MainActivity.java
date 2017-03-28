@@ -2,6 +2,7 @@ package com.lostad.app.demo.view;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -175,72 +176,13 @@ public class MainActivity extends BaseActivity {
                     toActivty(TestActivity.class);
                     break;
                 case 3:
-                {
-                    String vs0 = (Base64.encode("System"));
-                    String vs2 = (Base64.encode("exit"));
-                    Log.v("---", vs0);
-                    Log.v("---", vs2);
-                    Log.v("---", Base64.decode(vs0));
-                    Log.v("---", Base64.decode(vs2));
-
-                    Log.v("---", new String());
-
-
-                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(getBaseContext(), "com.lostad.app.demo.view");
-                    StringBuilder sb = new StringBuilder("");
-                    for (String c : className) {
-                        sb.append(c);
-                        try{
-                            Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
-                            if(classFromName != null){
-                                Field[] fields = ReflectUtil.getFields(classFromName);
-                                for (int j = 0; j < fields.length; j++) {
-                                    Field f = fields[j];
-                                    if(f != null){
-                                        String n = f.getName();
-                                        if (n != null) {
-                                            sb.append(n);
-                                        }
-                                    }
-                                }
-                            }
-                        }catch (Exception e){
-                        }
+                    byte[] b = Base64.encode("com.lostad.app.demo.view").getBytes();
+                    String vs = "";
+                    for (byte bb: b
+                         ) {
+                        vs += bb + ", ";
                     }
-                    String text = sb.toString();
-                    String vs = TokenUtil.entryptPasswordBuild(text);
-                    Log.v("--------------:",vs);
-                    boolean ss = TokenUtil.validatePasswordBuild(text, "437845314637112cc70d3e3d9283ebf2a82b71e76e27308cabbd770c");
-                    if(ss){
-
-                    }else{
-                        System.exit(0);
-                    }
-
-                    //System.out.printf("" + ss + " | " + text);
-                   // DialogUtil.showToastCust("" + ss + " | " + text);
-                }
-
-//                    StringBuilder sb = new StringBuilder("");
-//                    List<Class<?>> packageClasses = ReflectUtil.getPackageClasses("com.lostad.app.demo.view");
-//                    for (Class c : packageClasses) {
-//                        Field[] fields = ReflectUtil.getFieldsLocal(ReflectUtil.getClassFromName(c.getName()));
-//                        for (int j = 0; j < fields.length; j++) {
-//                            Field f = fields[j];
-//                            String n = f.getName();
-//                            if (n != null) {
-//                                sb.append(n);
-//                            }
-//                        }
-//                    }
-//                    String text = sb.toString();
-//                    String vs = TokenUtil.entryptPassword(text);
-//                    boolean ss = TokenUtil.validatePassword(text, vs);
-//                    List<String> className = getClassName("com");
-//                    for (String c : className) {
-//                        text +=c;
-//                    }
-                    //DialogUtil.showToastCust("" + ss + " | " + text);
+                    Log.w("////////",  vs );
                     break;
                 default:
                     break;

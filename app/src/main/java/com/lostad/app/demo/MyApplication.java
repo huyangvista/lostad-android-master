@@ -26,9 +26,9 @@ import java.util.List;
 
 /**
  * 存放全局变量
- * 
+ *
  * @author sszvip
- * 
+ *
  */
 public class MyApplication extends BaseApplication implements AMapLocationListener {
 
@@ -37,10 +37,10 @@ public class MyApplication extends BaseApplication implements AMapLocationListen
 	private DbManager mDb;
 	private DbManager.DaoConfig mDaoConfig;
 	private static MyApplication instance;
-    
-    public static MyApplication getInstance() {  
-        return instance;  
-    }  
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
 
 	@Override
 	public void onCreate() {

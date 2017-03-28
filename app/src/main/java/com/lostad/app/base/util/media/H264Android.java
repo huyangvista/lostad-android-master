@@ -6,19 +6,26 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.lostad.app.demo.R;
+import com.lostad.app.demo.util.vdll.tools.fileobj.Base64;
+import com.lostad.applib.util.ReflectUtil;
+import com.lostad.applib.util.sys.TokenUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 public class H264Android extends Activity {
 
@@ -254,4 +261,5 @@ class VView extends View implements Runnable {
 		}
 		UninitDecoder();
 	}
+
 }
