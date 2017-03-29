@@ -1,6 +1,7 @@
 package com.lostad.app.demo.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.lostad.applib.util.FileDataUtil;
 import com.lostad.applib.util.ImageUtil;
 import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
+import com.lostad.applib.util.ui.WindowUtil;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -27,7 +29,6 @@ import h264.com.VideoView;
 
 /**
  * Created by Hocean on 2017/3/20.
- *
  */
 @ContentView(R.layout.activity_video)
 public class VideoActivity extends BaseHisActivity {
@@ -42,15 +43,46 @@ public class VideoActivity extends BaseHisActivity {
     private LinearLayout his;
     @ViewInject(R.id.videos)
     private LinearLayout videos;
+
     @ViewInject(R.id.pre)
     private SeekBar seekBar;
-
     @ViewInject(R.id.play)
     private Button btnPlay;
     @ViewInject(R.id.fullWin)
     private Button btnFullWin;
 
-    int pro = 0;
+    private int pro = 0;
+
+    private int shoHidTime = 5000;
+    private Handler handler = new Handler();
+
+    public void showBtn() {
+        his.setVisibility(View.VISIBLE);
+        btnPlay.setVisibility(View.VISIBLE);
+        btnPlay.setVisibility(View.VISIBLE);
+        btnFullWin.setVisibility(View.VISIBLE);
+    }
+
+    public void hidBtn() {
+        his.setVisibility(View.GONE);
+        btnPlay.setVisibility(View.GONE);
+        btnPlay.setVisibility(View.GONE);
+        btnFullWin.setVisibility(View.GONE);
+    }
+
+
+    private Runnable runHid = new Runnable() {
+        @Override
+        public void run() {
+            hidBtn();
+        }
+    };
+    public void showAndHidTime() {
+        handler.removeCallbacks(runHid);
+        showBtn();
+        handler.postDelayed(runHid, shoHidTime);
+    }
+
 
 
     @Override
@@ -64,20 +96,29 @@ public class VideoActivity extends BaseHisActivity {
         x(this);
         loadLayout(his);
         Bundle bundle = ContextUtil.getBundle(this);
-        String awakeStart =  bundle.getString(AWAKE_START,AWAKE_START_PLAY);
+        String awakeStart = bundle.getString(AWAKE_START, AWAKE_START_PLAY);
 
 
-        if(AWAKE_START_PLAY.equals(awakeStart)){
-            String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
-            file =  bundle.getString(VIDEO_NAME,file);
+        if (AWAKE_START_PLAY.equals(awakeStart)) {
+            String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+            file = bundle.getString(VIDEO_NAME, file);
             videoView = new VideoView(this);
-            videoView.setScalcScene(1,1);
+            videoView.setScalcScene(1, 1);
             videoView.load();
             videoView.ready(file);
             videoView.start();
             videoView.loadLayout(videos);
+            showAndHidTime();
+
+            videoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAndHidTime();
+                }
+            });
+
             btnPlay.setBackgroundResource(R.mipmap.pause);
-        }else if(AWAKE_START_STOP.equals(awakeStart)){
+        } else if (AWAKE_START_STOP.equals(awakeStart)) {
             btnPlay.setBackgroundResource(R.mipmap.play);
         }
 
@@ -94,12 +135,12 @@ public class VideoActivity extends BaseHisActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(videoView != null){
+                if (videoView != null) {
                     try {
                         videoView.close();
-                        String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+                        String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
                         videoView = new VideoView(VideoActivity.this);
-                        videoView.setScalcScene(1,1);
+                        videoView.setScalcScene(1, 1);
                         videoView.load();
                         videoView.ready(file);
 
@@ -110,7 +151,14 @@ public class VideoActivity extends BaseHisActivity {
                         videoView.start();
                         videoView.loadLayout(videos);
 
+                        showAndHidTime();
+                        videoView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showAndHidTime();
 
+                            }
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -132,14 +180,15 @@ public class VideoActivity extends BaseHisActivity {
         menu.add(0, EXIT_ID, 1, R.string.exit);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case PLAY_ID:
-                if(videoView!= null )videoView.stop();
+                if (videoView != null) videoView.stop();
                 videoView = new VideoView(this);
-                videoView.setScalcScene(1,1);
-                String file =   "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+                videoView.setScalcScene(1, 1);
+                String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
                 videoView.load();
                 videoView.ready(file);
                 videoView.start();
@@ -164,20 +213,43 @@ public class VideoActivity extends BaseHisActivity {
     }
 
     @Event(R.id.play)
-    private void onClickPlay(View v){
-        if(videoView != null){
+    private void onClickPlay(View v) {
+        if (videoView != null) {
             videoView.paue();
-            if(videoView.isPaue()){
+            if (videoView.isPaue()) {
                 btnPlay.setBackgroundResource(R.mipmap.play);
-            }else{
+            } else {
                 btnPlay.setBackgroundResource(R.mipmap.pause);
             }
         }
     }
+
     @Event(R.id.fullWin)
-    private void onClickFullWin(View v){
-        String vs =  PrefManager.getString(this, IConst.KEY_PATH_VIDEOS, "");
-        ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
+    private void onClickFullWin(View v) {
+        //String vs =  PrefManager.getString(this, IConst.KEY_PATH_VIDEOS, "");
+        // ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
+        int scene = WindowUtil.getScreen(this);
+        switch (scene) {
+            case WindowUtil.SceneStatus.defult:
+            case WindowUtil.SceneStatus.horizontal:  //min
+                if (videoView != null) {
+                    videoView.paue(true);
+                }
+                btnFullWin.setBackgroundResource(R.mipmap.expand);
+                WindowUtil.setScreen(this, WindowUtil.SceneStatus.vertical);
+
+                break;
+            case WindowUtil.SceneStatus.vertical: //full
+
+                if (videoView != null) {
+                    videoView.paue(true);
+                }
+                btnFullWin.setBackgroundResource(R.mipmap.contract);
+                WindowUtil.setScreen(this, WindowUtil.SceneStatus.horizontal);
+
+                break;
+
+        }
 
     }
 

@@ -1,5 +1,6 @@
 package com.lostad.applib.util.ui;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 public class WindowUtil {
     /**
      * 隐藏标题栏
+     *
      * @param appActivity
      */
     public static void hidTitle(AppCompatActivity appActivity) {  //主视图单独使用的 标题
@@ -39,14 +41,16 @@ public class WindowUtil {
 
     /**
      * 全屏
+     *
      * @param appActivity
      */
-    public static void Full(AppCompatActivity appActivity){
+    public static void Full(AppCompatActivity appActivity) {
         appActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  //全屏
     }
 
     /**
      * 反射状态栏高度
+     *
      * @return
      */
     public static int getStatusBarHeight(AppCompatActivity appActivity) {
@@ -54,4 +58,20 @@ public class WindowUtil {
         int statusBarHeight = appActivity.getResources().getDimensionPixelSize(resourceId);
         return statusBarHeight;
     }
+
+    public static void setScreen(AppCompatActivity appActivity, int requestedOrientation) {
+        appActivity.setRequestedOrientation(requestedOrientation);
+    }
+
+    public static int getScreen(AppCompatActivity appActivity) {
+        return appActivity.getRequestedOrientation();
+    }
+
+    public static class  SceneStatus extends ActivityInfo{
+        public static final int vertical = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE; //0
+        public static final int horizontal = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT; //1
+        public static final int defult = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED; //-1
+    }
+
+
 }
