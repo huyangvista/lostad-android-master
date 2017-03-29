@@ -1,8 +1,10 @@
 package com.lostad.applib.core;
 
+import java.io.Serializable;
+
 /**
  * Created by Hocean on 2017/3/24.
  */
 
-public interface Delegate extends  BaseAction {
+public interface Delegate extends Serializable {
 }

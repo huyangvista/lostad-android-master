@@ -178,7 +178,6 @@ public class VideoView extends View implements Runnable {
         start();
     }
 
-
     public void paue() {
         paue(!isPaue);
     }
@@ -205,7 +204,6 @@ public class VideoView extends View implements Runnable {
             e.printStackTrace();
         }
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -248,6 +246,7 @@ public class VideoView extends View implements Runnable {
     }
 
     long counts = 0;
+    long countsThread = counts;
     //播放开始
     public void run() {
         try {
@@ -258,8 +257,8 @@ public class VideoView extends View implements Runnable {
             int bytesRead = 0;
             int NalBufUsed = 0;
             int SockBufUsed = 0;
-            byte[] NalBuf = new byte[40980]; // 40k
-            byte[] SockBuf = new byte[2048];
+            byte[] NalBuf = new byte[409800]; // 40k
+            byte[] SockBuf = new byte[20480];
 
             vview.InitDecoder(width, height);
             while (isStart && !Thread.currentThread().isInterrupted()) {
@@ -299,9 +298,10 @@ public class VideoView extends View implements Runnable {
                                 bFirst = false;
                             } else  // a complete NAL data, include 0x00000001 trail.
                             {
-                                if (bFindPPS == true) // true
+                                if (bFindPPS == true)
                                 {
-                                    if ((NalBuf[4] & 0x1F) == 7){
+                                    if ((NalBuf[4] & 0x1F) == 7)
+                                    {
                                         bFindPPS = false;
                                     } else {
                                         NalBuf[0] = 0;
@@ -333,10 +333,13 @@ public class VideoView extends View implements Runnable {
                 }
                 long end = System.currentTimeMillis();
                 try {
-                    if (end - start < sleepTime) {
-                        Thread.sleep(sleepTime - (end - start));
-                        //Thread.sleep(0);
+                    if(counts > countsThread){
+                        if (end - start < sleepTime) {
+                            Thread.sleep(sleepTime - (end - start));
+                            //Thread.sleep(0);
+                        }
                     }
+                    countsThread = counts;
                 } catch (InterruptedException e) {
                     //e.printStackTrace();
                     break;
@@ -416,4 +419,6 @@ public class VideoView extends View implements Runnable {
     public Bitmap getVideoBit() {
         return VideoBit;
     }
+
+
 }

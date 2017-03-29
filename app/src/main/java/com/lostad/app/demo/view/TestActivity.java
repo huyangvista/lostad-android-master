@@ -114,7 +114,7 @@ public class TestActivity extends BaseActivity {
             int temp = 0;
             byte[] bs = new byte[1024 * 4];
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 4; i++) {
                 is = new FileInputStream(file);
                 while ((temp = is.read(bs, 0, 1024 * 4)) > 0) {
                     os.write(bs, 0, temp);
@@ -144,42 +144,42 @@ public class TestActivity extends BaseActivity {
             //is.read()
 
             //int temp = 0;
-            int len = 0;
-            int mTrans = 0x0F0F0F0F;
-            byte[] bs = new byte[1024 * 4];
-
+//            int len = 0;
+//            int mTrans = 0x0F0F0F0F;
+//            byte[] bs = new byte[1024 * 4];
+//
             for (int i = 0; i < 200; i++) {
                  is.read();
             }
-
-            int fileLength = file.length();
-            int count = 0;
-            while (true) {
-//                if(count++ % 4 == 0){
+//
+//            int fileLength = Integer.MAX_VALUE;
+//            int count = 0;
+//            while (true) {
+//                if(count > 4){
 //                    is.mark(fileLength);
 //                }
-                int temp = is.read();
-                if (temp == -1) {
-                    break;
-                }
-                count++;
-                byte ib = (byte) temp;
-                mTrans <<= 8;
-                mTrans |= ib;
-                if (mTrans == 1) // 找到一个开始字
-                {
-                    if (is.read() == 0x67) {
-                        //is.reset();
-                        break;
-                    }
-                }
-            }
+//                int temp = is.read();
+//                if (temp == -1) {
+//                    break;
+//                }
+//                count++;
+//                byte ib = (byte) temp;
+//                mTrans <<= 8;
+//                mTrans |= ib;
+//                if (mTrans == 1) // 找到一个开始字
+//                {
+//                    if (is.read() == 0x67) {
+//                        is.reset();
+//                        break;
+//                    }
+//                }
+//            }
             //is.available()
-            is.close();
-            is = new BufferedInputStream(new FileInputStream(fileO));
-            for (int i = 0; i < count - 4; i++) {
-                is.read();
-            }
+//            is.close();
+//            is = new BufferedInputStream(new FileInputStream(fileO));
+//            for (int i = 0; i < count - 4; i++) {
+//                is.read();
+//            }
 
             if (videoView != null) videoView.stop();
             videoView = new VideoView(this);

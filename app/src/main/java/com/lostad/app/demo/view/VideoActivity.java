@@ -141,6 +141,7 @@ public class VideoActivity extends BaseHisActivity {
                     try {
                         videoView.close();
                         String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+
                         videoView = new VideoView(VideoActivity.this);
                         videoView.setScalcScene(1, 1);
                         videoView.load();
@@ -169,6 +170,18 @@ public class VideoActivity extends BaseHisActivity {
         });
 
 
+
+        int scene = WindowUtil.getScreen(this);
+        switch (scene) {
+            case WindowUtil.SceneStatus.defult:
+            case WindowUtil.SceneStatus.horizontal:  //min
+                btnFullWin.setBackgroundResource(R.mipmap.expand);
+                break;
+            case WindowUtil.SceneStatus.vertical: //full
+                btnFullWin.setBackgroundResource(R.mipmap.contract);
+                break;
+
+        }
     }
 
     // Menu item Ids
@@ -201,6 +214,7 @@ public class VideoActivity extends BaseHisActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onBack() {
@@ -237,7 +251,7 @@ public class VideoActivity extends BaseHisActivity {
                 if (videoView != null) {
                     videoView.paue(true);
                 }
-                btnFullWin.setBackgroundResource(R.mipmap.expand);
+                //btnFullWin.setBackgroundResource(R.mipmap.expand);
                 WindowUtil.setScreen(this, WindowUtil.SceneStatus.vertical);
 
                 break;
@@ -246,7 +260,7 @@ public class VideoActivity extends BaseHisActivity {
                 if (videoView != null) {
                     videoView.paue(true);
                 }
-                btnFullWin.setBackgroundResource(R.mipmap.contract);
+                //btnFullWin.setBackgroundResource(R.mipmap.contract);
                 WindowUtil.setScreen(this, WindowUtil.SceneStatus.horizontal);
 
                 break;
