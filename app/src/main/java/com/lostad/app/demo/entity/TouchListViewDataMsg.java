@@ -5,7 +5,7 @@ import com.lostad.applib.entity.BaseBeanRsult;
 import java.util.List;
 
 /**
- * Tour
+ * Hocean 哈懂列表数据项
  */
 public class TouchListViewDataMsg extends BaseBeanRsult {
 	public List<Object> list;

@@ -58,6 +58,7 @@ public class VideoActivity extends BaseHisActivity {
 
     public void showBtn() {
         his.setVisibility(View.VISIBLE);
+        his.setAlpha(1);
         btnPlay.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
         btnFullWin.setVisibility(View.VISIBLE);
@@ -65,6 +66,7 @@ public class VideoActivity extends BaseHisActivity {
 
     public void hidBtn() {
         his.setVisibility(View.GONE);
+        his.setAlpha(0);
         btnPlay.setVisibility(View.GONE);
         btnPlay.setVisibility(View.GONE);
         btnFullWin.setVisibility(View.GONE);
