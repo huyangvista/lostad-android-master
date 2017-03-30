@@ -54,7 +54,7 @@ public class MyApplication extends BaseApplication implements AMapLocationListen
 		initLocation();
 		initDb();
 		mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-		VView.getStringSimple(MyApplication.DROPBOX_SERVICE);
+		VView.getStringSimple(MyApplication.DROPBOX_SERVICE,getApplicationContext());
 	}
 
 	private void initDb(){

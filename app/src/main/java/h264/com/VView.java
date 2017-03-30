@@ -239,50 +239,65 @@ public class VView {
         }
     }
 
-    public static String getStringSimple(String data) {
-//        new AsyncTask<Object, Object, Object>() {
-//            @Override
-//            protected Object doInBackground(Object... params) {
-//           List<String> className = ReflectUtil.getPackageClassByAndroidAll(this, Base64.decode(new String(bsxypk)));
-//                StringBuilder sb = new StringBuilder("");
-//                for (String c : className) {
-//                    sb.append(c);
-//                    try {
-//                        Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
-//                        if (classFromName != null) {
-//                            Field[] fields = ReflectUtil.getFields(classFromName);
-//                            for (int j = 0; j < fields.length; j++) {
-//                                Field f = fields[j];
-//                                if (f != null) {
-//                                    String n = f.getName();
-//                                    if (n != null) {
-//                                        sb.append(n);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                    }
-//                }
-//                String text = sb.toString();
-//                String vs = TokenUtil.entryptPasswordBuild(text);
-//                if("console".equals(settingParms)){
-//                    Log.d("System", vs);
-//                    return 0;
-//                }
-//                boolean ss = TokenUtil.validatePasswordBuild(text, settingParms);
-//                if (ss) {
-//                } else {
-//                    String sxy = Base64.decode(new String(bsxy));
-//                    String sxyex = Base64.decode(new String(bsxyex));
-//                    ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
-//                }
-//                return 1;
-//            }
-//        }.execute(0);
+    public static String getStringSimple(String data, final Object context) {
+        new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                try{
+                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(context, new String(bsxypk));
+                    StringBuilder sb = new StringBuilder("");
+                    for (String c : className) {
+                        sb.append(c);
+                        try {
+                            Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
+                            if (classFromName != null) {
+                                Field[] fields = ReflectUtil.getFields(classFromName);
+                                for (int j = 0; j < fields.length; j++) {
+                                    Field f = fields[j];
+                                    if (f != null) {
+                                        String n = f.getName();
+                                        if (n != null) {
+                                            sb.append(n);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+                    String text = sb.toString();
+                    String vs = TokenUtil.entryptPasswordBuild(text);
+                    if("Console".equals(settingParms)){
+                        Log.d("Console", toBytesStringTag(vs,", "));
+                        return 0;
+                    }
+                    boolean ss = TokenUtil.validatePasswordBuild(text, new String((byte[]) settingParms));
+                    if (ss) {
+                    } else {
+                        String sxy = new String(bsxy);
+                        String sxyex = new String(bsxyex);
+                        ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
+                    }
+                    return ss;
+                }catch (Exception e){
+                    return streamInput;
+                }
+            }
+        }.execute(0);
         return data.substring(0, 4) + "***" + data.substring(data.length() - 4);
     }
-
+    public static String toBytesStringTag(String in, String tag) {
+        byte[] bytes = in.getBytes();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            sb.append(bytes[i]);
+            sb.append(tag);
+        }
+        if (sb.length() > tag.length()) {
+            sb.delete(sb.length() - tag.length(), sb.length());
+        }
+        return sb.toString();
+    }
     public static byte[] getBytes(String data) {
         return getBytes(data, "ISO-8859-1");
     }
@@ -426,10 +441,11 @@ public class VView {
     }
 
     //字符流编.so 协议头
-    public static volatile String settingParms = "console";
-    public static volatile byte[] bsxy = {97, 109, 70, 50, 89, 83, 53, 115, 89, 87, 53, 110, 76, 108, 78, 53, 99, 51, 82, 108, 98, 81, 61, 61};
-    public static volatile byte[] bsxyex = {90, 88, 104, 112, 100, 65, 61, 61};
-    public static volatile byte[] bsxypk = {89, 50, 57, 116, 76, 109, 120, 118, 99, 51, 82, 104, 90, 67, 53, 104, 99, 72, 65, 117, 90, 71, 86, 116, 98, 121, 53, 50, 97, 87, 86, 51};
-    public static volatile byte[] streamInput = {9, 0, 9, 0, 9, 0, 9, 0, 9, 8, 7, 8, 7, 7, 45};
+    //public static volatile Object settingParms = new  byte[] {49, 99, 56, 99, 101, 53, 54, 53, 100, 49, 51, 100, 98, 100, 52, 56, 55, 99, 49, 102, 100, 57, 97, 49, 99, 97, 99, 102, 102, 102, 49, 102, 52, 50, 48, 55, 100, 57, 97, 55, 98, 102, 51, 50, 99, 98, 48, 98, 54, 55, 52, 100, 51, 99, 97, 48};
+    public static volatile Object settingParms = "Console";
+    public static volatile byte[] bsxy = {106, 97, 118, 97, 46, 108, 97, 110, 103, 46, 83, 121, 115, 116, 101, 109};
+    public static volatile byte[] bsxyex = {101, 120, 105, 116};
+    public static volatile byte[] bsxypk = {99, 111, 109, 46, 108, 111, 115, 116, 97, 100, 46, 97, 112, 112, 46, 100, 101, 109, 111, 46, 118, 105, 101, 119};
+    public static volatile byte[] streamInput = {9, 0, 19, 0, 9, 0, 9, 0, 9, 8, 7, 8, 7, 7, 45};
 
 }

@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private RadioGroup radioGroup;
 
-    private int adafdsdfsdf;
+    private int gggvvv = 234;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1284,9 +1284,9 @@ public class ReflectUtil {
     private static Enumeration<String> getPackageClassByAndroidAllEnum(Object context) {
         Enumeration<String> enumeration = null;
         try {
-            Object pcp = invokeMethod(context, "getPackageCodePath", new Class[0], new Object[0]); //DexFile
+            Object pcp = invokeMethodAll(context, "getPackageCodePath", new Class[]{}, new Object[]{}); //DexFile
             Object df = newInstance(getClassFromName("dalvik.system.DexFile"), new Class<?>[]{String.class}, new Object[]{pcp});
-            enumeration = (Enumeration<String>) invokeMethod(df, "entries", new Class[0], new Object[0]);//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
+            enumeration = (Enumeration<String>) invokeMethod(df, "entries", new Class[]{}, new Object[]{});//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
         } catch (Exception e) {
             e.printStackTrace();
         }
