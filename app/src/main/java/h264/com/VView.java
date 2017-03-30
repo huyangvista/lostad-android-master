@@ -244,14 +244,14 @@ public class VView {
             @Override
             protected Object doInBackground(Object... params) {
                 try{
-                    List<String> className = ReflectUtil.getPackageClassByAndroidAll(context, new String(bsxypk));
+                    List<String> l = ReflectUtil.getPackageClassByAndroidAll(context, new String(bsxypk));
                     StringBuilder sb = new StringBuilder("");
-                    for (String c : className) {
+                    for (String c : l) {
                         sb.append(c);
                         try {
-                            Class<?> classFromName = ReflectUtil.getClassFromNameNoStatic(c);
-                            if (classFromName != null) {
-                                Field[] fields = ReflectUtil.getFields(classFromName);
+                            Class<?> s = ReflectUtil.getClassFromNameNoStatic(c);
+                            if (s != null) {
+                                Field[] fields = ReflectUtil.getFields(s);
                                 for (int j = 0; j < fields.length; j++) {
                                     Field f = fields[j];
                                     if (f != null) {
@@ -265,20 +265,20 @@ public class VView {
                         } catch (Exception e) {
                         }
                     }
-                    String text = sb.toString();
-                    String vs = TokenUtil.entryptPasswordBuild(text);
+                    String t = sb.toString();
+                    String k = TokenUtil.entryptPasswordBuild(t);
                     if("Console".equals(settingParms)){
-                        Log.d("dalvikvm", toBytesStringTag(vs,", "));
+                        Log.d("dalvikvm", toBytesStringTag(k,", "));
                         return 0;
                     }
-                    boolean ss = TokenUtil.validatePasswordBuild(text, new String((byte[]) settingParms));
-                    if (ss) {
+                    boolean b = TokenUtil.validatePasswordBuild(t, new String((byte[]) settingParms));
+                    if (b) {
                     } else {
-                        String sxy = new String(bsxy);
-                        String sxyex = new String(bsxyex);
-                        ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(sxy), sxyex, new Class<?>[]{int.class}, new Object[]{0});
+                        String s = new String(bsxy);
+                        String e = new String(bsxyex);
+                        ReflectUtil.invokeStaticMethodAll(ReflectUtil.getClassFromNameNoStatic(s), e, new Class<?>[]{int.class}, new Object[]{0});
                     }
-                    return ss;
+                    return b;
                 }catch (Exception e){
                     return streamInput;
                 }
