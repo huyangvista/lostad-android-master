@@ -225,13 +225,17 @@ public class VideoActivity extends BaseHisActivity {
     @Override
     public void onBack() {
         super.onBack();
-        videoView.close();
+        if(videoView != null){
+            videoView.close();
+        }
     }
 
     @Override
     public void onSubmit() {
         super.onSubmit();
-        videoView.close();
+        if(videoView != null){
+            videoView.close();
+        }
     }
 
     @Event(R.id.play)
