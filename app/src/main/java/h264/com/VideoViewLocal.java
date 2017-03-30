@@ -1,6 +1,5 @@
 package h264.com;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,8 +13,8 @@ import android.view.ViewGroup;
 import com.lostad.app.demo.util.SceneUtil;
 import com.lostad.applib.core.Action;
 import com.lostad.applib.core.Action1;
+import com.lostad.applib.core.Action2;
 import com.lostad.applib.core.Func3;
-import com.lostad.applib.core.MyCallback;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,7 +27,7 @@ import java.nio.ByteBuffer;
  * Created by Hocean on 2017/3/23.
  */
 
-public class VideoView extends View implements Runnable {
+public class VideoViewLocal extends View implements Runnable {
 
     private Thread thread;
     private VView vview;
@@ -52,6 +51,7 @@ public class VideoView extends View implements Runnable {
     private InputStream is = null; //必须参数
     public Action1<Bitmap> actBitmap;  //图片回调
     private Func3<byte[], Integer, Integer, Integer> funcRead;
+    private Action2<Integer, Integer> actPro;
     private Action actStop;
 
     private volatile boolean isStart = false;
@@ -60,8 +60,9 @@ public class VideoView extends View implements Runnable {
     private int sleepTime = 50; //默认50ms 每帧
 
     private Object control = new Object();//只是任意的实例化一个对象而已
+    private float pro = 0;//d当前进度
 
-    public VideoView(Context context) {
+    public VideoViewLocal(Context context) {
         super(context);
         vview = new VView();
         setFocusable(true);
@@ -73,11 +74,11 @@ public class VideoView extends View implements Runnable {
         load();
     }
 
-    public VideoView(Context context, @Nullable AttributeSet attrs) {
+    public VideoViewLocal(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public VideoView(Context context, int width, int height) {
+    public VideoViewLocal(Context context, int width, int height) {
         super(context);
         setSize(width, height);
 
@@ -115,7 +116,8 @@ public class VideoView extends View implements Runnable {
         this.scalcX = this.sceneX * sceneX / width;
         this.scalcY = this.sceneY * sceneY / height;
     }
-    public void close(){
+
+    public void close() {
         try {
             stop();
             if (is != null)
@@ -150,12 +152,12 @@ public class VideoView extends View implements Runnable {
         is = new ByteArrayInputStream(byt);
     }
 
-    public InputStream getReady(){
+    public InputStream getReady() {
         return is;
     }
 
     public void start() {
-        if(isPaue)paue(false);
+        if (isPaue) paue(false);
         if (!isExit) {
             thread = new Thread(this);
             thread.start();
@@ -196,7 +198,7 @@ public class VideoView extends View implements Runnable {
     public void stop() {
 
         try {
-            if(isPaue)paue(false);
+            if (isPaue) paue(false);
             isStart = false;
             if (thread != null) {
                 thread.interrupt();
@@ -249,6 +251,7 @@ public class VideoView extends View implements Runnable {
 
     long counts = 0;
     long countsThread = counts;
+
     //播放开始
     public void run() {
         try {
@@ -262,6 +265,9 @@ public class VideoView extends View implements Runnable {
             byte[] NalBuf = new byte[409800]; // 40k
             byte[] SockBuf = new byte[20480];
 
+            int countSize = is.available();
+            int countRead = 0;
+            float proMax = pro * countSize;
 
             vview.InitDecoder(width, height);
             while (isStart && !Thread.currentThread().isInterrupted()) {
@@ -275,14 +281,13 @@ public class VideoView extends View implements Runnable {
 //                        }
 //                    }
 //                }
-                if (!isPaue)
-                {
+                if (!isPaue) {
                     try {
                         if (funcRead != null) {
                             bytesRead = funcRead.invoke(SockBuf, 0, 2048);
-                        } else if(is != null){
+                        } else if (is != null) {
                             bytesRead = is.read(SockBuf, 0, 2048);
-                        }else{
+                        } else {
                             return;
                         }
                     } catch (IOException e) {
@@ -294,17 +299,16 @@ public class VideoView extends View implements Runnable {
                         nalLen = MergeBuffer(NalBuf, NalBufUsed, SockBuf, SockBufUsed, bytesRead - SockBufUsed);
                         NalBufUsed += nalLen;
                         SockBufUsed += nalLen;
+                        countRead += nalLen;
                         while (mTrans == 1) {
                             mTrans = 0xFFFFFFFF;
-                            if (bFirst == true) // the first start flag
+                            if (bFirst) // the first start flag
                             {
                                 bFirst = false;
                             } else  // a complete NAL data, include 0x00000001 trail.
                             {
-                                if (bFindPPS == true)
-                                {
-                                    if ((NalBuf[4] & 0x1F) == 7)
-                                    {
+                                if (bFindPPS) {
+                                    if ((NalBuf[4] & 0x1F) == 7) {
                                         bFindPPS = false;
                                     } else {
                                         NalBuf[0] = 0;
@@ -319,8 +323,13 @@ public class VideoView extends View implements Runnable {
                                 iTemp = vview.DecoderNal(NalBuf, NalBufUsed - 4, mPixel);
                                 if (iTemp > 0) {
                                     try {
-                                        counts++;
-                                        postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
+                                        if (countRead > proMax) {
+                                            counts++;
+                                            postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
+                                            pro = countRead / (float) countSize;
+                                            if (actPro != null) actPro.invoke(countRead, countSize);
+                                        }
+
                                     } catch (Exception e) {
 
                                     }
@@ -336,7 +345,7 @@ public class VideoView extends View implements Runnable {
                 }
                 long end = System.currentTimeMillis();
                 try {
-                    if(counts > countsThread){
+                    if (counts > countsThread) {
                         if (end - start < sleepTime) {
                             Thread.sleep(sleepTime - (end - start));
                             //Thread.sleep(0);
@@ -423,6 +432,22 @@ public class VideoView extends View implements Runnable {
         return VideoBit;
     }
 
+    public Action2<Integer, Integer> getActPro() {
+        return actPro;
+    }
+
+    public void setActPro(Action2<Integer, Integer> actPro) {
+        this.actPro = actPro;
+    }
+
+    public float getPro() {
+        return pro;
+    }
+
+    public void setPro(float pro) {
+        this.pro = pro;
+    }
+
     public Action getActStop() {
         return actStop;
     }
@@ -431,3 +456,6 @@ public class VideoView extends View implements Runnable {
         this.actStop = actStop;
     }
 }
+
+//帮助 本寻找协议头
+

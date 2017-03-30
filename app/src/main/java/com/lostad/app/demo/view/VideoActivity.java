@@ -12,7 +12,10 @@ import android.widget.SeekBar;
 import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.R;
+import com.lostad.applib.core.Action;
+import com.lostad.applib.core.Action2;
 import com.lostad.applib.util.DateTime;
+import com.lostad.applib.util.DialogUtil;
 import com.lostad.applib.util.FileDataUtil;
 import com.lostad.applib.util.ImageUtil;
 import com.lostad.applib.util.sys.PrefManager;
@@ -26,6 +29,7 @@ import org.xutils.view.annotation.ViewInject;
 import java.io.IOException;
 
 import h264.com.VideoView;
+import h264.com.VideoViewLocal;
 
 /**
  * Created by Hocean on 2017/3/20.
@@ -37,7 +41,7 @@ public class VideoActivity extends BaseHisActivity {
     public static final String AWAKE_START_PLAY = "0";
     public static final String AWAKE_START_STOP = "1";
 
-    private VideoView videoView;
+    private VideoViewLocal videoView;
 
     @ViewInject(R.id.his)
     private LinearLayout his;
@@ -52,6 +56,7 @@ public class VideoActivity extends BaseHisActivity {
     private Button btnFullWin;
 
     private int pro = 0;
+    private boolean onPro = false;
 
     private int shoHidTime = 5000;
     private Handler handler = new Handler();
@@ -85,6 +90,48 @@ public class VideoActivity extends BaseHisActivity {
         handler.postDelayed(runHid, shoHidTime);
     }
 
+    public void play(){
+        try {
+            if(videoView!=null)videoView.close();
+            String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+            videoView = new VideoViewLocal(VideoActivity.this);
+            videoView.setScalcScene(1, 1);
+            videoView.load();
+            videoView.ready(file);
+            videoView.setPro(pro / 100.0f);
+            videoView.start();
+            videoView.loadLayout(videos);
+            videoView.setActPro(new Action2<Integer, Integer>() {
+                @Override
+                public void invoke(final Integer integer, final Integer integer2) {
+                    if(!onPro){
+                        seekBar.setProgress(integer * 100 / integer2 );
+                    }
+                }
+            });
+            showAndHidTime();
+            videoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAndHidTime();
+                }
+            });
+            videoView.setActStop(new Action() {
+                @Override
+                public void invoke() {
+                    //DialogUtil.showToastCust("播放完");
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnPlay.setBackgroundResource(R.mipmap.play);
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -99,26 +146,8 @@ public class VideoActivity extends BaseHisActivity {
         loadLayout(his);
         Bundle bundle = ContextUtil.getBundle(this);
         String awakeStart = bundle.getString(AWAKE_START, AWAKE_START_PLAY);
-
-
         if (AWAKE_START_PLAY.equals(awakeStart)) {
-            String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
-            file = bundle.getString(VIDEO_NAME, file);
-            videoView = new VideoView(this);
-            videoView.setScalcScene(1, 1);
-            videoView.load();
-            videoView.ready(file);
-            videoView.start();
-            videoView.loadLayout(videos);
-            showAndHidTime();
-
-            videoView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showAndHidTime();
-                }
-            });
-
+            play();
             btnPlay.setBackgroundResource(R.mipmap.pause);
         } else if (AWAKE_START_STOP.equals(awakeStart)) {
             btnPlay.setBackgroundResource(R.mipmap.play);
@@ -132,40 +161,13 @@ public class VideoActivity extends BaseHisActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                onPro = true;
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (videoView != null) {
-                    try {
-                        videoView.close();
-                        String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
-
-                        videoView = new VideoView(VideoActivity.this);
-                        videoView.setScalcScene(1, 1);
-                        videoView.load();
-                        videoView.ready(file);
-
-                        int available = videoView.getReady().available();
-                        int p = available / 100 * pro;
-                        videoView.getReady().read(new byte[p]);
-
-                        videoView.start();
-                        videoView.loadLayout(videos);
-
-                        showAndHidTime();
-                        videoView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showAndHidTime();
-
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onStopTrackingTouch(SeekBar sb) {
+                play();
+                onPro = false;
             }
         });
 
@@ -201,7 +203,7 @@ public class VideoActivity extends BaseHisActivity {
         switch (item.getItemId()) {
             case PLAY_ID:
                 if (videoView != null) videoView.stop();
-                videoView = new VideoView(this);
+                videoView = new VideoViewLocal(this);
                 videoView.setScalcScene(1, 1);
                 String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
                 videoView.load();
@@ -232,7 +234,13 @@ public class VideoActivity extends BaseHisActivity {
     private void onClickPlay(View v) {
         if (videoView != null) {
             videoView.paue();
-            if (videoView.isPaue()) {
+
+            if (videoView.isExit()){
+                videoView.stop();
+                pro = 0;
+                play();
+                btnPlay.setBackgroundResource(R.mipmap.pause);
+            }else  if (videoView.isPaue()) {
                 btnPlay.setBackgroundResource(R.mipmap.play);
             } else {
                 btnPlay.setBackgroundResource(R.mipmap.pause);
