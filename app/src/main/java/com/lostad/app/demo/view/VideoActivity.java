@@ -2,6 +2,7 @@ package com.lostad.app.demo.view;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,31 +85,34 @@ public class VideoActivity extends BaseHisActivity {
             hidBtn();
         }
     };
+
     public void showAndHidTime() {
         handler.removeCallbacks(runHid);
         showBtn();
         handler.postDelayed(runHid, shoHidTime);
     }
 
-    public void play(){
+    public void play() {
         try {
-            if(videoView!=null)videoView.close();
+            if (videoView != null) videoView.close();
             String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
             videoView = new VideoViewLocal(VideoActivity.this);
             videoView.setScalcScene(1, 1);
             videoView.load();
             videoView.ready(file);
-            videoView.setPro(pro / 100.0f);
+            //videoView.setPro(pro / 100.0f);
+            videoView.jump(pro / 100.0f);
             videoView.start();
             videoView.loadLayout(videos);
             videoView.setActPro(new Action2<Integer, Integer>() {
                 @Override
                 public void invoke(final Integer integer, final Integer integer2) {
-                    if(!onPro){
-                        seekBar.setProgress(integer * 100 / integer2 );
+                    if (!onPro) {
+                        seekBar.setProgress(integer * 100 / integer2);
                     }
                 }
             });
+            btnPlay.setBackgroundResource(R.mipmap.pause);
             showAndHidTime();
             videoView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,6 +132,7 @@ public class VideoActivity extends BaseHisActivity {
                     });
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,12 +150,12 @@ public class VideoActivity extends BaseHisActivity {
         x(this);
         loadLayout(his);
         Bundle bundle = ContextUtil.getBundle(this);
+        btnPlay.setBackgroundResource(R.mipmap.pause);
+
         String awakeStart = bundle.getString(AWAKE_START, AWAKE_START_PLAY);
         if (AWAKE_START_PLAY.equals(awakeStart)) {
             play();
-            btnPlay.setBackgroundResource(R.mipmap.pause);
         } else if (AWAKE_START_STOP.equals(awakeStart)) {
-            btnPlay.setBackgroundResource(R.mipmap.play);
         }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -170,7 +175,6 @@ public class VideoActivity extends BaseHisActivity {
                 onPro = false;
             }
         });
-
 
 
         int scene = WindowUtil.getScreen(this);
@@ -235,12 +239,12 @@ public class VideoActivity extends BaseHisActivity {
         if (videoView != null) {
             videoView.paue();
 
-            if (videoView.isExit()){
+            if (videoView.isExit()) {
                 videoView.stop();
                 pro = 0;
                 play();
                 btnPlay.setBackgroundResource(R.mipmap.pause);
-            }else  if (videoView.isPaue()) {
+            } else if (videoView.isPaue()) {
                 btnPlay.setBackgroundResource(R.mipmap.play);
             } else {
                 btnPlay.setBackgroundResource(R.mipmap.pause);
@@ -277,5 +281,14 @@ public class VideoActivity extends BaseHisActivity {
 
     }
 
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+				if(videoView != null){
+                    videoView.close();
+                }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

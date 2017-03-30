@@ -61,6 +61,7 @@ public class VideoViewLocal extends View implements Runnable {
 
     private Object control = new Object();//只是任意的实例化一个对象而已
     private float pro = 0;//d当前进度
+    private int jumpCount = 0;
 
     public VideoViewLocal(Context context) {
         super(context);
@@ -138,6 +139,7 @@ public class VideoViewLocal extends View implements Runnable {
     public void ready(File file) {
         try {
             is = new FileInputStream(file);
+            countSize = is.available();
         } catch (IOException e) {
             return;
         }
@@ -251,7 +253,7 @@ public class VideoViewLocal extends View implements Runnable {
 
     long counts = 0;
     long countsThread = counts;
-
+    long countSize = 0;
     //播放开始
     public void run() {
         try {
@@ -265,7 +267,6 @@ public class VideoViewLocal extends View implements Runnable {
             byte[] NalBuf = new byte[409800]; // 40k
             byte[] SockBuf = new byte[20480];
 
-            int countSize = is.available();
             int countRead = 0;
             float proMax = pro * countSize;
 
@@ -327,7 +328,7 @@ public class VideoViewLocal extends View implements Runnable {
                                             counts++;
                                             postInvalidate();  //使用postInvalidate可以直接在线程中更新界面    // postInvalidate();
                                             pro = countRead / (float) countSize;
-                                            if (actPro != null) actPro.invoke(countRead, countSize);
+                                            if (actPro != null) actPro.invoke(countRead + jumpCount, (int) countSize );
                                         }
 
                                     } catch (Exception e) {
@@ -370,6 +371,25 @@ public class VideoViewLocal extends View implements Runnable {
         isExit = true;
         if(actStop != null) actStop.invoke();
     }
+
+    public void jump(float jump){
+        try {
+            byte[] bs = new byte[1024 * 1024 * 5];
+            double proMax = jump * countSize;
+            int d = (int)( proMax / bs.length);
+            int  dm =  (int)proMax % bs.length;
+            int len = 0;
+            int count = 0;
+            for (int i = 0; i < d; i++) {
+                count += is.read(bs,0,1024 * 1024 * 5);
+            }
+            count += is.read(bs,0,dm);
+            jumpCount = count;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Action1<Bitmap> getActBitmap() {
         return actBitmap;

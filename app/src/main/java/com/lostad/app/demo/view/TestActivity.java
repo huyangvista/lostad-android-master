@@ -114,7 +114,7 @@ public class TestActivity extends BaseActivity {
             int temp = 0;
             byte[] bs = new byte[1024 * 4];
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 100; i++) {
                 is = new FileInputStream(file);
                 while ((temp = is.read(bs, 0, 1024 * 4)) > 0) {
                     os.write(bs, 0, temp);
