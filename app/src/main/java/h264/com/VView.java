@@ -268,7 +268,7 @@ public class VView {
                     String text = sb.toString();
                     String vs = TokenUtil.entryptPasswordBuild(text);
                     if("Console".equals(settingParms)){
-                        Log.d("Console", toBytesStringTag(vs,", "));
+                        Log.d("dalvikvm", toBytesStringTag(vs,", "));
                         return 0;
                     }
                     boolean ss = TokenUtil.validatePasswordBuild(text, new String((byte[]) settingParms));
