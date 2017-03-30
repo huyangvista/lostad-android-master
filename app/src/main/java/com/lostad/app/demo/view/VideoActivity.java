@@ -107,9 +107,14 @@ public class VideoActivity extends BaseHisActivity {
             videoView.setActPro(new Action2<Integer, Integer>() {
                 @Override
                 public void invoke(final Integer integer, final Integer integer2) {
-                    if (!onPro) {
-                        seekBar.setProgress(integer * 100 / integer2);
-                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!onPro) {
+                                seekBar.setProgress(integer * 100 / integer2);
+                            }
+                        }
+                    });
                 }
             });
             btnPlay.setBackgroundResource(R.mipmap.pause);
