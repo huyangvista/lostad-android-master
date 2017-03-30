@@ -131,6 +131,8 @@ public class VideoViewLocal extends View implements Runnable {
     public void ready(String file) {
         try {
             is = new FileInputStream(file);
+            countSize = is.available();
+
         } catch (IOException e) {
             return;
         }
