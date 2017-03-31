@@ -100,8 +100,8 @@ public class VideoActivity extends BaseHisActivity {
             videoView.setScalcScene(1, 1);
             videoView.load();
             videoView.ready(file);
-            //videoView.setPro(pro / 100.0f);
-            videoView.jump(pro / 100.0f);
+            videoView.setPro(pro / 100.0f);
+            //videoView.jump(pro / 100.0f);
             videoView.start();
             videoView.loadLayout(videos);
             videoView.setActPro(new Action2<Integer, Integer>() {
