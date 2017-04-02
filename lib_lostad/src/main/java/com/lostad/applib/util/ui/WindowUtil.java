@@ -48,6 +48,9 @@ public class WindowUtil {
         appActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  //全屏
     }
 
+    public static void noFull(AppCompatActivity appActivity) {
+        appActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
     /**
      * 反射状态栏高度
      *

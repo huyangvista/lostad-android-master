@@ -257,9 +257,48 @@
                 android:textSize="@dimen/sp_content" />
 
         </LinearLayout>
+       <!-- viveadd-->
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_line_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_40"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/height_list_item"
+            android:layout_marginTop="12dp"
+            android:background="@xml/bg_white_gray"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:text="引导页"
+                android:textColor="@color/txt_gray"
+                android:textSize="@dimen/sp_content" />
+
+            <Switch
+                android:id="@+id/switchActionNavi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                android:text="是否开启"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+
+
+        </LinearLayout>
+        <!--viveaddEnd-->
     </LinearLayout>
 
-    <Button
+        <Button
         android:id="@+id/btn_quit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

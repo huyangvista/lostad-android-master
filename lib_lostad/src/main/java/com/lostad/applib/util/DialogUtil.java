@@ -335,4 +335,8 @@ public class DialogUtil {
 	public static void showToastCust(String msg){
 		showToastCust(ContextUtil.getAppContext(),msg);
 	}
+
+	public static void rely(){
+		showToastCust("需要SDK!");
+	}
 }

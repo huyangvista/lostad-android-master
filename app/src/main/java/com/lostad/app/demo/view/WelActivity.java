@@ -10,14 +10,15 @@ import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 
 /**
- *
+ * vive info
  */
 public class WelActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String appFirst = PrefManager.getString(this, IConst.APP_FIRST, "0");
-		if(appFirst.equals("0")){
+		//0 第一次   1 不跳转 -1跳转后不取消跳转
+		String appFirst = PrefManager.getString(this, IConst.APP_FIRST, "");
+		if(appFirst.equals("") || appFirst.equals("2")){
 			ContextUtil.toActivtyClear(this,WelReadmeActivity.class);
 			return;
 		}
@@ -30,7 +31,7 @@ public class WelActivity extends Activity {
 			 @Override
 			 public void run() {
 				 try {
-					 sleep(500);
+					 sleep(2000);
 				 } catch (InterruptedException e) {
 					 e.printStackTrace();
 				 }

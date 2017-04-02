@@ -28,6 +28,9 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import h264.com.VideoView;
 import h264.com.VideoViewLocal;
@@ -96,6 +99,7 @@ public class VideoActivity extends BaseHisActivity {
         try {
             if (videoView != null) videoView.close();
             String file = "/mnt/shared/Other/352x288s.264"; //352x288.264"; //240x320.264";
+            file = ContextUtil.getBundle(this).getString(VIDEO_NAME,file);
             videoView = new VideoViewLocal(VideoActivity.this);
             videoView.setScalcScene(1, 1);
             videoView.load();
@@ -187,9 +191,11 @@ public class VideoActivity extends BaseHisActivity {
             case WindowUtil.SceneStatus.defult:
             case WindowUtil.SceneStatus.horizontal:  //min
                 btnFullWin.setBackgroundResource(R.mipmap.expand);
+                WindowUtil.noFull(this);
                 break;
             case WindowUtil.SceneStatus.vertical: //full
                 btnFullWin.setBackgroundResource(R.mipmap.contract);
+                WindowUtil.Full(this);
                 break;
 
         }
@@ -198,12 +204,14 @@ public class VideoActivity extends BaseHisActivity {
     // Menu item Ids
     public static final int PLAY_ID = Menu.FIRST;
     public static final int EXIT_ID = Menu.FIRST + 1;
+    public static final int IMAGE_ID = Menu.FIRST + 2;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.add(0, PLAY_ID, 0, R.string.play);
         menu.add(0, EXIT_ID, 1, R.string.exit);
+        menu.add(0, IMAGE_ID, 2, "截图");
         return true;
     }
 
@@ -222,6 +230,10 @@ public class VideoActivity extends BaseHisActivity {
             case EXIT_ID:
                 finish();
                 return true;
+            case IMAGE_ID:
+                String vs =  PrefManager.getString(this, IConst.KEY_PATH_IMAGES, "");
+                ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -237,10 +249,14 @@ public class VideoActivity extends BaseHisActivity {
 
     @Override
     public void onSubmit() {
-        super.onSubmit();
-        if(videoView != null){
-            videoView.close();
-        }
+//        super.onSubmit();
+//        if(videoView != null){
+//            videoView.close();
+//        }
+        String vs =  PrefManager.getString(this, IConst.KEY_PATH_IMAGES, IConst.PATH_ROOT + IConst.KEY_PATH_IMAGES);
+        String name = FileDataUtil.createPngFileName("camera_");
+        ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , name);
+        DialogUtil.showToastCust("已保存到:" + vs + name);
     }
 
     @Event(R.id.play)
@@ -264,7 +280,7 @@ public class VideoActivity extends BaseHisActivity {
     @Event(R.id.fullWin)
     private void onClickFullWin(View v) {
         //String vs =  PrefManager.getString(this, IConst.KEY_PATH_VIDEOS, "");
-        // ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
+        //ImageUtil.saveToSDCard(videoView.getVideoBit(),vs , FileDataUtil.createPngFileName("camera_"));
         int scene = WindowUtil.getScreen(this);
         switch (scene) {
             case WindowUtil.SceneStatus.defult:
@@ -274,7 +290,6 @@ public class VideoActivity extends BaseHisActivity {
                 }
                 //btnFullWin.setBackgroundResource(R.mipmap.expand);
                 WindowUtil.setScreen(this, WindowUtil.SceneStatus.vertical);
-
                 break;
             case WindowUtil.SceneStatus.vertical: //full
 
@@ -283,7 +298,6 @@ public class VideoActivity extends BaseHisActivity {
                 }
                 //btnFullWin.setBackgroundResource(R.mipmap.contract);
                 WindowUtil.setScreen(this, WindowUtil.SceneStatus.horizontal);
-
                 break;
 
         }
@@ -299,5 +313,7 @@ public class VideoActivity extends BaseHisActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 
 }

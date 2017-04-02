@@ -23,8 +23,8 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="设备设置"
-            android:textSize="20dp"
-            android:textColor="@color/txt_blue_deep" />
+            android:textColor="@color/txt_blue_deep"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,13 +45,13 @@
             android:id="@+id/editTextUid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:ems="10"
             android:hint="设备的唯一 ID"
-            android:inputType="textPersonName"
 
+            android:inputType="textPersonName"
             android:text=""
-            android:textColor="@color/txt_blue_deep"
-            android:layout_weight="1" />
+            android:textColor="@color/txt_blue_deep" />
 
 
     </LinearLayout>
@@ -109,6 +109,24 @@
             android:inputType="textPersonName"
             android:text=""
             android:textColor="@color/txt_blue_deep" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="  搜索:"
+
+            android:textColor="@color/txt_blue_deep" />
+
+
     </LinearLayout>
 
 

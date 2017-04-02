@@ -3,6 +3,7 @@ package com.lostad.app.demo.view.mainFragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,7 +52,7 @@ public class ImageFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        videoPath = PrefManager.getString(getContext(), IConst.KEY_PATH_VIDEOS, videoPath);
+        videoPath = PrefManager.getString(getContext(), IConst.KEY_PATH_IMAGES, videoPath);
 
         View rootView = inflater.inflate(R.layout.fragment_video, null);
         linearLayout = (LinearLayout) rootView.findViewById(R.id.line_layout);
@@ -153,9 +154,17 @@ public class ImageFragment extends BaseFragment {
             //点击列表
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
-                map.put(VideoActivity.VIDEO_NAME,((File)tlv.getmListData().get(position - 1)).getPath());
-                ContextUtil.toActivtyResult(ImageFragment.this, map, VideoActivity.class);
+//                Map<String, Serializable> map = BaseHisActivity.markParms(BaseHisActivity.TITLE, "本地视频");
+//                map.put(VideoActivity.VIDEO_NAME,((File)tlv.getmListData().get(position - 1)).getPath());
+//                ContextUtil.toActivtyResult(ImageFragment.this, map, VideoActivity.class);
+
+
+                String picFile = ((File)tlv.getmListData().get(position - 1)).getPath();
+                //使用Intent
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+//Uri mUri = Uri.parse("file://" + picFile.getPath());Android3.0以后最好不要通过该方法，存在一些小Bug
+                intent.setDataAndType(Uri.fromFile(new File(picFile)), "image/*");
+                startActivity(intent);
             }
         };
         linearLayout.addView(tlv.getRootView());

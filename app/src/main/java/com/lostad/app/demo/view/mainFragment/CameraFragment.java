@@ -81,6 +81,7 @@ public class CameraFragment extends BaseFragment {
                                         //设置后 回调
                                         switch (data) {
                                             case 0: //重新连接
+                                                DialogUtil.rely();
                                                 break;
                                             case 1: //修改摄像机
                                                 Map<String, Serializable> map = new HashMap<>();
@@ -91,8 +92,10 @@ public class CameraFragment extends BaseFragment {
 
                                                 break;
                                             case 2: //查看事件
+                                                DialogUtil.rely();
                                                 break;
                                             case 3: //查看快照
+                                                DialogUtil.rely();
                                                 break;
                                             case 4: //删除相机
                                                 DbManager db = MyApplication.getInstance().getDb();
