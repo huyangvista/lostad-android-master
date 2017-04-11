@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.util.view.ViewPageBuild;
+import com.lostad.app.demo.view.mainFragment.SettingsFragment;
 import com.lostad.applib.util.sys.PrefManager;
 import com.lostad.applib.util.ui.ContextUtil;
 
@@ -23,6 +24,10 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+/**
+ * 引导
+ * Created by Hocean on 2017/3/21.
+ */
 @ContentView(R.layout.activity_wel_readme)
 public class WelReadmeActivity extends Activity {
 
@@ -34,13 +39,17 @@ public class WelReadmeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PrefManager.saveString(this, IConst.APP_FIRST, "1");   //设置为 0为没有启动过   1为已经启动过
+
+        String isChe = PrefManager.getString(this, IConst.APP_FIRST, "");
+        if("".equals(isChe)){
+            PrefManager.saveString(this, IConst.APP_FIRST, "1");   //设置为 0为没有启动过   1为已经启动过
+        }
         x.view().inject(this);
 
         ViewPager vg = new ViewPager(this);
 		ViewPageBuild vpg = new ViewPageBuild();
-        vpg.addPage(this, R.mipmap.camera);
-        vpg.addPage(this, R.mipmap.camera_load);
+//        vpg.addPage(this, R.mipmap.camera);
+//        vpg.addPage(this, R.mipmap.camera_load);
 
 //        RelativeLayout ll = new RelativeLayout(this);
 //        //ll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -58,9 +67,13 @@ public class WelReadmeActivity extends Activity {
 //        ll.addView(go);
 //        vpg.addPage(ll);
 
+
+        vpg.addPage(this, R.mipmap.cloud_guide_1);
+        vpg.addPage(this, R.mipmap.cloud_guide_2);
+        vpg.addPage(this, R.mipmap.cloud_guide_3);
         View v  = ContextUtil.getLayoutInflater(this).inflate(R.layout.activity_welreadme_startgoto,null);
         vpg.addPage(v);
-        vpg.setNavigation(ll_group);
+        //vpg.setNavigation(ll_group);
         vpg.show(vg);
         ll_vp.addView(vg);
 

@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.lostad.app.base.view.fragment.BaseFragment;
+import com.lostad.app.demo.IConst;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.view.LoginActivity;
@@ -16,6 +19,8 @@ import com.lostad.app.demo.view.my.ListMyTourActivity;
 import com.lostad.applib.core.MyCallback;
 import com.lostad.applib.entity.ILoginConfig;
 import com.lostad.applib.util.DialogUtil;
+import com.lostad.applib.util.sys.PrefManager;
+import com.umeng.socialize.view.SwitchImageView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -39,14 +44,31 @@ public class SettingsFragment extends BaseFragment {
 	@ViewInject(R.id.btn_quit)
 	private TextView btn_quit;
 	ILoginConfig mLogin;
+
+	@ViewInject(R.id.switchActionNavi)
+	private Switch switchActionNavi;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 		x.view().inject(this, rootView);
         mApp = (MyApplication)getApp();
+		load(); //vive
 		//注入view
 		return rootView;
+	}
+
+	private void load() {
+		String isChe = PrefManager.getString(SettingsFragment.this.getContext(), IConst.APP_FIRST, "");
+		if("".equals(isChe) || "2".equals(isChe)){
+			switchActionNavi.setChecked(true);
+		}
+		switchActionNavi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				PrefManager.saveString(SettingsFragment.this.getContext(), IConst.APP_FIRST, isChecked?"2":"1");
+			}
+		});
 	}
 
 

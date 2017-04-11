@@ -12,6 +12,7 @@ import com.lostad.app.base.view.component.BaseHisActivity;
 import com.lostad.app.demo.MyApplication;
 import com.lostad.app.demo.R;
 import com.lostad.app.demo.entity.Video;
+import com.lostad.applib.util.DialogUtil;
 import com.lostad.applib.util.ui.ContextUtil;
 
 import org.xutils.DbManager;
@@ -83,5 +84,10 @@ public class AddCameraActivity extends BaseHisActivity {
             e.printStackTrace(); ///storage/emulated/0/1_tour/tour_0107.db
         }
         super.onSubmit();
+    }
+
+    @Event(R.id.search)
+    private void onClickSearch(View v){
+        DialogUtil.rely();
     }
 }

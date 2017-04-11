@@ -42,4 +42,6 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="fullWin"><![CDATA[<>]]></string>
     <string name="view_play">△</string>
+    <string name="on">开启</string>
+    <string name="off">关闭</string>
 </resources>
